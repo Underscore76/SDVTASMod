@@ -59,6 +59,7 @@ namespace TASMod
             }
 
             State = new SaveState();
+            Console = new TASConsole();
         }
 
         public static void LateInit()
@@ -108,7 +109,9 @@ namespace TASMod
 		{
 			TASInputState.Active = false;
 			RealInputState.Update();
+            Console.Update();
             bool didInjectText = HandleTextBoxEntry();
+
             UpdateOverlays();
 
             if (HandleStoredInput())
@@ -243,6 +246,9 @@ namespace TASMod
 			bool advance = false;
             RealMouse = new TASMouseState(RealInputState.mouseState);
             RealKeyboard = new TASKeyboardState(RealInputState.keyboardState);
+
+            if (Console.IsOpen) return advance;
+
             if (RealInputState.KeyTriggered(Keys.Q))
             {
                 advance = true;

@@ -168,23 +168,6 @@ namespace TASMod.Patches
         {
             if (CanUpdate)
             {
-                //string curState = $"{Game1.recentMultiplayerRandom.Peek()} {Game1.random.Peek()}";
-                //string lastState = "";
-                //if (LastRun.Count > 0 && TASDateTime.CurrentFrame < (ulong)LastRun.Count)
-                //{
-                //    lastState = $"{LastRun[(int)TASDateTime.CurrentFrame]}";
-                //    LastRun[(int)TASDateTime.CurrentFrame] = curState;
-                //} else {
-                //    LastRun.Add(curState);
-                //}
-                //if (curState != lastState)
-                //{
-                //    //ModEntry.Console.Log($"{TASDateTime.CurrentFrame} {curState} {lastState}", LogLevel.Warn);
-                //}
-                //else
-                //{
-                //    //ModEntry.Console.Log($"{TASDateTime.CurrentFrame}");
-                //}
                 Counter++;
             }
             else
