@@ -35,4 +35,12 @@
     <Folder Include="Automation\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
+    <None Include="..\TODO.md">
+      <Link>TODO.md</Link>
+    </None>
+  </ItemGroup>
 </Project>
