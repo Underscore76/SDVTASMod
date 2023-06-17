@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TASMod",
+  "Author": "Underscore76",
+  "Version": "0.0.1",
+  "Description": "Stardew TAS Mod",
+  "UniqueID": "underscore.tasmod",
+  "EntryDll": "TASMod.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [ "GitHub:Underscore76/TASMod" ]
+}

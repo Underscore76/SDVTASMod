@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="NLua" Version="1.6.2" />
+    <PackageReference Include="DynamicExpresso.Core" Version="2.16.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Patches\" />
+    <None Remove="Inputs\" />
+    <None Remove="Extensions\" />
+    <None Remove="Overlays\" />
+    <None Remove="Console\" />
+    <None Remove="Assets\" />
+    <None Remove="Monogame.Framework\" />
+    <None Remove="Recording\" />
+    <None Remove="Automation\" />
+    <None Remove="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patches\" />
+    <Folder Include="Inputs\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Overlays\" />
+    <Folder Include="Console\" />
+    <Folder Include="Assets\" />
+    <Folder Include="Monogame.Framework\" />
+    <Folder Include="Recording\" />
+    <Folder Include="Automation\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+</Project>
