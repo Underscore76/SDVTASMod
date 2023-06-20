@@ -7,12 +7,14 @@ Basic Framework for a TAS Mod, includes
 * save (press '.', writes to tmp.json)
 * load (press ',', reads from tmp.json)
 * AC keybind (hold `r` to simulate ac keys)
-* Console (Ctrl+`) or (⌘+`) to open/close the console
+* Console (Ctrl+\`) or (⌘+\`) to open/close the console
 
 Hold the keys you want and then advance a frame to store those inputs (simulate AC with `r`)
 
 ## Console commands
-Slowly copying over/making sure things work in the new system
+Slowly copying over/making sure things work in the new system.
+
+Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
 
 Helper Functions:
 * `help` - allows you to check command description/usage
