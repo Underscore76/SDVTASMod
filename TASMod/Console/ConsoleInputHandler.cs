@@ -9,9 +9,13 @@ namespace TASMod.Console
     public class ConsoleInputHandler
     {
         public HashSet<Keys> SpecialKeys = new HashSet<Keys>(new Keys[]{
-            Keys.LeftShift, Keys.LeftControl, Keys.LeftAlt
+            Keys.LeftShift, Keys.LeftControl, Keys.LeftAlt, Keys.LeftWindows
         });
         public Dictionary<Keys, bool> specialKeys;
+        public bool LeftShiftDown => IsKeyDown(Keys.LeftShift);
+        public bool ControlKeyDown => IsKeyDown(Keys.LeftControl) || IsKeyDown(Keys.LeftWindows);
+        public bool AltKeyDown => IsKeyDown(Keys.LeftAlt);
+
         public GameWindow Window;
         public TASConsole Console;
 
@@ -34,7 +38,7 @@ namespace TASMod.Console
 
         public void Event_TextInput(object sender, TextInputEventArgs e)
         {
-            ModEntry.Console.Log($"Event_TextInput: {e.Character}:{e.Key} {char.IsControl(e.Character)}", StardewModdingAPI.LogLevel.Warn);
+            //ModEntry.Console.Log($"Event_TextInput: {e.Character}:{e.Key} {char.IsControl(e.Character)}", StardewModdingAPI.LogLevel.Warn);
             if (Console != null && Console.IsOpenMax)
             {
                 if (char.IsControl(e.Character))
@@ -49,7 +53,7 @@ namespace TASMod.Console
         }
         public void Event_KeyDown(object sender, InputKeyEventArgs e)
         {
-            ModEntry.Console.Log($"Event_KeyDown: {e.Key}", StardewModdingAPI.LogLevel.Warn);
+            //ModEntry.Console.Log($"Event_KeyDown: {e.Key}", StardewModdingAPI.LogLevel.Warn);
             if (!specialKeys.ContainsKey(e.Key))
             {
                 specialKeys.Add(e.Key, true);
@@ -61,7 +65,7 @@ namespace TASMod.Console
             switch (e.Key)
             {
                 case Keys.C:
-                    if (IsKeyDown(Keys.LeftControl))
+                    if (ControlKeyDown)
                     {
                         Console.ReceiveCommandInput('\u0003');
                         break;
@@ -69,7 +73,7 @@ namespace TASMod.Console
                     Console.ReceiveKey(e.Key);
                     break;
                 case Keys.V:
-                    if (IsKeyDown(Keys.LeftControl))
+                    if (ControlKeyDown)
                     {
                         Console.ReceiveCommandInput('\u0016');
                         break;
@@ -83,7 +87,7 @@ namespace TASMod.Console
         }
         public void Event_KeyUp(object sender, InputKeyEventArgs e)
         {
-            ModEntry.Console.Log($"Event_KeyUp: {e.Key}", StardewModdingAPI.LogLevel.Warn);
+            //ModEntry.Console.Log($"Event_KeyUp: {e.Key}", StardewModdingAPI.LogLevel.Warn);
             if (specialKeys.ContainsKey(e.Key))
             {
                 specialKeys[e.Key] = false;

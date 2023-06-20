@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Locations;
 
 using TASMod.System;
-using TASMod.Menus;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
@@ -153,7 +152,7 @@ namespace TASMod.Console
             Rectangle cursorRect = new Rectangle((int)(entryLoc.X + characterSize.X * renderCursorPosition), (int)entryLoc.Y, (int)characterSize.X, (int)characterSize.Y);
             spriteBatch.Draw(solidColor, cursorRect, null, cursorColor, 0, Vector2.Zero, SpriteEffects.None, 0);
 
-            if (IsSelecting && SelectStart != -1 && SelectEnd != -1)
+            if (SelectStart != -1 && SelectEnd != -1)
             {
                 int selectStartPos = SelectStart;
                 int selectEndPos = SelectEnd;
@@ -176,7 +175,6 @@ namespace TASMod.Console
                 Rectangle selectRect = new Rectangle(minX, (int)entryLoc.Y, (int)((maxX - minX) + characterSize.X), (int)characterSize.Y);
                 spriteBatch.Draw(solidColor, selectRect, null, cursorColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             }
-
             spriteBatch.End();
         }
 
@@ -236,6 +234,22 @@ namespace TASMod.Console
         {
             switch (command)
             {
+                case '\u0003': // copy
+                    if (SelectStart != -1)
+                    {
+                        int minX = Math.Min(SelectStart, SelectEnd);
+                        int offset = Math.Abs(SelectStart - SelectEnd);
+                        DesktopClipboard.SetText(entryText.Substring(minX, offset));
+                    }
+                    else
+                    {
+                        ResetEntry();
+                        ResetHistoryPointers();
+                    }
+                    break;
+                case '\u0016': //paste
+                    HandlePaste();
+                    break;
                 case '\r':
                     PushEntry(entryText);
                     ResetEntry();
@@ -244,25 +258,12 @@ namespace TASMod.Console
                 case '\t':
                     ReceiveTextInput('\t');
                     break;
-                case '\b':
-                    if (!IsSelecting && entryText.Length > 0)
-                    {
-                        if (cursorPosition > 0)
-                        {
-                            entryText = entryText.Remove(cursorPosition - 1, 1);
-                        }
-                        cursorPosition = Math.Max(0, cursorPosition - 1);
-                    }
-                    break;
                 default:
-                    ModEntry.Console.Log($"Pressed Command Key: {command}", LogLevel.Warn);
+                    //ModEntry.Console.Log($"Pressed Command Key: {command}", LogLevel.Warn);
                     break;
             }
         }
 
-        public bool LeftShiftDown => handler.IsKeyDown(Keys.LeftShift);
-        public bool ControlKeyDown => handler.IsKeyDown(Keys.LeftControl);
-        public bool AltKeyDown => handler.IsKeyDown(Keys.LeftAlt);
 
         public void ReceiveTextInput(char character)
         {
@@ -270,7 +271,7 @@ namespace TASMod.Console
             {
                 case '~':
                 case '`':
-                    if (!ControlKeyDown)
+                    if (!handler.ControlKeyDown)
                     {
                         entryText = entryText.Insert(cursorPosition++, character.ToString());
                     }
@@ -283,12 +284,12 @@ namespace TASMod.Console
 
         public void ReceiveKey(Keys key)
         {
-            IsSelecting = LeftShiftDown;
+            IsSelecting = handler.LeftShiftDown;
             int startCursor = cursorPosition;
             switch (key)
             {
                 case Keys.OemTilde:
-                    if (ControlKeyDown)
+                    if (handler.ControlKeyDown)
                     {
                         if (IsOpen)
                         {
@@ -301,7 +302,7 @@ namespace TASMod.Console
                     }
                     break;
                 case Keys.Left:
-                    if (AltKeyDown || ControlKeyDown)
+                    if (handler.AltKeyDown || handler.ControlKeyDown)
                     {
                         string[] tokens = entryText.Split(SplitTokens);
                         int count = 0;
@@ -323,7 +324,7 @@ namespace TASMod.Console
                     UpdateSelection(startCursor, cursorPosition);
                     break;
                 case Keys.Right:
-                    if (AltKeyDown || ControlKeyDown)
+                    if (handler.AltKeyDown || handler.ControlKeyDown)
                     {
                         string[] tokens = entryText.Split(SplitTokens);
                         int count = 0;
@@ -366,15 +367,28 @@ namespace TASMod.Console
                         }
                         else
                         {
-                            if (cursorPosition < entryText.Length)
+                            if (cursorPosition > 0)
                             {
-                                entryText = entryText.Remove(cursorPosition, 1);
+                                entryText = entryText.Remove(cursorPosition-1, 1);
                             }
-                            cursorPosition = Math.Min(cursorPosition, entryText.Length);
+                            cursorPosition = Math.Max(0, cursorPosition - 1);
                         }
                     }
                     break;
             }
+        }
+
+        private void HandlePaste()
+        {
+            string pasteResult = "";
+            DesktopClipboard.GetText(ref pasteResult);
+            if (SelectStart != - 1)
+            {
+                SelectEnd++;
+                ReceiveKey(Keys.Delete);
+            }
+            entryText = entryText.Insert(cursorPosition, pasteResult);
+            cursorPosition += pasteResult.Length;
         }
     }
 }

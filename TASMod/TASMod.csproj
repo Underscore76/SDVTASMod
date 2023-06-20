@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,5 +43,6 @@
     <None Include="..\TODO.md">
       <Link>TODO.md</Link>
     </None>
+    <None Include="..\.editorconfig" />
   </ItemGroup>
 </Project>
