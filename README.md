@@ -2,12 +2,13 @@
 
 ## Basic controls (for this alpha)
 Basic Framework for a TAS Mod, includes
-* frame advance (press `q` or 'down' for 1 frame, hold 'space' for real time)
-* reset (press '|' for normal speed, ']' for fast speed)
-* save (press '.', writes to tmp.json)
-* load (press ',', reads from tmp.json)
+* frame advance (press `q` or `downarrow` for 1 frame, hold `space` for real time)
+* reset (press `|` for normal speed, ']' for fast speed)
+* save (press `.`, writes to tmp.json)
+* load (press `,`, reads from tmp.json)
 * AC keybind (hold `r` to simulate ac keys)
-* Console (Ctrl+\`) or (⌘+\`) to open/close the console
+* Console (Ctrl+\`) or (⌘+\`) to open/close the console (\` is above tab on US keyboards, may function as `~` if using another keyboard layout...)
+    * you cannot manually input while the console is up
 
 Hold the keys you want and then advance a frame to store those inputs (simulate AC with `r`)
 
