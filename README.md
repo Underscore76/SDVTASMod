@@ -7,8 +7,35 @@ Basic Framework for a TAS Mod, includes
 * save (press '.', writes to tmp.json)
 * load (press ',', reads from tmp.json)
 * AC keybind (hold `r` to simulate ac keys)
+* Console (Ctrl+`) or (⌘+`) to open/close the console
 
 Hold the keys you want and then advance a frame to store those inputs (simulate AC with `r`)
+
+## Console commands
+Slowly copying over/making sure things work in the new system
+
+Helper Functions:
+* `help` - allows you to check command description/usage
+* `list` - lists available overlays/logics/commands, to find available options
+* `clr` - clear the current console screen
+* `exit` - exit the game
+
+File System functions:
+* `ls` - list save states (allows for wildcard search)
+* `cp` - copy save state to new file
+* `rm` - delete a save state file
+* `mv` - rename a save state file
+
+Save State functions:
+* `frame` - print the current frame
+* `stateinfo` - print some details about the current save state
+* `reset` - reset to the desired frame
+* `freset` - fast reset to the desired frame
+* `load` - load a save state and advance to final frame
+* `fload` -  load a save state and fast advance to final frame
+* `save` - save the current state to file
+* `saveas` - save the current state to a new file
+
 
 ## Automation
 

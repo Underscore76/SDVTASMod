@@ -229,6 +229,7 @@ namespace TASMod.Console
 
         public void RunCommand(string command)
         {
+            ModEntry.Console.Log($"calling RunCommand: {command}");
             if (Aliases.ContainsKey(command))
             {
                 RunCommand(Aliases[command]);

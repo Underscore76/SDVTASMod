@@ -13,12 +13,49 @@ namespace TASMod.Monogame.Framework
 
         public new void Begin(SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, SamplerState samplerState = null, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, Effect effect = null, Matrix? transformMatrix = null)
         {
-            if (Active)
-                base.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformMatrix);
+            if (!Active) return;
+            base.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformMatrix);
+        }
+
+        public new void Draw(Texture2D texture, Rectangle destinationRectangle, Color color)
+        {
+            if (!Active) return;
+            base.Draw(texture, destinationRectangle, color);
+        }
+
+        public new void Draw(Texture2D texture, Vector2 position, Color color)
+        {
+            if (!Active) return;
+            base.Draw(texture, position, color);
+        }
+
+        public new void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color)
+        {
+            if (!Active) return;
+            base.Draw(texture, destinationRectangle, sourceRectangle, color);
+        }
+
+        public new void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
+        {
+            if (!Active) return;
+            base.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+        }
+
+        public new void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+        {
+            if (!Active) return;
+            base.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+        }
+
+        public new void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+        {
+            if (!Active) return;
+            base.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
 
         public void DrawSafeString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
+            if (!Active) return;
             string safeText = text;
             for(int i = 0; i < safeText.Length; i++)
             {

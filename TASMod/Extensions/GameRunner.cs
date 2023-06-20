@@ -102,26 +102,31 @@ namespace TASMod.Extensions
         public static void Step(this GameRunner runner)
         {
             GameTime gameTime = TASDateTime.CurrentGameTime;
+            //ModEntry.Console.Log($"invoking Update... {gameTime.TotalGameTime}", LogLevel.Error);
             runner.InvokeUpdate(gameTime);
+            //ModEntry.Console.Log($"\tinvoking BeginDraw... {gameTime.TotalGameTime}", LogLevel.Error);
             runner.InvokeBeginDraw();
+            //ModEntry.Console.Log($"\tinvoking Draw... {gameTime.TotalGameTime}", LogLevel.Error);
             runner.InvokeDraw(gameTime);
+            //ModEntry.Console.Log($"\tinvoking EndDraw... {gameTime.TotalGameTime}", LogLevel.Error);
             runner.InvokeEndDraw();
+            //ModEntry.Console.Log($"finished step. {gameTime.TotalGameTime}", LogLevel.Error);
         }
 
         public static void RunFast(this GameRunner runner)
         {
+            //ModEntry.Console.Log($"Resetting Fast... {TASDateTime.CurrentFrame} to {Controller.State.Count}", LogLevel.Error);
             Controller.FastAdvance = false;
             int counter = 0;
             int framesBetweenRender = 60;
+            int finalFrames = 10;
             TASSpriteBatch.Active = false;
-            while ((int)TASDateTime.CurrentFrame < Controller.State.Count)
+            while ((int)TASDateTime.CurrentFrame < Controller.State.Count - finalFrames)
             {
                 try
                 {
-                    GameTime gameTime = TASDateTime.CurrentGameTime;
-                    runner.EventLoop();
-                    runner.InvokeUpdate(gameTime);
-                    runner.InvokeDraw(gameTime);
+                    //ModEntry.Console.Log($"Reset {TASDateTime.CurrentFrame}", LogLevel.Error);
+                    runner.Step();
                     if (counter++ >= framesBetweenRender)
                         break;
                 } catch
@@ -132,7 +137,7 @@ namespace TASMod.Extensions
             }
             //ModEntry.Console.Log($"CurrentFrame: {TASDateTime.CurrentFrame}", LogLevel.Warn);
             TASSpriteBatch.Active = true;
-            if ((int)TASDateTime.CurrentFrame < Controller.State.Count)
+            if ((int)TASDateTime.CurrentFrame < Controller.State.Count - finalFrames)
                 Controller.FastAdvance = true;
         }
 

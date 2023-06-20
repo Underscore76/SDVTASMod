@@ -199,6 +199,7 @@ namespace TASMod
         }
         public static void Reset(bool fastAdvance=false)
         {
+            ModEntry.Console.Log("Calling reset", LogLevel.Error);
             FastAdvance = fastAdvance;
             ResetGame = true;
             Game1.audioEngine.Engine.Reset();

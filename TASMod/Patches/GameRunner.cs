@@ -151,6 +151,7 @@ namespace TASMod.Patches
             }
             if (Controller.FastAdvance)
             {
+                //ModEntry.Console.Log("Calling fast advance", LogLevel.Error);
                 __instance.RunFast();
             }
             if (GameRunner_Draw.Counter != Counter)

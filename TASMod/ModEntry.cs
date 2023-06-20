@@ -16,6 +16,7 @@ using System.Diagnostics;
 using TASMod.Patches;
 using TASMod.System;
 using TASMod.Extensions;
+using StardewValley.SDKs;
 
 namespace TASMod
 {
@@ -50,6 +51,18 @@ namespace TASMod
             foreach (var mode in Game1.graphics.GraphicsDevice.Adapter.SupportedDisplayModes)
             {
                 ModEntry.Console.Log($"{mode.Width}x{mode.Height} ({mode.AspectRatio}) {mode.TitleSafeArea}");
+            }
+
+            try
+            {
+                FieldInfo? field = typeof(StardewValley.Program).GetField("_sdk", BindingFlags.NonPublic | BindingFlags.Static);
+                SDKHelper? sdk = field?.GetValue(null) as SDKHelper;
+                sdk?.Shutdown();
+                field.SetValue(null, new NullSDKHelper());
+            }
+            catch
+            {
+                // well, at least we tried
             }
         }
         private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)

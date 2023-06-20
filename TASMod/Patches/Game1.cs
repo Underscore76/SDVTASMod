@@ -161,4 +161,33 @@ namespace TASMod.Patches
             Trace($"Postfix:screen {Game1.game1.screen.Bounds}");
         }
     }
+
+    public class Game1_GetHasRoomAnotherFarmAsync : IPatch
+    {
+        public override string Name => "Game1.GetHasRoomAnotherFarmAsync";
+
+        public override void Patch(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "GetHasRoomAnotherFarmAsync"),
+                prefix: new HarmonyMethod(this.GetType(), nameof(this.Prefix)),
+                postfix: new HarmonyMethod(this.GetType(), nameof(this.Postfix))
+                );
+        }
+        public static bool Prefix(Game1 __instance)
+        {
+            return false;
+        }
+        public static void Postfix(ref Game1 __instance, ReportHasRoomAnotherFarm callback)
+        {
+            if (LocalMultiplayer.IsLocalMultiplayer())
+            {
+                bool yes = Game1.GetHasRoomAnotherFarm();
+                callback(yes);
+                return;
+            }
+            bool hasRoomAnotherFarm = Game1.GetHasRoomAnotherFarm();
+            callback(hasRoomAnotherFarm);
+        }
+    }
 }
