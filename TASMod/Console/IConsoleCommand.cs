@@ -9,6 +9,18 @@ namespace TASMod.Console.Commands
         public virtual void Stop() { }
         public virtual string SubscriberPrefix => "$ ";
 
+        public void Subscribe()
+        {
+            Console.ActiveSubscribers.Push(Name);
+        }
+
+        public void Unsubscribe()
+        {
+            if (Console.ActiveSubscribers.Peek() != Name)
+                throw new Exception("Tried to pop from non-controlling command!");
+            Console.ActiveSubscribers.Pop();
+        }
+
         public virtual string[] ParseToken(string token) { return null; }
     }
 }

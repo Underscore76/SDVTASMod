@@ -17,7 +17,10 @@ using TASMod.Overlays;
 using TASMod.Recording;
 using TASMod.System;
 using TASMod.Patches;
-using static StardewValley.Minigames.CraneGame;
+using System.IO;
+using Newtonsoft.Json;
+using TASMod.Helpers;
+using TASMod.Monogame.Framework;
 
 namespace TASMod
 {
@@ -26,11 +29,14 @@ namespace TASMod
         public static bool ResetGame = true;
         public static bool FastAdvance = false;
 
+        public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
         public static TASKeyboardState LogicKeyboard = null;
         public static TASMouseState RealMouse = null;
         public static TASKeyboardState RealKeyboard = null;
+        public static TASSpriteBatch SpriteBatch = null;
         public static TASConsole Console = null;
+        public static PathFinder pathFinder = null;
 
         public static Dictionary<string, IAutomatedLogic> Logics;
         public static Dictionary<string, IOverlay> Overlays;
@@ -38,6 +44,11 @@ namespace TASMod
 
         static Controller()
 		{
+            Timing = new PerformanceTiming();
+            Console = new TASConsole();
+            State = new SaveState();
+            pathFinder = new PathFinder();
+            SpriteBatch = new TASSpriteBatch(Game1.graphics.GraphicsDevice);
             Overlays = new Dictionary<string, IOverlay>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Overlays"))
             {
@@ -57,14 +68,11 @@ namespace TASMod
                 Logics.Add(logic.Name, logic);
                 ModEntry.Console.Log(string.Format("AutomatedLogic \"{0}\" added to logic list ({1})", logic.Name, logic.Active), StardewModdingAPI.LogLevel.Info);
             }
-
-            State = new SaveState();
-            Console = new TASConsole();
         }
 
         public static void LateInit()
         {
-            Console = new TASConsole();
+            LoadEngineState();
             OverrideStaticDefaults();
             Reset();
         }
@@ -157,6 +165,8 @@ namespace TASMod
         }
         public static void Draw()
 		{
+            bool tmp = TASSpriteBatch.Active;
+            TASSpriteBatch.Active = true;
             Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             foreach (var overlay in Overlays.Values)
             {
@@ -168,6 +178,35 @@ namespace TASMod
             {
                 Console.Draw();
             }
+            TASSpriteBatch.Active = tmp;
+        }
+
+        public static void SaveEngineState(string engine_name = "default_engine_state")
+        {
+            EngineState state = new EngineState();
+            string filePath = Path.Combine(Constants.BasePath, string.Format("{0}.json", engine_name));
+            using (StreamWriter file = File.CreateText(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Formatting = Formatting.Indented;
+                serializer.Serialize(file, state);
+            }
+        }
+
+        public static void LoadEngineState(string engine_name = "default_engine_state")
+        {
+            string filePath = Path.Combine(Constants.BasePath, string.Format("{0}.json", engine_name));
+            if (!File.Exists(filePath))
+                return;
+
+            EngineState state = null;
+            using (StreamReader file = File.OpenText(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                // TODO: any safety rails for overwriting current State?
+                state = (EngineState)serializer.Deserialize(file, typeof(EngineState));
+            }
+            state.UpdateGame();
         }
 
         public static TASMouseState LastFrameMouse()

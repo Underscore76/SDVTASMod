@@ -72,8 +72,6 @@ namespace TASMod
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            // use our own custom sprite batch
-            Game1.spriteBatch = new TASSpriteBatch(Game1.graphics.GraphicsDevice);
             Game1.uniqueIDForThisGame = TASDateTime.uniqueIdForThisGame;
 
             // sanity check RNG

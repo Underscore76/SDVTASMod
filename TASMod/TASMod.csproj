@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
     <PackageReference Include="NLua" Version="1.6.2" />
     <PackageReference Include="DynamicExpresso.Core" Version="2.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Patches\" />
@@ -29,14 +31,9 @@
     <Folder Include="Patches\" />
     <Folder Include="Inputs\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Overlays\" />
-    <Folder Include="Console\" />
     <Folder Include="Assets\" />
     <Folder Include="Monogame.Framework\" />
     <Folder Include="Recording\" />
-    <Folder Include="Automation\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Console\Commands\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

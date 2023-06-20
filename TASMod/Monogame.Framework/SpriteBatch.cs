@@ -35,6 +35,12 @@ namespace TASMod.Monogame.Framework
             base.Draw(texture, destinationRectangle, sourceRectangle, color);
         }
 
+        public new void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
+        {
+            if (!Active) return;
+            base.Draw(texture, position, sourceRectangle, color);
+        }
+
         public new void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
             if (!Active) return;

@@ -61,7 +61,7 @@ namespace TASMod.Patches
             __instance.soundVolumeLevel = 1f;
             __instance.preferredResolutionX = Game1.graphics.GraphicsDevice.Adapter.SupportedDisplayModes.Last().Width;
             __instance.preferredResolutionY = Game1.graphics.GraphicsDevice.Adapter.SupportedDisplayModes.Last().Height;
-            __instance.vsyncEnabled = false;
+            __instance.vsyncEnabled = true;
             //GameRunner.instance.OnWindowSizeChange(null, null);
             __instance.snappyMenus = true;
             __instance.ipConnectionsEnabled = true;

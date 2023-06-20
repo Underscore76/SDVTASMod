@@ -43,6 +43,10 @@ namespace TASMod.Patches
         {
             CanDraw = (Counter + 1) == GameRunner_Update.Counter;
             gameTime = TASDateTime.CurrentGameTime;
+            if (CanDraw)
+            {
+                Controller.Timing.DrawPrefix();
+            }
             return CanDraw;
         }
 
@@ -50,6 +54,8 @@ namespace TASMod.Patches
         {
             if (CanDraw)
             {
+                Controller.Timing.DrawPostfix();
+                Controller.Timing.EndFrame();
                 Counter++;
                 TASDateTime.Update();
             }
@@ -97,15 +103,18 @@ namespace TASMod.Patches
             InvokeBase(gameTime);
         }
 
+        private static IntPtr FuncPtr = IntPtr.Zero;
         public static void InvokeBase(GameTime gameTime)
         {
-            var method = typeof(Game).GetMethod("Draw", BindingFlags.NonPublic | BindingFlags.Instance);
-            var funcPtr = method.MethodHandle.GetFunctionPointer();
-
             if (GameRunner.instance != null)
             {
+                if (FuncPtr == IntPtr.Zero)
+                {
+                    var method = typeof(Game).GetMethod("Draw", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FuncPtr = method.MethodHandle.GetFunctionPointer();
+                }
                 // get the actual base function
-                var func = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), GameRunner.instance, funcPtr);
+                var func = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), GameRunner.instance, FuncPtr);
                 func(gameTime);
             }
         }
@@ -153,6 +162,7 @@ namespace TASMod.Patches
             {
                 //ModEntry.Console.Log("Calling fast advance", LogLevel.Error);
                 __instance.RunFast();
+                return false;
             }
             if (GameRunner_Draw.Counter != Counter)
             {
@@ -163,12 +173,18 @@ namespace TASMod.Patches
                 CanUpdate = Controller.Update();
                 gameTime = TASDateTime.CurrentGameTime;
             }
+            if (CanUpdate)
+            {
+                Controller.Timing.StartFrame();
+                Controller.Timing.UpdatePrefix();
+            }
             return CanUpdate;
         }
         public static void Postfix(ref GameTime gameTime)
         {
             if (CanUpdate)
             {
+                Controller.Timing.UpdatePostfix();
                 Counter++;
             }
             else
@@ -178,14 +194,18 @@ namespace TASMod.Patches
             CanUpdate = false;
         }
 
+        private static IntPtr FuncPtr = IntPtr.Zero;
         public static void InvokeBase(GameTime gameTime)
         {
-            var method = typeof(Game).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
-            var funcPtr = method.MethodHandle.GetFunctionPointer();
             if (GameRunner.instance != null)
             {
+                if (FuncPtr == IntPtr.Zero)
+                {
+                    var method = typeof(Game).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FuncPtr = method.MethodHandle.GetFunctionPointer();
+                }
                 // get the actual base function
-                var func = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), GameRunner.instance, funcPtr);
+                var func = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), GameRunner.instance, FuncPtr);
                 func(gameTime);
             }
         }

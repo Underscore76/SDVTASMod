@@ -27,6 +27,7 @@ namespace TASMod.Console
         public Dictionary<string, IConsoleCommand> Commands;
         public List<string> GetCommands() { return Commands.Keys.ToList(); }
         public Dictionary<string, string> Aliases;
+        public Stack<string> ActiveSubscribers;
 
         public float fontSize = 1f;
         private const int LEFTPAD = 5;
@@ -44,7 +45,7 @@ namespace TASMod.Console
         public Color textHistoryColor = new Color(180, 180, 180, 255);
         private Rectangle historyRect;
         public int historyRectRows;
-        public List<string> historyLog;
+        public List<ConsoleTextElement> historyLog;
         public int historyIndex;
         public int historyTail;
         public bool followLogUpdate;
@@ -73,7 +74,7 @@ namespace TASMod.Console
             spriteBatch = new TASSpriteBatch(Game1.graphics.GraphicsDevice);
             spriteBatch.PrintAllChars(consoleFont);
 
-            historyLog = new List<string>();
+            historyLog = new List<ConsoleTextElement>();
 
             Commands = new Dictionary<string, IConsoleCommand>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Console.Commands"))
@@ -85,6 +86,7 @@ namespace TASMod.Console
                 ModEntry.Console.Log(string.Format("Command \"{0}\" added to console", command.Name), StardewModdingAPI.LogLevel.Info);
             }
             Aliases = new Dictionary<string, string>();
+            ActiveSubscribers = new Stack<string>();
         }
 
         public void Update()
@@ -128,6 +130,11 @@ namespace TASMod.Console
 
             string prefix = " ";
             int lineWidth = (int)(Game1.viewport.Width / consoleFont.MeasureString(" ").X) - 8;
+            if (ActiveSubscribers.Count > 0)
+            {
+                prefix = Commands[ActiveSubscribers.Peek()].SubscriberPrefix;
+            }
+            Vector2 offset = consoleFont.MeasureString(prefix) * fontSize;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             // draw the history
@@ -137,21 +144,29 @@ namespace TASMod.Console
             int index = historyTail - 1;
             while (historyLoc.Y + consoleFont.LineSpacing > 0 && index >= 0)
             {
-                string text = new string('.', prefix.Length - 1) + " " + historyLog[index];
-                text = text.Replace("\t", new string(' ', TABSTOP));
-                spriteBatch.DrawSafeString(consoleFont,
-                    text,
-                    historyLoc,
-                    textHistoryColor,
-                    0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f
-                    );
-                historyLoc.Y -= consoleFont.LineSpacing;
+                if (historyLog[index].Visible)
+                {
+                    string text = new string('.', prefix.Length - 1) + " " + historyLog[index].Text;
+                    text = text.Replace("\t", new string(' ', TABSTOP));
+                    spriteBatch.DrawSafeString(consoleFont,
+                        text,
+                        historyLoc,
+                        historyLog[index].Entry ? textEntryColor : textHistoryColor,
+                        0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f
+                        );
+                    historyLoc.Y -= consoleFont.LineSpacing;
+                }
                 index--;
             }
 
             // draw the entry block
             Vector2 entryLoc = new Vector2(LEFTPAD, entryRect.Y);
             spriteBatch.Draw(solidColor, entryRect, null, backgroundEntryColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            if (ActiveSubscribers.Count > 0)
+            {
+                spriteBatch.DrawString(consoleFont, prefix, entryLoc, textEntryColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f);
+                entryLoc.X += offset.X;
+            }
 
             string renderText = entryText.Replace("\t", new string(' ', TABSTOP));
             spriteBatch.DrawSafeString(consoleFont, renderText, entryLoc, textEntryColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.9999999f);
@@ -214,8 +229,28 @@ namespace TASMod.Console
             SelectEnd = end;
         }
 
+        public void SendStop()
+        {
+            if (ActiveSubscribers.Count == 0)
+                return;
+            Commands[ActiveSubscribers.Peek()].Stop();
+        }
+        public bool HandleSubscribers(string command)
+        {
+            if (ActiveSubscribers.Count > 0)
+            {
+                string name = ActiveSubscribers.Peek();
+                Commands[name].ReceiveInput(command);
+                return true;
+            }
+            return false;
+        }
+
         public void PushCommand(string command)
         {
+            if (HandleSubscribers(command))
+                return;
+
             if (command != "")
             {
                 PushEntry(command);
@@ -246,13 +281,13 @@ namespace TASMod.Console
 
         public void PushEntry(string entry)
         {
-            historyLog.Add(entry);
+            historyLog.Add(new ConsoleTextElement(entry, true));
         }
         public void PushResult(string result)
         {
             followLogUpdate = historyTail == historyLog.Count;
             if (followLogUpdate) historyTail++;
-            historyLog.Add(result);
+            historyLog.Add(new ConsoleTextElement(result, false));
 
         }
 
@@ -337,6 +372,17 @@ namespace TASMod.Console
                             Open();
                         }
                     }
+                    break;
+                case Keys.Escape:
+                    ResetSelection();
+                    break;
+                case Keys.Up:
+                    BackHistory();
+                    ResetSelection();
+                    break;
+                case Keys.Down:
+                    ForwardHistory();
+                    ResetSelection();
                     break;
                 case Keys.Left:
                     if (handler.AltKeyDown || handler.ControlKeyDown)
@@ -428,10 +474,49 @@ namespace TASMod.Console
             cursorPosition += pasteResult.Length;
         }
 
+        public void BackHistory()
+        {
+            if (cursorPosition != entryText.Length)
+            {
+                cursorPosition = entryText.Length;
+                return;
+            }
+            while (--historyIndex >= 0 && historyLog.Count != 0)
+            {
+                if (historyLog[historyIndex].Entry)
+                {
+                    entryText = historyLog[historyIndex].Text;
+                    cursorPosition = entryText.Length;
+                    return;
+                }
+            }
+            ResetEntry();
+            historyIndex = historyLog.Count;
+        }
+        public void ForwardHistory()
+        {
+            while (++historyIndex < historyLog.Count)
+            {
+                if (historyLog[historyIndex].Entry)
+                {
+                    entryText = historyLog[historyIndex].Text;
+                    cursorPosition = entryText.Length;
+                    return;
+                }
+            }
+            ResetEntry();
+            historyIndex = historyLog.Count;
+        }
+
         public void Clear()
         {
             ResetEntry();
-            historyLog.Clear();
+            // allow retaining command history but make them invisible
+            historyLog = new List<ConsoleTextElement>(historyLog.Where(t => t.Entry));
+            for (int i = 0; i < historyLog.Count; ++i)
+            {
+                historyLog[i].Visible = false;
+            }
             ResetHistoryPointers();
         }
     }

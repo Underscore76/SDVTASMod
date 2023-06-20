@@ -126,7 +126,11 @@ namespace TASMod.Extensions
                 try
                 {
                     //ModEntry.Console.Log($"Reset {TASDateTime.CurrentFrame}", LogLevel.Error);
-                    runner.Step();
+                    //runner.Step();
+                    GameTime gameTime = TASDateTime.CurrentGameTime;
+                    runner.InvokeUpdate(gameTime);
+                    runner.InvokeDraw(gameTime);
+                    runner.EventLoop();
                     if (counter++ >= framesBetweenRender)
                         break;
                 } catch
