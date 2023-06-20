@@ -10,6 +10,11 @@ namespace TASMod.Automation
 	public class AnimationCancel : IAutomatedLogic
 	{
 		public override string Name => "AnimationCancel";
+        public override string Description => "auto advance tool swing to first cancellable frame";
+        public override string[] Usage => new string[]
+		{
+			"\tnote: only works with axe, pickaxe, hoe, watering can."
+		};
 
         public AnimationCancel()
 		{
@@ -54,13 +59,3 @@ namespace TASMod.Automation
         }
     }
 }
-
-/*
-Left/Right Axe/Pickaxe/Hoe AnimType 48, AnimIdx 2, AnimElap 0
-Up Axe/Pickaxe/Hoe AnimType 36, AnimIdx 2, AnimElap 0
-Down 66/2/0
-Watering Can
-54/3/0 (DOWN)
-58/3/0 (LEFT/RIGHT)
-62/3/0 (UP)
- * */

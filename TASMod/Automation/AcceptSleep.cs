@@ -11,6 +11,8 @@ namespace TASMod.Automation
 	public class AcceptSleep : IAutomatedLogic
 	{
 		public override string Name => "AcceptSleep";
+        public override string Description => "auto accept the sleep dialogue on first frame";
+
         public AcceptSleep()
 		{
 			Active = true;

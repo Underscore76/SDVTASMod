@@ -14,7 +14,6 @@ namespace TASMod.Overlays
     {
         private static int ViewportWidth => Game1.graphics.GraphicsDevice.Viewport.Width;
         private static int ViewportHeight => Game1.graphics.GraphicsDevice.Viewport.Height;
-        public abstract string Name { get; }
         public bool Active = true;
         private static Rectangle? _outlineRect;
         private static Rectangle? OutlineRect

@@ -1,12 +1,12 @@
 ﻿using System;
 using StardewModdingAPI;
+using TASMod.Console;
 using TASMod.Inputs;
 
 namespace TASMod.Automation
 {
-	public abstract class IAutomatedLogic
+	public abstract class IAutomatedLogic : IConsoleAware
 	{
-        public abstract string Name { get; }
         public bool Active;
         public bool Toggle() { Active = !Active; return Active; }
 
@@ -37,4 +37,3 @@ namespace TASMod.Automation
 		}
     }
 }
-

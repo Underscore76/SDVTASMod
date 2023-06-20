@@ -10,6 +10,11 @@ using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using TASMod.Inputs;
 using TASMod.Monogame.Framework;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Input;
+using TASMod.Console.Commands;
+using TASMod.Overlays;
 
 namespace TASMod.Console
 {
@@ -19,6 +24,9 @@ namespace TASMod.Console
         public SpriteFont consoleFont;
         public Texture2D solidColor;
         public static ConsoleInputHandler handler;
+        public Dictionary<string, IConsoleCommand> Commands;
+        public List<string> GetCommands() { return Commands.Keys.ToList(); }
+        public Dictionary<string, string> Aliases;
 
         public float fontSize = 1f;
         private const int LEFTPAD = 5;
@@ -66,6 +74,17 @@ namespace TASMod.Console
             spriteBatch.PrintAllChars(consoleFont);
 
             historyLog = new List<string>();
+
+            Commands = new Dictionary<string, IConsoleCommand>();
+            foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Console.Commands"))
+            {
+                if (v.IsAbstract || v.BaseType != typeof(IConsoleCommand))
+                    continue;
+                IConsoleCommand command = (IConsoleCommand)Activator.CreateInstance(v);
+                Commands.Add(command.Name, command);
+                ModEntry.Console.Log(string.Format("Command \"{0}\" added to console", command.Name), StardewModdingAPI.LogLevel.Info);
+            }
+            Aliases = new Dictionary<string, string>();
         }
 
         public void Update()
@@ -200,10 +219,27 @@ namespace TASMod.Console
             if (command != "")
             {
                 PushEntry(command);
+                RunCommand(command);
             }
             else
             {
                 PushResult("");
+            }
+        }
+
+        public void RunCommand(string command)
+        {
+            if (Aliases.ContainsKey(command))
+            {
+                RunCommand(Aliases[command]);
+                return;
+            }
+            string[] tokens = command.Trim().Split(' ');
+            string func = tokens[0];
+            string[] parameters = tokens.Skip(1).ToArray();
+            if (Commands.ContainsKey(func))
+            {
+                Commands[func].Run(parameters);
             }
         }
 
@@ -251,7 +287,7 @@ namespace TASMod.Console
                     HandlePaste();
                     break;
                 case '\r':
-                    PushEntry(entryText);
+                    PushCommand(entryText);
                     ResetEntry();
                     ResetHistoryPointers();
                     break;
@@ -389,6 +425,13 @@ namespace TASMod.Console
             }
             entryText = entryText.Insert(cursorPosition, pasteResult);
             cursorPosition += pasteResult.Length;
+        }
+
+        public void Clear()
+        {
+            ResetEntry();
+            historyLog.Clear();
+            ResetHistoryPointers();
         }
     }
 }

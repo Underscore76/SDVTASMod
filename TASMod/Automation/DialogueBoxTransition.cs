@@ -7,6 +7,8 @@ namespace TASMod.Automation
 	public class DialogueBoxTransition : IAutomatedLogic
 	{
         public override string Name => "DialogueBoxTransition";
+        public override string Description => "auto advance frames during transition of dialogue box";
+
         public DialogueBoxTransition()
 		{
             Active = true;

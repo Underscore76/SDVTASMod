@@ -23,6 +23,7 @@
     <None Remove="Recording\" />
     <None Remove="Automation\" />
     <None Remove="Helpers\" />
+    <None Remove="Console\Commands\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
@@ -35,6 +36,7 @@
     <Folder Include="Recording\" />
     <Folder Include="Automation\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Console\Commands\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

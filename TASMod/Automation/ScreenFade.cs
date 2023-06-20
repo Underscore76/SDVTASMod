@@ -8,6 +8,7 @@ namespace TASMod.Automation
     public class ScreenFade : IAutomatedLogic
     {
         public override string Name => "ScreenFade";
+        public override string Description => "auto advance frames during screen transitions";
 
         public override bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)
         {

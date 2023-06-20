@@ -9,6 +9,8 @@ namespace TASMod.Overlays
     public class DebugMouse : IOverlay
     {
         public override string Name => "mouse";
+        public override string Description => "display the real mouse over the screen";
+
         public Color MouseColor = Color.Black;
 
         public override void ActiveDraw(SpriteBatch spriteBatch)
