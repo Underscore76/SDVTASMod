@@ -20,6 +20,8 @@ Console supports scrolling, selection, normal copy and paste (or it should, LET 
 Helper Functions:
 * `help` - allows you to check command description/usage
 * `list` - lists available overlays/logics/commands, to find available options
+* `overlay` - print or modify the status of TAS overlays
+* `logic` - print or modify the status of TAS automation logic
 * `clr` - clear the current console screen
 * `exit` - exit the game
 
@@ -40,9 +42,10 @@ Save State functions:
 * `saveas` - save the current state to a new file
 
 
-## Automation
+## Automation logic
+Slowly copying over/making sure things work in the new system.
 
-Need for a system (console, clickable menu, etc) to toggle these but some basic automated frame advance for common actions
+Some basic automated frame advance for common actions
 
 * `AcceptSleep` - auto advance when the frame for the sleep menu is popping up and approve the sleep question
 * `AnimationCancel` - advance through frames after swing up to the first cancel frame
@@ -52,6 +55,7 @@ Need for a system (console, clickable menu, etc) to toggle these but some basic 
 To implement a new Automation, create a new class that inherits from `IAutomatedLogic`. All classes that inherit from `IAutomatedLogic` will be automatically loaded and available in `Controller.Logics`.
 
 ## Overlays
+Slowly copying over/making sure things work in the new system.
 
 * `DebugMouse` - draw your actual mouse onto the screen
 
