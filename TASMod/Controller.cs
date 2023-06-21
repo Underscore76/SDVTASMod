@@ -18,6 +18,8 @@ using TASMod.Recording;
 using TASMod.System;
 using TASMod.Patches;
 using static StardewValley.Minigames.CraneGame;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace TASMod
 {
@@ -64,6 +66,7 @@ namespace TASMod
 
         public static void LateInit()
         {
+            LoadEngineState();
             Console = new TASConsole();
             OverrideStaticDefaults();
             Reset();
@@ -168,6 +171,34 @@ namespace TASMod
             {
                 Console.Draw();
             }
+        }
+
+        public static void SaveEngineState(string engine_name = "default_engine_state")
+        {
+            EngineState state = new EngineState();
+            string filePath = Path.Combine(Constants.BasePath, string.Format("{0}.json", engine_name));
+            using (StreamWriter file = File.CreateText(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Formatting = Formatting.Indented;
+                serializer.Serialize(file, state);
+            }
+        }
+
+        public static void LoadEngineState(string engine_name = "default_engine_state")
+        {
+            string filePath = Path.Combine(Constants.BasePath, string.Format("{0}.json", engine_name));
+            if (!File.Exists(filePath))
+                return;
+
+            EngineState state = null;
+            using (StreamReader file = File.OpenText(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                // TODO: any safety rails for overwriting current State?
+                state = (EngineState)serializer.Deserialize(file, typeof(EngineState));
+            }
+            state.UpdateGame();
         }
 
         public static TASMouseState LastFrameMouse()

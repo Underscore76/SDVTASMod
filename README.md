@@ -17,7 +17,8 @@ Slowly copying over/making sure things work in the new system.
 
 Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
 
-Helper Functions:
+#### Helper Functions:
+Any function that is callable through this top level console has some help text associated with its use, and you can discover different tools through the list command.
 * `help` - allows you to check command description/usage
 * `list` - lists available overlays/logics/commands, to find available options
 * `overlay` - print or modify the status of TAS overlays
@@ -25,13 +26,15 @@ Helper Functions:
 * `clr` - clear the current console screen
 * `exit` - exit the game
 
-File System functions:
+#### File System functions:
+Tries to mimic basic linux command line methods
 * `ls` - list save states (allows for wildcard search)
 * `cp` - copy save state to new file
 * `rm` - delete a save state file
 * `mv` - rename a save state file
 
-Save State functions:
+#### Save State functions:
+Basic functions for manipulating the save state including loading, saving, and resetting.
 * `frame` - print the current frame
 * `stateinfo` - print some details about the current save state
 * `reset` - reset to the desired frame
@@ -43,6 +46,10 @@ Save State functions:
 * `newgame` - setup a new save state file and fill in details
 * `swapseed` - swap the seed of the current save state
 
+#### Engine State functions:
+Engine state is the current state of overlays/logics. You can save different configurations if you find that you often want to switch between different setups.
+* `saveengine` - save the current engine state to file
+* `loadengine` - load engine state from file
 
 ## Automation logic
 Slowly copying over/making sure things work in the new system.
