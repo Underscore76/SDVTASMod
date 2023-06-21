@@ -45,7 +45,7 @@ namespace TASMod.Console
         public Color textHistoryColor = new Color(180, 180, 180, 255);
         private Rectangle historyRect;
         public int historyRectRows;
-        public List<string> historyLog;
+        public List<ConsoleTextElement> historyLog;
         public int historyIndex;
         public int historyTail;
         public bool followLogUpdate;
@@ -74,7 +74,7 @@ namespace TASMod.Console
             spriteBatch = new TASSpriteBatch(Game1.graphics.GraphicsDevice);
             spriteBatch.PrintAllChars(consoleFont);
 
-            historyLog = new List<string>();
+            historyLog = new List<ConsoleTextElement>();
 
             Commands = new Dictionary<string, IConsoleCommand>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Console.Commands"))
@@ -144,15 +144,18 @@ namespace TASMod.Console
             int index = historyTail - 1;
             while (historyLoc.Y + consoleFont.LineSpacing > 0 && index >= 0)
             {
-                string text = new string('.', prefix.Length - 1) + " " + historyLog[index];
-                text = text.Replace("\t", new string(' ', TABSTOP));
-                spriteBatch.DrawSafeString(consoleFont,
-                    text,
-                    historyLoc,
-                    textHistoryColor,
-                    0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f
-                    );
-                historyLoc.Y -= consoleFont.LineSpacing;
+                if (historyLog[index].Visible)
+                {
+                    string text = new string('.', prefix.Length - 1) + " " + historyLog[index].Text;
+                    text = text.Replace("\t", new string(' ', TABSTOP));
+                    spriteBatch.DrawSafeString(consoleFont,
+                        text,
+                        historyLoc,
+                        historyLog[index].Entry ? textEntryColor : textHistoryColor,
+                        0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f
+                        );
+                    historyLoc.Y -= consoleFont.LineSpacing;
+                }
                 index--;
             }
 
@@ -278,13 +281,13 @@ namespace TASMod.Console
 
         public void PushEntry(string entry)
         {
-            historyLog.Add(entry);
+            historyLog.Add(new ConsoleTextElement(entry, true));
         }
         public void PushResult(string result)
         {
             followLogUpdate = historyTail == historyLog.Count;
             if (followLogUpdate) historyTail++;
-            historyLog.Add(result);
+            historyLog.Add(new ConsoleTextElement(result, false));
 
         }
 
@@ -460,10 +463,49 @@ namespace TASMod.Console
             cursorPosition += pasteResult.Length;
         }
 
+        public void BackHistory()
+        {
+            if (cursorPosition != entryText.Length)
+            {
+                cursorPosition = entryText.Length;
+                return;
+            }
+            while (--historyIndex >= 0 && historyLog.Count != 0)
+            {
+                if (historyLog[historyIndex].Entry)
+                {
+                    entryText = historyLog[historyIndex].Text;
+                    cursorPosition = entryText.Length;
+                    return;
+                }
+            }
+            ResetEntry();
+            historyIndex = historyLog.Count;
+        }
+        public void ForwardHistory()
+        {
+            while (++historyIndex < historyLog.Count)
+            {
+                if (historyLog[historyIndex].Entry)
+                {
+                    entryText = historyLog[historyIndex].Text;
+                    cursorPosition = entryText.Length;
+                    return;
+                }
+            }
+            ResetEntry();
+            historyIndex = historyLog.Count;
+        }
+
         public void Clear()
         {
             ResetEntry();
-            historyLog.Clear();
+            // allow retaining command history but make them invisible
+            historyLog = new List<ConsoleTextElement>(historyLog.Where(t => t.Entry));
+            for (int i = 0; i < historyLog.Count; ++i)
+            {
+                historyLog[i].Visible = false;
+            }
             ResetHistoryPointers();
         }
     }
