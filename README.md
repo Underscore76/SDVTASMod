@@ -40,6 +40,8 @@ Save State functions:
 * `fload` -  load a save state and fast advance to final frame
 * `save` - save the current state to file
 * `saveas` - save the current state to a new file
+* `newgame` - setup a new save state file and fill in details
+* `swapseed` - swap the seed of the current save state
 
 
 ## Automation logic
@@ -58,6 +60,11 @@ To implement a new Automation, create a new class that inherits from `IAutomated
 Slowly copying over/making sure things work in the new system.
 
 * `DebugMouse` - draw your actual mouse onto the screen
+* `MinesLadder` - draw rock break counts and path to nearest ladder
+* `Grid` - draw the tile grid outlines
+* `TimerPanel` - draw a timer panel in the top left corner
+* `Hitbox` - draw hitboxes for all characters
+* `WeaponGuide` - draw a guide for weapon hitboxes
 
 To implement a new Overlay, create a new class that inherits from `IOverlay`. All classes that inherit from `IOverlay` will be automatically loaded and available in `Controller.Overlays`.
 

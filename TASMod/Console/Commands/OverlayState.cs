@@ -10,10 +10,10 @@ namespace TASMod.Console.Commands
         public override string Description => "print or modify the status of TAS overlays";
         public override string[] Usage => new string[]
         {
-            string.Format("{0} :See current state", Name),
-            string.Format("{0} on[|off]: See all on/off", Name),
-            string.Format("{0} on[|off] <name> [..<name>]: Toggle items on/off", Name),
-            string.Format("{0} on[|off] all: Toggle ALL overlays on/off", Name),
+            $"\"{Name}\" :See current state",
+            $"\"{Name}\" on[|off]: See all on/off",
+            $"\"{Name}\" on[|off] <name> [..<name>]: Toggle items on/off",
+            $"\"{Name}\" on[|off] all: Toggle ALL overlays on/off",
         };
 
         public override void Run(string[] tokens)

@@ -27,6 +27,7 @@ namespace TASMod.Console
         public Dictionary<string, IConsoleCommand> Commands;
         public List<string> GetCommands() { return Commands.Keys.ToList(); }
         public Dictionary<string, string> Aliases;
+        public Stack<string> ActiveSubscribers;
 
         public float fontSize = 1f;
         private const int LEFTPAD = 5;
@@ -85,6 +86,7 @@ namespace TASMod.Console
                 ModEntry.Console.Log(string.Format("Command \"{0}\" added to console", command.Name), StardewModdingAPI.LogLevel.Info);
             }
             Aliases = new Dictionary<string, string>();
+            ActiveSubscribers = new Stack<string>();
         }
 
         public void Update()
@@ -128,6 +130,11 @@ namespace TASMod.Console
 
             string prefix = " ";
             int lineWidth = (int)(Game1.viewport.Width / consoleFont.MeasureString(" ").X) - 8;
+            if (ActiveSubscribers.Count > 0)
+            {
+                prefix = Commands[ActiveSubscribers.Peek()].SubscriberPrefix;
+            }
+            Vector2 offset = consoleFont.MeasureString(prefix) * fontSize;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             // draw the history
@@ -152,6 +159,11 @@ namespace TASMod.Console
             // draw the entry block
             Vector2 entryLoc = new Vector2(LEFTPAD, entryRect.Y);
             spriteBatch.Draw(solidColor, entryRect, null, backgroundEntryColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            if (ActiveSubscribers.Count > 0)
+            {
+                spriteBatch.DrawString(consoleFont, prefix, entryLoc, textEntryColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.999999f);
+                entryLoc.X += offset.X;
+            }
 
             string renderText = entryText.Replace("\t", new string(' ', TABSTOP));
             spriteBatch.DrawSafeString(consoleFont, renderText, entryLoc, textEntryColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0.9999999f);
@@ -214,8 +226,28 @@ namespace TASMod.Console
             SelectEnd = end;
         }
 
+        public void SendStop()
+        {
+            if (ActiveSubscribers.Count == 0)
+                return;
+            Commands[ActiveSubscribers.Peek()].Stop();
+        }
+        public bool HandleSubscribers(string command)
+        {
+            if (ActiveSubscribers.Count > 0)
+            {
+                string name = ActiveSubscribers.Peek();
+                Commands[name].ReceiveInput(command);
+                return true;
+            }
+            return false;
+        }
+
         public void PushCommand(string command)
         {
+            if (HandleSubscribers(command))
+                return;
+
             if (command != "")
             {
                 PushEntry(command);

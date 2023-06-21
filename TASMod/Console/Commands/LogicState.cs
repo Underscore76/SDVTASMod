@@ -10,10 +10,10 @@ namespace TASMod.Console.Commands
         public override string Description => "print or modify the status of TAS automation logic";
         public override string[] Usage => new string[]
         {
-            string.Format("{0} :See current state", Name),
-            string.Format("{0} on[|off]: See all on/off", Name),
-            string.Format("{0} on[|off] <name> [..<name>]: Toggle items on/off", Name),
-            string.Format("{0} on[|off] all: Toggle ALL logics on/off", Name),
+            $"\"{Name}\" :See current state",
+            $"\"{Name}\" on[|off]: See all on/off",
+            $"\"{Name}\" on[|off] <name> [..<name>]: Toggle items on/off",
+            $"\"{Name}\" on[|off] all: Toggle ALL logics on/off",
         };
 
         private string[] validStates = new string[] { "off", "false", "f", "on", "true", "t" };
