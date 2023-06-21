@@ -69,7 +69,6 @@ Engine state is the current state of overlays/logics. You can save different con
 * `screenshot` - screenshot the current game screen (stored in the StardewTAS folder)
 * `takestep` - take N steps in a direction (activates the `TakeStep` logic)
 
-
 ## Automation logic
 Tools for automated frame advance through common actions
 
