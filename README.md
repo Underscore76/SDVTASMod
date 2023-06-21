@@ -66,7 +66,7 @@ To implement a new Automation, create a new class that inherits from `IAutomated
 ## Overlays
 Slowly copying over/making sure things work in the new system.
 
-* `DebugMouse` - draw your actual mouse onto the screen
+* `Mouse` - draw your actual mouse onto the screen
 * `MinesLadder` - draw rock break counts and path to nearest ladder
 * `Grid` - draw the tile grid outlines
 * `TimerPanel` - draw a timer panel in the top left corner
