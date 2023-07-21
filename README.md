@@ -1,4 +1,5 @@
 # Stardew Valley TAS Mod
+[Build Issues?](#build-issues)
 
 ## Basic controls (for this alpha)
 Basic Framework for a TAS Mod, includes
@@ -79,3 +80,17 @@ To implement a new Overlay, create a new class that inherits from `IOverlay`. Al
 
 A ton of harmony patches (including patching SMAPI inputs and base System.DateTime and System.Random) to rewrap functionality and control all parts of the update/draw loop. Added some additional fields to System.Random to trace random calls for debugging purposes.
 
+
+## Build Issues
+If you have Stardew installed at a non-standard location, you'll need to modify the StardewModConfig build config which can be found at:
+
+`C:\Users\<User>\.nuget\packages\pathoschild.stardew.modbuildconfig\4.1.0\build\find-game-folder.targets`
+
+**NOTE**: you may need to try building and failing once before this file will exist.
+
+At the bottom of the file you can add
+```xml
+<GamePath Condition="!Exists('$(GamePath)')">Path-To-Stardew-Directory</GamePath>
+```
+
+(Thanks to @PianoAddict for finding these details!)
