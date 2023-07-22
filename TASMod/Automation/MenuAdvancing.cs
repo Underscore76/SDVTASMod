@@ -36,7 +36,11 @@ namespace TASMod.Automation
 
     public class ShippingMenu : IAutomatedLogic
     {
+<<<<<<< HEAD
         public override string Name => "ShippingMenu";
+=======
+        public override string Name => "shippingmenu";
+>>>>>>> 6595e4a (Port of most logics and overlays from TAS, pathfinding stuff missing)
         public override string Description => "advance through the shipping menu";
 
         public override bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)
