@@ -8,7 +8,15 @@ namespace TASMod.Automation
 	public abstract class IAutomatedLogic : IConsoleAware
 	{
         public bool Active;
-        public bool Toggle() { Active = !Active; return Active; }
+		public bool Toggleable = true;
+        public bool Toggle()
+		{
+			if (Toggleable)
+			{
+				Active = !Active;
+			}
+			return Active;
+		}
 
 		public virtual bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)
 		{

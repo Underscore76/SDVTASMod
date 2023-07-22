@@ -59,6 +59,21 @@ namespace TASMod.Helpers
             }
         }
 
+        public static int CurrentAnimationLength
+        {
+            get
+            {
+                double interval = Math.Round(Game1.player.FarmerSprite.interval * Game1.player.FarmerSprite.intervalModifier, 1);
+                return (int)Math.Ceiling(interval / 16);
+            }
+        }
+        public static int CurrentAnimationElapsed
+        {
+            get
+            {
+                return (int)(Game1.player.FarmerSprite.timer / 16);
+            }
+        }   
         public static bool IsHarvestingItem
         {
             get
@@ -184,6 +199,35 @@ namespace TASMod.Helpers
                     return slingshot.GetBackArmDistance(Game1.player) > 4;
                 }
                 return false;
+            }
+        }
+        public static Vector2 PlayerCenter
+        {
+            get
+            {
+                if (Game1.player != null)
+                {
+                    Rectangle bb = BoundingBox;
+                    return new Vector2(bb.X + 24, bb.Y + 16);
+                }
+                return Vector2.Zero;
+            }
+
+        }
+        public static Vector2 PlayerInTile { get { return new Vector2(PlayerCenter.X % 64f, PlayerCenter.Y % 64f); } }
+        public static int Direction { get { return Game1.player.facingDirection; } }
+        public static int CurrentSingleAnimation
+        {
+            get
+            {
+                return Game1.player.FarmerSprite.CurrentSingleAnimation;
+            }
+        }
+        public static int CurrentAnimationIndex
+        {
+            get
+            {
+                return Game1.player.FarmerSprite.currentAnimationIndex;
             }
         }
     }
