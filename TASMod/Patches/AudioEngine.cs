@@ -15,7 +15,7 @@ namespace TASMod.Patches
         public override void Patch(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Constructor(typeof(AudioEngine)),
+                original: AccessTools.Constructor(typeof(AudioEngine), new Type[] { typeof(string)}),
                 postfix: new HarmonyMethod(this.GetType(), nameof(this.Postfix))
                 );
         }
