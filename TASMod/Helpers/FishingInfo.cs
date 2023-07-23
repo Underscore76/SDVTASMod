@@ -6,10 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-<<<<<<< HEAD
 using TASMod.Extensions;
-=======
->>>>>>> 6595e4a (Port of most logics and overlays from TAS, pathfinding stuff missing)
 
 namespace TASMod.Helpers
 {
