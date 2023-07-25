@@ -14,6 +14,10 @@ namespace TASMod.Automation
     {
         public override string Name => "GhostCancel";
         public override string Description => "silent step cancelling";
+        public StepCancel() 
+        {
+            Active = false;
+        }
         public override bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)
         {
             kstate = null;

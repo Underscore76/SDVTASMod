@@ -40,6 +40,8 @@ namespace TASMod
 
         static Controller()
 		{
+            Console = new TASConsole();
+            State = new SaveState();
             Overlays = new Dictionary<string, IOverlay>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Overlays"))
             {
@@ -59,9 +61,6 @@ namespace TASMod
                 Logics.Add(logic.Name, logic);
                 ModEntry.Console.Log(string.Format("AutomatedLogic \"{0}\" added to logic list ({1})", logic.Name, logic.Active), StardewModdingAPI.LogLevel.Info);
             }
-
-            State = new SaveState();
-            Console = new TASConsole();
         }
 
         public static void LateInit()

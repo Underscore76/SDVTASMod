@@ -7,7 +7,7 @@ namespace TASMod.Automation
 {
 	public abstract class IAutomatedLogic : IConsoleAware
 	{
-        public bool Active;
+        public bool Active = true;
 		public bool Toggleable = true;
         public bool Toggle()
 		{
