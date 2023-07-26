@@ -284,7 +284,7 @@ namespace TASMod.Helpers
                     drops.Add(ObjectName(74));
                 }
             }
-            if (((bool)Game1.currentLocation.IsOutdoors || (bool)Game1.currentLocation.treatAsOutdoors) && num == 0)
+            if (((bool)Game1.currentLocation.IsOutdoors || (bool)Game1.currentLocation.treatAsOutdoors.Value) && num == 0)
             {
                 double num3 = who.DailyLuck / 2.0 + (double)who.MiningLevel * 0.005 + (double)who.LuckLevel * 0.001;
                 Random random = new Random(x * 1000 + y + (int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2);

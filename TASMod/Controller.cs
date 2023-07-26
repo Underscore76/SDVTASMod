@@ -20,6 +20,7 @@ using TASMod.Patches;
 using static StardewValley.Minigames.CraneGame;
 using System.IO;
 using Newtonsoft.Json;
+using TASMod.Helpers;
 
 namespace TASMod
 {
@@ -33,6 +34,7 @@ namespace TASMod
         public static TASMouseState RealMouse = null;
         public static TASKeyboardState RealKeyboard = null;
         public static TASConsole Console = null;
+        public static PathFinder pathFinder = null;
 
         public static Dictionary<string, IAutomatedLogic> Logics;
         public static Dictionary<string, IOverlay> Overlays;
@@ -42,6 +44,7 @@ namespace TASMod
 		{
             Console = new TASConsole();
             State = new SaveState();
+            pathFinder = new PathFinder();
             Overlays = new Dictionary<string, IOverlay>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Overlays"))
             {
