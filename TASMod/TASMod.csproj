@@ -31,17 +31,14 @@
     <Folder Include="Patches\" />
     <Folder Include="Inputs\" />
     <Folder Include="Extensions\" />
-<<<<<<< HEAD
-    <Folder Include="Assets\" />
-    <Folder Include="Monogame.Framework\" />
-    <Folder Include="Recording\" />
-=======
+    <Folder Include="Overlays\" />
     <Folder Include="Console\" />
     <Folder Include="Assets\" />
     <Folder Include="Monogame.Framework\" />
     <Folder Include="Recording\" />
+    <Folder Include="Automation\" />
+    <Folder Include="Helpers\" />
     <Folder Include="Console\Commands\" />
->>>>>>> 6595e4a (Port of most logics and overlays from TAS, pathfinding stuff missing)
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
