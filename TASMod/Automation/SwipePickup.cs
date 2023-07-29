@@ -3,9 +3,6 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static StardewValley.Minigames.CraneGame;
 using TASMod.Helpers;
 using TASMod.Inputs;
 

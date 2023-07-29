@@ -14,7 +14,7 @@ namespace TASMod.Overlays
 {
     public class ObjectDrop : IOverlay
     {
-        public override string Name => "objectdrop";
+        public override string Name => "ObjectDrop";
         private string currentLocationName = "";
         private int currentLocationNumObjects = -1;
         public Dictionary<Vector2, IEnumerable<string>> objectsThatHaveDrops;

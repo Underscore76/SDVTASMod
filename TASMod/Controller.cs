@@ -17,7 +17,6 @@ using TASMod.Overlays;
 using TASMod.Recording;
 using TASMod.System;
 using TASMod.Patches;
-using static StardewValley.Minigames.CraneGame;
 using System.IO;
 using Newtonsoft.Json;
 using TASMod.Helpers;

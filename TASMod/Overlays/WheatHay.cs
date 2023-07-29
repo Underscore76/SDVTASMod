@@ -15,7 +15,7 @@ namespace TASMod.Overlays
         public int TestDay = 28 + 27;
         private int lastUpdate_Day = -1;
         private int lastUpdate_FarmingLevel = -1;
-        public override string Name => "wheathay";
+        public override string Name => "WheatHay";
         public Dictionary<Vector2, int> HayTiles = new Dictionary<Vector2, int>();
 
         public override string Description => "renders tiles/days that trigger hay from wheat";

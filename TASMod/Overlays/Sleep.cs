@@ -13,7 +13,7 @@ namespace TASMod.Overlays
 {
     public class Sleep : IOverlay
     {
-        public override string Name => "sleep";
+        public override string Name => "Sleep";
         public int RowHeight = 42;
         public int MaxRowWidth;
         public Color BackgroundColor = new Color(0, 0, 0, 220);

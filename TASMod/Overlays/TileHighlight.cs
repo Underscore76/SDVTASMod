@@ -26,7 +26,7 @@ namespace TASMod.Overlays
 
     public class TileHighlight : IOverlay
     {
-        public override string Name => "tile_highlight";
+        public override string Name => "TileHighlight";
         public static List<HighlightState> States = new List<HighlightState>();
         public static HashSet<Vector2> Tiles = new HashSet<Vector2>();
         public static bool DrawOrder = false;

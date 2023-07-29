@@ -13,7 +13,7 @@ namespace TASMod.Overlays
 {
     public class CropQuality : IOverlay
     {
-        public override string Name => "cropquality";
+        public override string Name => "CropQuality";
         private int fontScale = 2;
         private int lastUpdate_Day = -1;
         private int lastUpdate_FarmingLevel = -1;

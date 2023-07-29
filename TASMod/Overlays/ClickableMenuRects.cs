@@ -11,7 +11,7 @@ namespace TASMod.Overlays
 {
     public class ClickableMenuRects : IOverlay
     {
-        public override string Name => "clickable_menus";
+        public override string Name => "ClickableMenus";
 
         public override string Description => "render rects around all clickable menus";
 

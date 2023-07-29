@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static StardewValley.Minigames.CraneGame;
 using TASMod.Helpers;
 using TASMod.Inputs;
 using Microsoft.Xna.Framework;
@@ -17,6 +16,7 @@ namespace TASMod.Automation
     public class WalkPath : IAutomatedLogic
     {
         public override string Name => "WalkPath";
+        public override string Description => " walk the currently defined path";
         public static bool DoWalk;
         public static string CurrentLocationName;
         public WalkPath()
@@ -99,8 +99,6 @@ namespace TASMod.Automation
             DoWalk = false;
             return false;
         }
-
-        public override string Description => " walk the currently defined path";
 
         private bool ActOnTile(Vector2 playerTile, Vector2 moveTile, out TASKeyboardState kstate, out TASMouseState mstate)
         {

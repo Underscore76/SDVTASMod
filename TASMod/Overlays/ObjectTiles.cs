@@ -15,7 +15,7 @@ namespace TASMod.Overlays
 {
     public class ObjectTiles : IOverlay
     {
-        public override string Name => "objecttiles";
+        public override string Name => "ObjectTiles";
 
         public override string Description => "draw object/clump outlines";
 

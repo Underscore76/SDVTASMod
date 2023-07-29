@@ -16,7 +16,7 @@ namespace TASMod.Overlays
     public class InfoPanel : IOverlay
     {
         private ObjectDrop Drops;
-        public override string Name => "infopanel";
+        public override string Name => "InfoPanel";
 
         public override string Description => "draw game info";
 

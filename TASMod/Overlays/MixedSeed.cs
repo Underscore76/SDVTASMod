@@ -14,7 +14,7 @@ namespace TASMod.Overlays
 {
     public class MixedSeed : IOverlay
     {
-        public override string Name => "mixedseed";
+        public override string Name => "MixedSeed";
 
         public override string Description => "display mixed seed that will be planted";
 

@@ -26,7 +26,7 @@ namespace TASMod.Automation
             kstate = null;
             mstate = null;
             gstate = null;
-            return true;    
+            return true;
         }
     }
 }

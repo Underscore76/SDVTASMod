@@ -15,7 +15,7 @@ namespace TASMod.Overlays
 {
     public class MouseData : IOverlay
     {
-        public override string Name => "mousedata";
+        public override string Name => "MouseData";
 
         public Vector2 offset = new Vector2(-5, 0);
         public Color RectColor = new Color(0, 0, 0, 180);

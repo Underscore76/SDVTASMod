@@ -4,15 +4,12 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static StardewValley.Minigames.CraneGame;
 
 namespace TASMod.Overlays
 {
     public class Clay : IOverlay
     {
-        public override string Name => "clay";
+        public override string Name => "Clay";
         private uint NumHoed = uint.MaxValue;
         private string LocationName = "";
         private List<Vector2> Tiles = new List<Vector2>();

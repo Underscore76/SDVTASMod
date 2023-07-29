@@ -14,7 +14,7 @@ namespace TASMod.Overlays
 {
     public class MonsterDrop : IOverlay
     {
-        public override string Name => "monsterdrop";
+        public override string Name => "MonsterDrop";
         public Color RectColor = new Color(0, 0, 0, 180);
         public Color TextColor = Color.White;
         public override string Description => "display monster drops";

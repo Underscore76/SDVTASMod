@@ -10,7 +10,7 @@ namespace TASMod.Overlays
 {
     public class DrawPath : IOverlay
     {
-        public override string Name => "drawpath";
+        public override string Name => "DrawPath";
         public Color color = Color.LightCyan;
         public int thickness = 8;
         public override string Description => "draw active path";

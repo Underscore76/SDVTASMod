@@ -13,7 +13,7 @@ namespace TASMod.Overlays
 {
     public class Fishing : IOverlay
     {
-        public override string Name => "fishing";
+        public override string Name => "Fishing";
 
         public override string Description => "draws fishing minigame data";
 

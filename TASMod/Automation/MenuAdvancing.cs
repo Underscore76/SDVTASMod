@@ -3,16 +3,13 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TASMod.Inputs;
-using static StardewValley.Minigames.CraneGame;
 
 namespace TASMod.Automation
 {
     public class LevelUpMenu : IAutomatedLogic
     {
-        public override string Name => "levelupmenu";
+        public override string Name => "LevelUpMenu";
 
         public override string Description => "advance to the frame before a level up menu action";
         public override bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)
@@ -39,7 +36,7 @@ namespace TASMod.Automation
 
     public class ShippingMenu : IAutomatedLogic
     {
-        public override string Name => "shippingmenu";
+        public override string Name => "ShippingMenu";
         public override string Description => "advance through the shipping menu";
 
         public override bool ActiveUpdate(out TASKeyboardState kstate, out TASMouseState mstate, out TASGamePadState gstate)

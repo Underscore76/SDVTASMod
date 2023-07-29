@@ -81,7 +81,7 @@ namespace TASMod.Overlays
             }
         }
 
-        public override string Name => "timerpanel";
+        public override string Name => "TimerPanel";
         public override string Description => "display a timer";
 
         public Stopwatch GlobalTimer;

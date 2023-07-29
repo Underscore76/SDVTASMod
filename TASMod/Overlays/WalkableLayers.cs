@@ -22,7 +22,7 @@ namespace TASMod.Overlays
 {
     public class WalkableLayers : IOverlay
     {
-        public override string Name => "layers";
+        public override string Name => "Layers";
         private Rectangle LastVisibleArea;
         private Vector2[] VisibleTiles;
         private TileGroup[] TileGroups;
