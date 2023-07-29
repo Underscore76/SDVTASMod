@@ -29,14 +29,9 @@
     <Folder Include="Patches\" />
     <Folder Include="Inputs\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Overlays\" />
-    <Folder Include="Console\" />
     <Folder Include="Assets\" />
     <Folder Include="Monogame.Framework\" />
     <Folder Include="Recording\" />
-    <Folder Include="Automation\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Console\Commands\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

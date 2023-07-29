@@ -23,7 +23,7 @@ namespace TASMod.Automation
                 return true;
             if (Globals.FadeIn && Globals.FadeToBlackAlpha < 1f && Globals.FadeToBlackAlpha != 0)
                 return true;
-            if (Globals.FadeToBlack && Globals.FadeToBlackAlpha > 0f)
+            if (Globals.FadeToBlack && Globals.FadeToBlackAlpha > 0f && !PlayerInfo.CanMove)
                 return true;
 
             return false;
