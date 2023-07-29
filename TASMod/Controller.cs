@@ -165,6 +165,8 @@ namespace TASMod
         }
         public static void Draw()
 		{
+            bool tmp = TASSpriteBatch.Active;
+            TASSpriteBatch.Active = true;
             Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             foreach (var overlay in Overlays.Values)
             {
@@ -176,6 +178,7 @@ namespace TASMod
             {
                 Console.Draw();
             }
+            TASSpriteBatch.Active = tmp;
         }
 
         public static void SaveEngineState(string engine_name = "default_engine_state")

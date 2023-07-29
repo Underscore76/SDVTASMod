@@ -147,6 +147,7 @@ namespace TASMod.Patches
             __instance.Window.EndScreenDeviceChange(__instance.Window.ScreenDeviceName, w, h);
             Game1.graphics.PreferredBackBufferWidth = w;
             Game1.graphics.PreferredBackBufferHeight = h;
+            Game1.graphics.SynchronizeWithVerticalRetrace = true;
             Trace($"Prefix:viewport {Game1.viewport}");
             Trace($"Prefix:ClientBounds {__instance.Window.ClientBounds} DisplayBounds: {__instance.Window.GetDisplayBounds(0)}");
             Trace($"Prefix:graphics {Game1.graphics.PreferredBackBufferWidth}x{Game1.graphics.PreferredBackBufferHeight} ({Game1.graphics.GraphicsProfile})");

@@ -60,6 +60,7 @@ namespace TASMod.Recording
                 seed = o.randomState.seed
             };
             keyboardState = new TASKeyboardState(o.keyboardState);
+            keyboardState.IntersectWith(ValidKeys);
             mouseState = new TASMouseState(o.mouseState);
             comments = o.comments;
         }
