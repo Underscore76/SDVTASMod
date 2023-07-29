@@ -4,6 +4,8 @@ using HarmonyLib;
 using TASMod.Monogame.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using TASMod.Helpers;
 
 namespace TASMod.Patches
 {
@@ -33,7 +35,7 @@ namespace TASMod.Patches
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] { typeof(Texture2D), typeof(Rectangle), typeof(Color) }),
-                prefix: new HarmonyMethod(this.GetType(), nameof(this.Prefix))
+                prefix: new HarmonyMethod(this.GetType(), nameof(this.RectPrefix))
                 );
             harmony.Patch(
                 original: AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Color) }),
@@ -64,6 +66,20 @@ namespace TASMod.Patches
         public static bool Prefix()
         {
             return TASSpriteBatch.Active;
+        }
+
+        public static bool RectPrefix(Texture2D texture, Rectangle destinationRectangle)
+        {
+            if (!TASSpriteBatch.Active) return false;
+
+            bool isMenuDim = (
+                    texture == Game1.fadeToBlackRect
+                    && destinationRectangle == Game1.graphics.GraphicsDevice.Viewport.Bounds
+                    && CurrentMenu.Active
+                    && !CurrentEvent.Active
+                    && !(Globals.FadeIn || Globals.FadeToBlack || Globals.GlobalFade)
+                    );
+            return !isMenuDim;
         }
     }
 
