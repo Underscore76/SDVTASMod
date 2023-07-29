@@ -20,10 +20,7 @@ using TASMod.Patches;
 using System.IO;
 using Newtonsoft.Json;
 using TASMod.Helpers;
-<<<<<<< HEAD
 using TASMod.Monogame.Framework;
-=======
->>>>>>> f502c3a (Pathfinding code and overlays, genpath, walkpath ported)
 
 namespace TASMod
 {
