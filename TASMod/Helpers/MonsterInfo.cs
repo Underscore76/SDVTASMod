@@ -25,7 +25,7 @@ namespace TASMod.Helpers
         }
 
         private static Random random;
-        private static float damage;
+        private static float damage = 0;
         private static ulong CurrentFrame;
 
         public static float Damage
