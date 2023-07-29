@@ -373,6 +373,17 @@ namespace TASMod.Console
                         }
                     }
                     break;
+                case Keys.Escape:
+                    ResetSelection();
+                    break;
+                case Keys.Up:
+                    BackHistory();
+                    ResetSelection();
+                    break;
+                case Keys.Down:
+                    ForwardHistory();
+                    ResetSelection();
+                    break;
                 case Keys.Left:
                     if (handler.AltKeyDown || handler.ControlKeyDown)
                     {

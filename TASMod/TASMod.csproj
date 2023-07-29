@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

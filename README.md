@@ -51,28 +51,69 @@ Basic functions for manipulating the save state including loading, saving, and r
 Engine state is the current state of overlays/logics. You can save different configurations if you find that you often want to switch between different setups.
 * `saveengine` - save the current engine state to file
 * `loadengine` - load engine state from file
+* `alias` - allows you to define custom commands based on other commands `alias set ss=screenshot` will set `ss` to call the `screenshot` function
+
+#### Path Finding
+* `genpath` - generates a nav path to a tile
+* `walkpath` - walk the current nav path (activates the `WalkPath` logic)
+
+#### Info functions:
+* `forage` - print current details about forage (defaults to current location, define specific `forage loc` or `forage all`)
+* `friendship` - prints current friendship details
+* `player` - prints details on player including xp/friendship/pos/etc
+* `trashcans` - prints current trash can drops
+
+#### Misc functions:
+* `sethayday` - sets the date for the `WheatHay` overlay
+* `blankscreen` - turns the screen black
+* `screenshot` - screenshot the current game screen (stored in the StardewTAS folder)
+* `takestep` - take N steps in a direction (activates the `TakeStep` logic)
+
 
 ## Automation logic
-Slowly copying over/making sure things work in the new system.
-
-Some basic automated frame advance for common actions
+Tools for automated frame advance through common actions
 
 * `AcceptSleep` - auto advance when the frame for the sleep menu is popping up and approve the sleep question
+* `AdvanceFrozen` - advance when character is frozen/picking up an artifact/sleeping emoting
 * `AnimationCancel` - advance through frames after swing up to the first cancel frame
-* `DialoguBoxTransition` - advance through frames where a dialogue box is transitioning on/off the screen
+* `DialogueBox` - advance to the frame where you can click a dialogue box
+* `DialogueBoxTransition` - advance through frames where a dialogue box is transitioning on/off the screen
+* `GhostCancel` - walk like a ghost (without taking a step)
+* `LevelUpMenu` - advance through level up menu (does not advance profession select)
+* `SaveGame` - advance through the save game menu
 * `ScreenFade` - advance through frames where the screen is fading in and out of black
+* `ShippingMenu` - holds the mouse and advances through shipping menu
+* `SkipEvent` - skips events or advances through pause frames up during an event/requires dialogue interaction
+* `SwipePickup` - swing cancel pickup an item if melee weapon in inventory (will swap tools suboptimally)
+* `TakeStep` - walk N steps in a direction
+* `WalkPath` - attempt to walk the current nav path automatically (will be suboptimal vs manual, may panic out)
 
 To implement a new Automation, create a new class that inherits from `IAutomatedLogic`. All classes that inherit from `IAutomatedLogic` will be automatically loaded and available in `Controller.Logics`.
 
 ## Overlays
-Slowly copying over/making sure things work in the new system.
+Additional info layers to draw on top of the game
 
-* `Mouse` - draw your actual mouse onto the screen
-* `MinesLadder` - draw rock break counts and path to nearest ladder
+* `Clay` - draw the clay tilling map
+* `ClickableMenuRects` - show outlines of clickable screen elements in menus
+* `CropQuality` - draw first gold quality day for a tile
+* `DrawPath` - draw the current nav path
+* `Fishing` - draw a simplified view of the fishing minigame including where the fish wants to go
 * `Grid` - draw the tile grid outlines
-* `TimerPanel` - draw a timer panel in the top left corner
 * `Hitbox` - draw hitboxes for all characters
+* `InfoPanel` - draw a bunch of random game state details
+* `Layers` - highlight all of the unwalkable tiles
+* `MinesLadder` - draw rock break counts and path to nearest ladder
+* `MixedSeed` - overlay the seed you'll get if you plant a mixed seed on the next frame
+* `MonsterDrop` - displays items a monster will drop
+* `Mouse` - draw your actual mouse onto the screen
+* `MouseData` - draws tile, steps, ticks at mouse position
+* `ObjectDrop` - draw what items an object will drop
+* `ObjectTiles` - draw boundaries around objects
+* `Sleep` - draw sleep details given current step count
+* `TileHighlight` - draw highlighted tiles
+* `TimerPanel` - draw a timer panel in the top left corner
 * `WeaponGuide` - draw a guide for weapon hitboxes
+* `WheatHay` - draw tiles where wheat will give hay if harvested on a specific day
 
 To implement a new Overlay, create a new class that inherits from `IOverlay`. All classes that inherit from `IOverlay` will be automatically loaded and available in `Controller.Overlays`.
 

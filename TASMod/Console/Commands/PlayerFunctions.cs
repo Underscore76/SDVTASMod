@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using StardewValley;
 using TASMod.Helpers;
 
 namespace TASMod.Console.Commands
@@ -51,4 +52,73 @@ namespace TASMod.Console.Commands
             }
         }
     }
+
+    public class GetPlayer : IConsoleCommand
+    {
+        public override string Name => "player";
+        public override string Description => "get player data info";
+        public override string[] Usage => new string[]
+        {
+            $"\"{Name}\" - all player data",
+            $"\"{Name} pos\" - current position",
+            $"\"{Name} luck\" - current luck",
+            $"\"{Name} steps\" - current step count",
+            $"\"{Name} hp\" - current hp",
+            $"\"{Name} energy\" - current energy",
+            $"\"{Name} xp\" - all skill xp",
+            $"\"{Name} friendship\" - all friendships data",
+        };
+
+        public override void Run(string[] tokens)
+        {
+            if (tokens.Length > 1)
+            {
+                Write(HelpText());
+            }
+            if (tokens.Length == 0)
+            {
+                tokens = new string[] { "pos", "luck", "steps", "hp", "energy", "xp", "friendship" };
+            }
+            foreach (var token in tokens)
+            {
+                switch (token)
+                {
+                    case "pos":
+                    case "position":
+                        Write("\tPosition: {0}, {1}", Game1.player.getStandingX() / Game1.tileSize, Game1.player.getStandingY() / Game1.tileSize);
+                        break;
+                    case "luck":
+                        Write("\tDaily Luck: {0}", Game1.player.DailyLuck);
+                        break;
+                    case "steps":
+                        Write("\tSteps Taken: {0}", Game1.stats.StepsTaken);
+                        break;
+                    case "energy":
+                        Write("\tEnergy: {0}", Game1.player.Stamina);
+                        break;
+                    case "hp":
+                        Write("\tHealth: {0}", Game1.player.health);
+                        break;
+                    case "xp":
+                        Write("\tExperience:");
+                        Write("\t\tFarming: {0}", Game1.player.experiencePoints[0]);
+                        Write("\t\tFishing: {0}", Game1.player.experiencePoints[1]);
+                        Write("\t\tForage : {0}", Game1.player.experiencePoints[2]);
+                        Write("\t\tMining : {0}", Game1.player.experiencePoints[3]);
+                        Write("\t\tCombat : {0}", Game1.player.experiencePoints[4]);
+                        break;
+                    case "friend":
+                    case "friendship":
+                    case "friendships":
+                        Write("\tFriendships:");
+                        GetFriendship._instance.Run();
+                        break;
+                    default:
+                        Write("invalid token: {0} not in list of options", token);
+                        return;
+                }
+            }
+        }
+    }
+
 }

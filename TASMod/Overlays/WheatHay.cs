@@ -12,13 +12,22 @@ namespace TASMod.Overlays
 {
     public class WheatHay : IOverlay
     {
-        public int TestDay = 28 + 27;
+        public override string Name => "WheatHay";
+        public override string Description => "renders tiles/days that trigger hay from wheat";
+        public static WheatHay _instance;
+
+        public WheatHay()
+        {
+            _instance = this;
+            TestDay = 28 + 27;
+        }
+
+        public int TestDay;
         private int lastUpdate_Day = -1;
         private int lastUpdate_FarmingLevel = -1;
-        public override string Name => "WheatHay";
+
         public Dictionary<Vector2, int> HayTiles = new Dictionary<Vector2, int>();
 
-        public override string Description => "renders tiles/days that trigger hay from wheat";
         public override void ActiveUpdate()
         {
             if (CurrentLocation.Active && Game1.currentLocation is Farm farm && Game1.player != null && Game1.stats != null)

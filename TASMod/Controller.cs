@@ -20,6 +20,7 @@ using TASMod.Patches;
 using System.IO;
 using Newtonsoft.Json;
 using TASMod.Helpers;
+using TASMod.Monogame.Framework;
 
 namespace TASMod
 {
@@ -32,6 +33,7 @@ namespace TASMod
         public static TASKeyboardState LogicKeyboard = null;
         public static TASMouseState RealMouse = null;
         public static TASKeyboardState RealKeyboard = null;
+        public static TASSpriteBatch SpriteBatch = null;
         public static TASConsole Console = null;
         public static PathFinder pathFinder = null;
 
@@ -44,6 +46,7 @@ namespace TASMod
             Console = new TASConsole();
             State = new SaveState();
             pathFinder = new PathFinder();
+            SpriteBatch = new TASSpriteBatch(Game1.graphics.GraphicsDevice);
             Overlays = new Dictionary<string, IOverlay>();
             foreach (var v in Reflector.GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TASMod.Overlays"))
             {
