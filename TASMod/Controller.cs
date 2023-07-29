@@ -29,6 +29,7 @@ namespace TASMod
         public static bool ResetGame = true;
         public static bool FastAdvance = false;
 
+        public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
         public static TASKeyboardState LogicKeyboard = null;
         public static TASMouseState RealMouse = null;
@@ -43,6 +44,7 @@ namespace TASMod
 
         static Controller()
 		{
+            Timing = new PerformanceTiming();
             Console = new TASConsole();
             State = new SaveState();
             pathFinder = new PathFinder();
@@ -71,7 +73,6 @@ namespace TASMod
         public static void LateInit()
         {
             LoadEngineState();
-            Console = new TASConsole();
             OverrideStaticDefaults();
             Reset();
         }
