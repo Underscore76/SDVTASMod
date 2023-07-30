@@ -58,12 +58,22 @@ namespace TASMod.Patches
                 Controller.Timing.EndFrame();
                 Counter++;
                 TASDateTime.Update();
+                Controller.Draw();
             }
             else
             {
-                RedrawFrame(gameTime);
+                switch (Controller.CurrentView)
+                {
+                    case TASView.None:
+                        RedrawFrame(gameTime);
+                        Controller.Draw();
+                        break;
+                    case TASView.Map:
+                        Controller.MapView.Draw();
+                        break;
+                }
             }
-            Controller.Draw();
+            Controller.DrawLate();
             CanDraw = false;
         }
 
@@ -189,6 +199,13 @@ namespace TASMod.Patches
             }
             else
             {
+                switch (Controller.CurrentView)
+                {
+                    case TASView.None: break;
+                    case TASView.Map:
+                        Controller.MapView.Update();
+                        break;
+                }
                 InvokeBase(gameTime);
             }
             CanUpdate = false;
