@@ -26,14 +26,21 @@
     <None Remove="Automation\" />
     <None Remove="Helpers\" />
     <None Remove="Console\Commands\" />
+    <None Remove="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
     <Folder Include="Inputs\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Overlays\" />
+    <Folder Include="Console\" />
     <Folder Include="Assets\" />
     <Folder Include="Monogame.Framework\" />
     <Folder Include="Recording\" />
+    <Folder Include="Automation\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Console\Commands\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

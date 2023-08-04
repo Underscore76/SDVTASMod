@@ -37,6 +37,9 @@ namespace TASMod
         public static TASSpriteBatch SpriteBatch = null;
         public static TASConsole Console = null;
         public static PathFinder pathFinder = null;
+        public static TASMode GameMode = TASMode.Edit;
+        public static TASView CurrentView = TASView.None;
+        public static Views.MapView MapView = null;
 
         public static Dictionary<string, IAutomatedLogic> Logics;
         public static Dictionary<string, IOverlay> Overlays;
@@ -44,6 +47,7 @@ namespace TASMod
 
         static Controller()
 		{
+            MapView = new Views.MapView();
             Timing = new PerformanceTiming();
             Console = new TASConsole();
             State = new SaveState();
@@ -173,7 +177,13 @@ namespace TASMod
                 overlay.Draw();
             }
             Game1.spriteBatch.End();
+            TASSpriteBatch.Active = tmp;
+        }
 
+        public static void DrawLate()
+        {
+            bool tmp = TASSpriteBatch.Active;
+            TASSpriteBatch.Active = true;
             if (Console != null)
             {
                 Console.Draw();
@@ -288,6 +298,7 @@ namespace TASMod
             RealKeyboard = new TASKeyboardState(RealInputState.keyboardState);
 
             if (Console.IsOpen) return advance;
+            if (Controller.CurrentView != TASView.None) return advance;
 
             if (RealInputState.KeyTriggered(Keys.Q))
             {

@@ -25,7 +25,6 @@ namespace TASMod.Overlays
         public int TestDay;
         private int lastUpdate_Day = -1;
         private int lastUpdate_FarmingLevel = -1;
-
         public Dictionary<Vector2, int> HayTiles = new Dictionary<Vector2, int>();
 
         public override void ActiveUpdate()

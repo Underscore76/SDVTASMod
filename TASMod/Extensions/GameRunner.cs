@@ -16,6 +16,11 @@ namespace TASMod.Extensions
 	{
         public static void Reset(this GameRunner runner)
         {
+            if (Controller.CurrentView == TASView.Map)
+            {
+                Controller.MapView.Exit();
+                Controller.CurrentView = TASView.None;
+            }
             var input = Game1.input;
             var multiplayer = ModEntry.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 
