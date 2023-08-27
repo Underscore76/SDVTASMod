@@ -123,7 +123,6 @@ namespace TASMod.Extensions
             //ModEntry.Console.Log($"Resetting Fast... {TASDateTime.CurrentFrame} to {Controller.State.Count}", LogLevel.Error);
             Controller.FastAdvance = false;
             int counter = 0;
-            int framesBetweenRender = 60;
             int finalFrames = 10;
             TASSpriteBatch.Active = false;
             while ((int)TASDateTime.CurrentFrame < Controller.State.Count - finalFrames)
@@ -136,7 +135,7 @@ namespace TASMod.Extensions
                     runner.InvokeUpdate(gameTime);
                     runner.InvokeDraw(gameTime);
                     runner.EventLoop();
-                    if (counter++ >= framesBetweenRender)
+                    if (counter++ >= Controller.FramesBetweenRender)
                         break;
                 } catch
                 {
@@ -171,6 +170,50 @@ namespace TASMod.Extensions
         public static bool IsExiting(this GameRunner runner)
         {
             return true;
+        }
+
+        public static void BlockingReset(this GameRunner runner)
+        {
+            Controller.Reset(fastAdvance: false);
+            Controller.ResetGame = false;
+            runner.Reset();
+            Controller.AcceptRealInput = true;
+            Controller.Console.historyTail = Controller.Console.historyLog.Count - 1;
+            while ((int)TASDateTime.CurrentFrame < Controller.State.Count)
+            {
+                runner.EventLoop();
+                Controller.Console.Update();
+                runner.Step();
+            }
+        }
+        public static void BlockingFastReset(this GameRunner runner)
+        {
+            Controller.Reset(fastAdvance: false);
+            Controller.ResetGame = false;
+            runner.Reset();
+            Controller.AcceptRealInput = true;
+            Controller.Console.historyTail = Controller.Console.historyLog.Count - 1;
+            while ((int)TASDateTime.CurrentFrame < Controller.State.Count)
+            {
+                runner.EventLoop();
+                Controller.Console.Update();
+                // intermittently draw or ensure the last few frames draw completely
+                if (
+                    (int)TASDateTime.CurrentFrame % Controller.FramesBetweenRender == 0 ||
+                    (int)TASDateTime.CurrentFrame + 3 > Controller.State.Count
+                    )
+                {
+                    runner.Step();
+                }
+                else
+                {
+                    TASSpriteBatch.Active = false;
+                    GameTime gameTime = TASDateTime.CurrentGameTime;
+                    runner.InvokeUpdate(gameTime);
+                    runner.InvokeDraw(gameTime);
+                    TASSpriteBatch.Active = true;
+                }
+            }
         }
     }
 }

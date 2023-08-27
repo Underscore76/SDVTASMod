@@ -85,7 +85,7 @@ namespace TASMod.Console.Commands
             Controller.State.Save();
             Controller.Reset(fastAdvance: true);
         }
-        public override void ReceiveInput(string input)
+        public override void ReceiveInput(string input, bool writeEntry = true)
         {
             string value = input.Trim();
             switch (CurrentStage)

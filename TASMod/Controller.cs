@@ -28,6 +28,8 @@ namespace TASMod
 	{
         public static bool ResetGame = true;
         public static bool FastAdvance = false;
+        public static bool AcceptRealInput = true;
+        public static int FramesBetweenRender = 60;
 
         public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
@@ -151,7 +153,7 @@ namespace TASMod
                 TASInputState.SetMouse(LogicMouse);
                 PushFrame();
             }
-            else if (HandleRealInput())
+            else if (AcceptRealInput && HandleRealInput())
 			{
                 TASInputState.SetKeyboard(RealKeyboard);
                 TASInputState.SetMouse(RealMouse);
