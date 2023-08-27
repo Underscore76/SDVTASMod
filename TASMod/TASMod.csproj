@@ -38,6 +38,7 @@
     <None Remove="_libs\" />
     <None Remove="Assets\lua\" />
     <None Remove="Assets\lua\core\" />
+    <None Remove="Assets\lua\core\utilities\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
@@ -57,6 +58,7 @@
     <Folder Include="_libs\" />
     <Folder Include="Assets\lua\" />
     <Folder Include="Assets\lua\core\" />
+    <Folder Include="Assets\lua\core\utilities\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

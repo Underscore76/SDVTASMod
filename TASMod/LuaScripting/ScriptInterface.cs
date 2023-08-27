@@ -17,6 +17,11 @@ namespace TASMod.LuaScripting
             _instance = this;
         }
 
+        public int GetCurrentFrame()
+        {
+            return (int)TASMod.System.TASDateTime.CurrentFrame;
+        }
+
         public void Print(object s)
         {
             try

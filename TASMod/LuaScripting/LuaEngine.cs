@@ -5,6 +5,7 @@ using System.Text;
 using NLua;
 using NLua.Exceptions;
 using StardewValley.Characters;
+using TASMod.System;
 
 namespace TASMod.LuaScripting
 {
@@ -32,6 +33,9 @@ namespace TASMod.LuaScripting
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Graphics')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Input')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Audio')
+            ");
+
+            LuaState.DoString(@"
             ");
         }
 

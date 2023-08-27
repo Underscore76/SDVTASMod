@@ -1,4 +1,5 @@
-﻿-- file is run at generation of the lua state to setup core library overrides
+﻿---@diagnostic disable: lowercase-global, undefined-global
+-- file is run at generation of the lua state to setup core library overrides
 
 __old_print__ = print
 __old_require__ = require
@@ -6,7 +7,7 @@ __old_require__ = require
 ---
 ---dump a lua object to the in-game console
 ---
----@param dump object
+---@param obj any object to dump
 function dump(obj)
     function isobj(v)
         return type(v) == "table"
@@ -39,27 +40,21 @@ function dump(obj)
     end
 end
 
----
 ---variadic function to dump a set of items to the console
----
----@param ... set of objects to dump
+---@param ... any set of objects to dump
 print = function(...)
     dump(...)
 end
 
----
 ---print contents based on a format string specification
----
----@param format_str format string to input values into
----@param ... set of objects to dump
+---@param format_str string string to input values into
+---@param ... any set of objects to dump
 printf = function(format_str, ...)
     print(string.format(format_str, ...))
 end
 
----
 ---load additional module by name, overridden to allow reloading
----
----@param label string
+---@param label string name of module to load
 require = function(label)
     if label == 'prelaunch' then
         print('ERROR: cannot reload prelaunch')
@@ -72,5 +67,12 @@ require = function(label)
     return __old_require__(label)
 end
 
-require('core.utils')
-require('core.aliases')
+-- preload core common functions/aliases
+require('core.lua_utils')
+require('core.common')
+require('aliases')
+
+-- attempt to load user-defined init script on startup
+pcall(function()
+    require('init')
+end)
