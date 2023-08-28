@@ -11,12 +11,7 @@ namespace TASMod.LuaScripting
 {
     public class LuaEngine
     {
-        public static Lua LuaState;
-        static LuaEngine()
-        {
-            Reload();
-        }
-        
+        public static Lua LuaState = null;
 
         public static void Init()
         {
@@ -58,6 +53,8 @@ namespace TASMod.LuaScripting
         public static void RegisterStaticClasses()
         {
             LuaState["Controller"] = Activator.CreateInstance(typeof(Controller));
+            LuaState.RegisterFunction("RunCS", typeof(CSInterpreter).GetMethod("Eval"));
+            LuaState.RegisterFunction("GetValue", typeof(Reflector).GetMethod("GetDynamicCastField"));
         }
 
         public static string Reload()

@@ -20,10 +20,8 @@ end
 ---@param input table|nil input to advance with (defaults current frame)
 --- negative frames are relative to the current frame (-1 == current frame)
 function engine.advance(input)
-    console.close()
     interface:AdvanceFrame(input)
     engine.halt()
-    console.open()
 end
 
 ---reset the game to the specified frame

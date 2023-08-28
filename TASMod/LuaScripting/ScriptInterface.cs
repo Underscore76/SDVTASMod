@@ -1,20 +1,73 @@
 ﻿using System;
+using System.Collections.Generic;
 using NLua;
 using NLua.Exceptions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using TASMod.Inputs;
 using TASMod.Recording;
 using TASMod.Extensions;
+using TASMod.Console;
 
 namespace TASMod.LuaScripting
 {
 	public class ScriptInterface
 	{
         public static ScriptInterface _instance = null;
+        private static TASConsole Console => Controller.Console;
+        public Dictionary<Keys, Tuple<string,LuaFunction>> KeyBinds;
+
         public ScriptInterface()
         {
             _instance = this;
+            KeyBinds = new Dictionary<Keys, Tuple<string,LuaFunction>>();
+        }
+
+        public void PrintKeyBinds()
+        {
+            foreach(var kvp in KeyBinds)
+            {
+                Console.PushResult($"{kvp.Key}: {kvp.Value}");
+            }
+        }
+        public void AddKeyBind(Keys key, string funcName, LuaFunction function)
+        {
+            Console.PushResult($"Attempting to bind {key} to func `{funcName}`");
+            KeyBinds.Add(key, new Tuple<string, LuaFunction>(funcName, function));
+        }
+        public void RemoveKeyBind(Keys key)
+        {
+            KeyBinds.Remove(key);
+        }
+        public void ClearKeyBinds()
+        {
+            KeyBinds.Clear();
+        }
+        public bool ReceiveKeys(IEnumerable<Keys> keys)
+        {
+            bool matched = false;
+            foreach(var key in keys)
+            {
+                if (KeyBinds.ContainsKey(key))
+                {
+                    try
+                    {
+                        matched = true;
+                        LuaFunction func = KeyBinds[key].Item2;
+                        func.Call();
+                    }
+                    catch (LuaScriptException e)
+                    {
+                        string err = e.Message;
+                        if (e.InnerException != null)
+                            err += "\n\t" + e.InnerException.Message;
+                        Console.PushResult("failed to run keybind");
+                        Console.PushResult(err);
+                    }
+                }
+            }
+            return matched;
         }
 
         public int GetCurrentFrame()
@@ -26,15 +79,25 @@ namespace TASMod.LuaScripting
         {
             try
             {
-                Controller.Console.PushResult(s.ToString());
-                Controller.Console.historyTail = Controller.Console.historyLog.Count - 1;
+                Console.PushResult(s.ToString());
+                Console.historyTail = Console.historyLog.Count - 1;
             }
             catch (LuaScriptException e)
             {
                 string err = e.Message;
                 if (e.InnerException != null)
                     err += "\n\t" + e.InnerException.Message;
-                Controller.Console.PushResult(err);
+                Console.PushResult(err);
+            }
+        }
+
+#pragma warning disable CA1822 // Mark members as static
+        public bool HasStep
+#pragma warning restore CA1822 // Mark members as static
+        {
+            get
+            {
+                return TASInputState.Active;
             }
         }
 
@@ -48,8 +111,7 @@ namespace TASMod.LuaScripting
                     mstate.GetMouseState()
                 )
             );
-
-            GameRunner.instance.Step();
+            StepLogic();
         }
         public void StepLogic()
         {

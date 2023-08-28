@@ -35,6 +35,10 @@ namespace TASMod.Console.Commands
 
         public override void Run(string[] tokens)
         {
+            if (LuaEngine.LuaState == null)
+            {
+                LuaEngine.Reload();
+            }
             if (tokens.Length == 1)
             {
                 ReceiveInput(tokens[0], false);

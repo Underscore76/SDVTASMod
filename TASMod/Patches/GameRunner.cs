@@ -43,10 +43,11 @@ namespace TASMod.Patches
         {
             CanDraw = (Counter + 1) == GameRunner_Update.Counter;
             gameTime = TASDateTime.CurrentGameTime;
-            if (CanDraw)
-            {
-                Controller.Timing.DrawPrefix();
-            }
+            //ModEntry.Console.Log($"Draw prefix: {Counter}:{GameRunner_Update.Counter}:{TASDateTime.CurrentFrame} => {CanDraw}");
+            //if (CanDraw)
+            //{
+            //    Controller.Timing.DrawPrefix();
+            //}
             return CanDraw;
         }
 
@@ -54,8 +55,8 @@ namespace TASMod.Patches
         {
             if (CanDraw)
             {
-                Controller.Timing.DrawPostfix();
-                Controller.Timing.EndFrame();
+                //Controller.Timing.DrawPostfix();
+                //Controller.Timing.EndFrame();
                 Counter++;
                 TASDateTime.Update();
                 Controller.Draw();
@@ -161,6 +162,7 @@ namespace TASMod.Patches
 
         public static bool Prefix(GameRunner __instance, ref GameTime gameTime)
         {
+            //ModEntry.Console.Log($"Update prefix: {GameRunner_Draw.Counter}:{Counter}:{TASDateTime.CurrentFrame}");
             if (Controller.ResetGame)
             {
                 ModEntry.Console.Log("Running Reset", LogLevel.Error);
@@ -183,18 +185,18 @@ namespace TASMod.Patches
                 CanUpdate = Controller.Update();
                 gameTime = TASDateTime.CurrentGameTime;
             }
-            if (CanUpdate)
-            {
-                Controller.Timing.StartFrame();
-                Controller.Timing.UpdatePrefix();
-            }
+            //if (CanUpdate)
+            //{
+            //    Controller.Timing.StartFrame();
+            //    Controller.Timing.UpdatePrefix();
+            //}
             return CanUpdate;
         }
         public static void Postfix(ref GameTime gameTime)
         {
             if (CanUpdate)
             {
-                Controller.Timing.UpdatePostfix();
+                //Controller.Timing.UpdatePostfix();
                 Counter++;
             }
             else

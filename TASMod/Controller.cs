@@ -223,7 +223,7 @@ namespace TASMod
 
         public static TASMouseState LastFrameMouse()
         {
-            if (TASDateTime.CurrentFrame == 0)
+            if (TASDateTime.CurrentFrame == 0 || State.FrameStates.Count == 0)
             {
                 return new TASMouseState();
             }
@@ -350,6 +350,20 @@ namespace TASMod
             {
                 Reset(true);
                 advance = false;
+            }
+            if (!advance)
+            {
+                if (LuaScripting.ScriptInterface._instance != null)
+                {
+                    if (
+                        LuaScripting.ScriptInterface._instance.ReceiveKeys(RealInputState.GetTriggeredKeys())
+                        )
+                    {
+                        // clear any remaining state and force things to reset back to normal flow
+                        TASInputState.Active = false;
+                    }
+                    return false;
+                }
             }
             return advance;
 		}
