@@ -18,6 +18,48 @@ Slowly copying over/making sure things work in the new system.
 
 Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
 
+### Lua Support
+WIP: Right now I can confirm building works on Mac, I can't tell on Windows yet so feel free to try it out and let me know!
+Scripting in this TAS is done with Lua! By typing `lua` onto the console you'll enter into a Lua REPL (read-eval-print-loop), which will allow you to run arbitrary lua code. Documentation for the core lua engine functions can be found by navigating locally to docs/ldoc/index.html or you can browse the `TASMod/Assets/lua` folder where the lua files are stored.
+
+There is an example `init.lua` file in the `lua-examples` folder. The TASMod will look for a file called `init.lua` in the `StardewTAS/Scripts/` folder and will run that file when first launching into the lua console. This allows you to define custom functions and aliases that you can use in the console. For example, you can define a function called `myfunc` in `init.lua` and then call it from the lua console with `myfunc()`. You can also do things like auto-load into a specific save state or configure the engine state by toggling overlays/logic etc (or loading a particular engine state).
+
+#### Key Lua Helper
+* `advance({keyboard={keys to press}, mouse={X=int, Y=int, left=bool, right=bool}})` - advance a frame with the given keyboard/mouse inputs. This should then pause while any existing automation is running. Example for holding down and right and clicking the mouse:
+```lua
+advance({keyboard={Keys.S, Keys.D}, mouse={X=100, Y=100, left=true}})
+```
+
+* Global frame stack
+    * `current_frame()` - returns the current frame actual frame
+    * `push(f)` - pushes a frame onto the frame stack
+    * `push()` or `gcf()` - pushes the current frame onto the frame stack
+    * `f = pop()` - pops a frame off the frame stack
+    * `rw()` - rewinds to the frame on the top of the frame stack
+    * `brw()` - blocking rewind to the frame on the top of the frame stack
+    * `frame_stack_clear()` - clears the frame stack
+    * `pgcf()` - print the global frame stack
+* reset functions (blocking forces lua to wait until the reset is complete, others can occur async)
+    * `reset()` - reset to the current frame
+    * `freset()` - fast reset to the current frame
+    * `reset(f)` - reset to the given frame
+    * `freset(f)` - fast reset to the given frame
+    * `breset()` - blocking reset to the current frame
+    * `breset(f)` - blocking reset to the given frame
+    * `bfreset()` - blocking fast reset to the current frame
+    * `bfreset(f)` - blocking fast reset to the given frame
+* save state functions
+    * `save()` - save the current state to file
+    * `saveas(f)` or `save(f)` - save the current state to a new file
+    * `load(f)` - load a save state and advance to final frame
+    * `fload(f)` - load a save state and fast advance to final frame
+    * `view()` - swap between view modes
+    * `exec("...")` - execute a command on the base console (e.g. `exec("overlay off Layers")`)
+
+There's a ton more but there's a whole generated set of docs for the lua engine that you can find in the docs folder.
+
+### Core Console Functions
+
 #### Helper Functions:
 Any function that is callable through this top level console has some help text associated with its use, and you can discover different tools through the list command.
 * `help` - allows you to check command description/usage
