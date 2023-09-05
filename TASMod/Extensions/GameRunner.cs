@@ -77,6 +77,8 @@ namespace TASMod.Extensions
 
             ModEntry.Console.Log("ResetStaticTextures", LogLevel.Trace);
             ResetStaticTextures();
+
+            Controller.State.RestoreGameDetails();
         }
         public static void ResetStaticTextures()
         {

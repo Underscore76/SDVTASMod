@@ -73,6 +73,15 @@ require('core.common')
 require('aliases')
 
 -- attempt to load user-defined init script on startup
-pcall(function()
+success, result = pcall(function()
     require('init')
 end)
+
+if not success and result ~= nil then
+    print('ERROR: could not load init script')
+    print('ERROR: ')
+    items = string.split(result, '\n')
+    for i, v in ipairs(items) do
+        print('ERROR: ' .. v)
+    end
+end

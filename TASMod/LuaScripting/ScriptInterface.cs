@@ -9,6 +9,7 @@ using TASMod.Inputs;
 using TASMod.Recording;
 using TASMod.Extensions;
 using TASMod.Console;
+using TASMod.Helpers;
 
 namespace TASMod.LuaScripting
 {
@@ -177,6 +178,11 @@ namespace TASMod.LuaScripting
         {
             Controller.State.Reset(frame);
             GameRunner.instance.BlockingFastReset();
+        }
+
+        public List<ClickableItems.ClickObject> GetClickableObjects()
+        {
+            return ClickableItems.GetClickObjects();
         }
     }
 }

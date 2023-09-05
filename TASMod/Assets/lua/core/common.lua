@@ -92,3 +92,15 @@ end
 function frame_stack_clear()
     frame_stack._X = {}
 end
+
+---gets the current real time
+---@return System.DateTime @current real time
+function real_time()
+    return DateTimeOffset.FromUnixTimeSeconds(os.time()):ToLocalTime()
+end
+
+-- stashing a raw mechanism to check if a file exists
+-- function file_exists(name)
+--     local f = io.open(name, "r")
+--     return f ~= nil and io.close(f)
+-- end

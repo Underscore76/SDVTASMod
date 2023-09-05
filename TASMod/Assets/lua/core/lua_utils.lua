@@ -227,3 +227,17 @@ function print_arr(x)
     end
     return table.concat(res, ',')
 end
+
+
+---generates a random string of a given length
+---taken from https://gist.github.com/haggen/2fd643ea9a261fea2094
+---@param length number @length of string to generate
+---@return string|unknown @random string
+function string.random(length)
+    local charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    if length > 0 then
+        return string.random(length - 1) .. charset:sub(math.random(1, #charset), 1)
+    else
+        return ""
+    end
+end
