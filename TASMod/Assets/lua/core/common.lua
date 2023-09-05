@@ -14,7 +14,7 @@ function advance(input)
 end
 
 ---wait for the game to halt logic
----@param max_frames number
+---@param max_frames number|nil
 function halt(max_frames)
     engine.halt(max_frames)
 end
