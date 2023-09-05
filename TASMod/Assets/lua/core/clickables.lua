@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-global
+-- clickables: a module for finding clickable objects in menus
 
 local intro_click_map = require('core.data.click_maps')
 local clickables = {}

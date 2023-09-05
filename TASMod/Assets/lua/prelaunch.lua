@@ -1,5 +1,4 @@
-﻿---@diagnostic disable: lowercase-global, undefined-global
--- file is run at generation of the lua state to setup core library overrides
+﻿-- file is run at generation of the lua state to setup core library overrides
 
 __old_print__ = print
 __old_require__ = require

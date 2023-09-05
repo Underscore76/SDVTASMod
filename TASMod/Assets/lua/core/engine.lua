@@ -1,5 +1,4 @@
-﻿---@diagnostic disable: undefined-global
----defines the core engine interface for dealing with frame
+﻿--defines the core engine interface for dealing with frame
 local console = require('core.console')
 local engine = {}
 

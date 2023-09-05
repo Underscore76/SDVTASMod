@@ -134,3 +134,21 @@ At the bottom of the file you can add
 ```
 
 (Thanks to @PianoAddict for finding these details!)
+
+
+## Generating Lua Docs
+This project uses [LDoc](https://github.com/lunarmodules/ldoc) to generate documentation for the lua files. To generate the docs, run the following command from the root directory of the project:
+
+```bash
+ldoc .
+```
+
+You'll need Lua/LuaRocks installed to run this command, which will vary by system. On Mac you can install Lua/LuaRocks with the following command:
+
+```bash
+brew install lua luarocks
+luarocks install penlight
+luarocks install ldoc
+```
+
+Looking for someone on windows to give guidance on how to install Lua/LuaRocks :).

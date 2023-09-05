@@ -1,4 +1,3 @@
----@diagnostic disable: lowercase-global, undefined-global
 --- NOTE: this file pollutes the global namespace with common named elements
 local console = require('core.console')
 

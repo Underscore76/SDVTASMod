@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-global, lowercase-global
+--- keybinds: functions that allow you to bind lua function to keyboard buttons
 
 local keybinds = {}
 ---add a key to the keybind map

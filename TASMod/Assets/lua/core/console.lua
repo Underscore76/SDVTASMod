@@ -1,5 +1,4 @@
-﻿---@diagnostic disable: undefined-global
----defines wrapper object around the TAS console
+﻿--defines wrapper object around the TAS console
 
 local console = {}
 

@@ -1,3 +1,5 @@
+-- raw click maps for the title screen/existing names
+
 local title_click_map = {
     NameBox = 536, FarmBox = 537, FavBox = 538,
     Eye_H = 522, Eye_S = 523, Eye_V = 524,

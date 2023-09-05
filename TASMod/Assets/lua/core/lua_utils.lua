@@ -1,12 +1,11 @@
-﻿---@diagnostic disable: lowercase-global, undefined-field
---- NOTE: this file pollutes the global namespace with utility functions
+﻿--- NOTE: this file pollutes the global namespace with utility functions
 
 
 ---computes the length of an object.
 ---  for tables this is via direct lookup,
 ---  all other objects are via iteration.
 ---@param obj any
----@returns int length
+---@return number @length of object
 function len(obj)
     if type(obj) == "table" then
         return #obj
@@ -85,7 +84,7 @@ end
 ---@param cond boolean
 ---@param T any
 ---@param F any
----@returns any
+---@return any
 function where(cond, T, F)
     if type(T) == "function" then
         if type(F) == "function" then
@@ -103,10 +102,10 @@ end
 ---
 --- clamp a value between min and max
 ---
----@params x number
----@params min number
----@params max number
----@returns number
+---@param x number
+---@param min number
+---@param max number
+---@return number
 function clamp(x, min, max)
     if x < min then
         return min
@@ -145,8 +144,10 @@ function copytable(list)
 end
 
 ---concatenates a list of strings together with tabs
----@vararg string @list of strings to concatenate
+--example: concat("a", "b", "c") -> "a\tb\tc"
+---@param ... vararg @list of strings to concatenate
 ---@return string @concatenated string
+---
 function concat(...)
     local arg = { ... }
     local result = ""

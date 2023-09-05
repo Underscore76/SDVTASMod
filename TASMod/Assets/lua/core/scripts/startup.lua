@@ -1,4 +1,5 @@
----@diagnostic disable: undefined-global
+-- script to startup a new game based on your character customization
+
 local clickables = require("core.clickables")
 local input = require("core.input")
 
@@ -168,7 +169,7 @@ function startup.run()
         return
     end
 
-    --- click a component by name
+    -- click a component by name
     input.click_component("NameBox")
     input.click_component("FarmBox")
     input.click_component("FavBox")

@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>aliases</strong></li>
+  <li><a href="../modules/core.common.html">core.common</a></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><a href="../modules/core.engine.html">core.engine</a></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><a href="../modules/core.lua_utils.html">core.lua_utils</a></li>
+  <li><a href="../modules/core.scripts.newgame.html">core.scripts.newgame</a></li>
+  <li><a href="../modules/core.scripts.startup.html">core.scripts.startup</a></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>aliases</code></h1>
+<p>NOTE: this file pollutes the global namespace with common named elements</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#view">view ()</a></td>
+	<td class="summary">swaps between different view states (base, map)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#save">save (name)</a></td>
+	<td class="summary">save the current TAS inputs to the current file</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#saveas">saveas (name)</a></td>
+	<td class="summary">save the current TAS inputs to the specified file</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#load">load (name)</a></td>
+	<td class="summary">load a TAS input file</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fload">fload (name)</a></td>
+	<td class="summary">fast load a TAS input file</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#exec">exec (command)</a></td>
+	<td class="summary">run the specified command on the top level console</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#save_state_exists">save_state_exists (name)</a></td>
+	<td class="summary">check if a save state exists</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "view"></a>
+    <strong>view ()</strong>
+    </dt>
+    <dd>
+    swaps between different view states (base, map)
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "save"></a>
+    <strong>save (name)</strong>
+    </dt>
+    <dd>
+    save the current TAS inputs to the current file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string|nil @name of file to save to (default: nil)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "saveas"></a>
+    <strong>saveas (name)</strong>
+    </dt>
+    <dd>
+    save the current TAS inputs to the specified file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string @name of file to save to
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "load"></a>
+    <strong>load (name)</strong>
+    </dt>
+    <dd>
+    load a TAS input file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string @name of file to load
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "fload"></a>
+    <strong>fload (name)</strong>
+    </dt>
+    <dd>
+    fast load a TAS input file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string @name of file to load
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "exec"></a>
+    <strong>exec (command)</strong>
+    </dt>
+    <dd>
+    run the specified command on the top level console
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">command</span>
+         string command to execute
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "save_state_exists"></a>
+    <strong>save_state_exists (name)</strong>
+    </dt>
+    <dd>
+    check if a save state exists
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string @name of the save state
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean @whether the save state exists
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-04 22:07:36 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,4 +1,5 @@
----@diagnostic disable: undefined-global, undefined-doc-name
+-- `input`: defines some basic click functions for interacting with the game
+
 local clickables = require("core.clickables")
 
 local input = {}
@@ -27,12 +28,6 @@ end
 ---@param rect table|Microsoft.Xna.Framework.Rectangle @a table with Center field or a Rectangle object
 function input.click_rect(rect)
     input.click_point(rect.Center, true, false)
-end
-
----register a clickmap
----@param clickmap table @a table that can be indexed by a string to get a clickable object
-function input.register_clickmap(clickmap)
-    input.clickmap = clickmap
 end
 
 ---click a component by name

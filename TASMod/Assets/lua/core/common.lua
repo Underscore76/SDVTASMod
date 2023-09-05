@@ -1,12 +1,11 @@
-﻿---@diagnostic disable: lowercase-global, undefined-global
---- NOTE: this file pollutes the global namespace with common named elements
+﻿--- NOTE: this file pollutes the global namespace with common named elements
 
 local engine = require('core.engine')
 local frame_stack = require('core.utilities.frame_stack')
 
----
---- functions for working with the game engine interface
----
+--
+-- functions for working with the game engine interface
+--
 
 ---advance the game by one frame
 ---@param input any
@@ -50,9 +49,9 @@ function current_frame()
     return interface:GetCurrentFrame()
 end
 
----
---- functions for manipulating/working with the global framestack
----
+--
+-- functions for manipulating/working with the global framestack
+--
 
 ---push the current frame to the global framestack
 ---@return number current frame number

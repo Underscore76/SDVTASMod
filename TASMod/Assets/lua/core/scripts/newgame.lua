@@ -1,4 +1,5 @@
----@diagnostic disable: undefined-global, undefined-field
+-- script to define and create a new game
+
 local newgame = {
     farmer_name = "abc",
     farm_name = "abc",
