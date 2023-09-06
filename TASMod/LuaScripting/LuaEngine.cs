@@ -25,13 +25,11 @@ namespace TASMod.LuaScripting
             // import namespaces for core MonoGame types
             LuaState.DoString(@"
                 import ('System')
+                import ('System.Collections.Generic')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Graphics')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Input')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Audio')
-            ");
-
-            LuaState.DoString(@"
             ");
         }
 

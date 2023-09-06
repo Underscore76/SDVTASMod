@@ -66,9 +66,6 @@ namespace TASMod
 		public RingBuffer<TimeSpan> Frames;
 		public RingBuffer<TimeSpan> Updates;
 		public RingBuffer<TimeSpan> Draws;
-		//public List<TimeSpan> Frames;
-		//public List<TimeSpan> Updates;
-		//public List<TimeSpan> Draws;
 
 		public PerformanceTiming()
 		{
