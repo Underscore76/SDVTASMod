@@ -3,7 +3,7 @@
 local clickables = require("core.clickables")
 local input = require("core.input")
 
---- load defaults
+-- load defaults
 local startup = {
     pet={true, 0},
     skin=0,
@@ -122,7 +122,7 @@ function startup.set_skip(skip)
     startup.skip = skip
 end
 
---- wrappers for getting player values
+-- wrappers for getting player values
 local player = {}
 function player.get_skin()
     return RunCS("Game1.player.skin.Value")
