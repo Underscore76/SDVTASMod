@@ -118,7 +118,7 @@ namespace TASMod
             }
             //ModEntry.Console.Log($"number of statics: {defaults.Count}");
         }
-        public static int failedFrames = 6;
+
 		public static bool Update()
 		{
 			TASInputState.Active = false;

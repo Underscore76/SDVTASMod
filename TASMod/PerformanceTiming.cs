@@ -1,26 +1,82 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace TASMod
 {
 	public class PerformanceTiming
 	{
+		public class RingBuffer<T> : IEnumerable<T>
+		{
+			private List<T> values;
+			private int ptr;
+			private int capacity;
+			public int Count => values.Count;
+
+			public RingBuffer(int capacity)
+			{
+				values = new List<T>(capacity);
+				ptr = 0;
+				this.capacity = capacity;
+			}
+
+			public void Add(T val)
+			{
+				if (values.Count < capacity)
+				{
+					values.Add(val);
+				}
+				else
+				{
+					values[ptr] = val;
+				}
+				ptr = (ptr+1) % capacity;
+			}
+
+            IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            {
+				return (IEnumerator<T>)this.values.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.values.GetEnumerator();
+            }
+
+			public void Clear()
+			{
+				values.Clear();
+				ptr = 0;
+			}
+
+			public T this[int i]
+			{
+				get
+				{
+					return this.values[i];
+				}
+			}
+		}
+
 		public Stopwatch timer;
 		public TimeSpan frameStart;
 		public TimeSpan updateStart;
 		public TimeSpan drawStart;
-		public List<TimeSpan> Frames;
-		public List<TimeSpan> Updates;
-		public List<TimeSpan> Draws;
+		public RingBuffer<TimeSpan> Frames;
+		public RingBuffer<TimeSpan> Updates;
+		public RingBuffer<TimeSpan> Draws;
+		//public List<TimeSpan> Frames;
+		//public List<TimeSpan> Updates;
+		//public List<TimeSpan> Draws;
 
 		public PerformanceTiming()
 		{
 			timer = Stopwatch.StartNew();
 			frameStart = timer.Elapsed;
-			Frames = new();
-			Updates = new();
-			Draws = new();
+			Frames = new(10000);
+			Updates = new(10000);
+			Draws = new(10000);
 		}
 
 		public void Reset()
