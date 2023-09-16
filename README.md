@@ -21,7 +21,6 @@ Slowly copying over/making sure things work in the new system.
 Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
 
 ### Lua Support
-> WIP: Right now I can confirm building works on Mac, I can't tell on Windows yet so feel free to try it out and let me know!
 
 Scripting in this TAS is done with Lua! By typing `lua` onto the console you'll enter into a Lua REPL (read-eval-print-loop), which will allow you to run arbitrary lua code. Documentation for the core lua engine functions can be found by navigating locally to docs/ldoc/index.html or you can browse the `TASMod/Assets/lua` folder where the lua files are stored.
 
