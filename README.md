@@ -1,6 +1,8 @@
 # Stardew Valley TAS Mod
 [Build Issues?](#build-issues)
 
+NOTE: Use of this mod will create a folder `StardewTAS` in your `Documents` folder. This folder will contain your save states, scripts, screenshots, etc.
+
 ## Basic controls (for this alpha)
 Basic Framework for a TAS Mod, includes
 * frame advance (press `q` or `downarrow` for 1 frame, hold `space` for real time)
@@ -19,10 +21,20 @@ Slowly copying over/making sure things work in the new system.
 Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
 
 ### Lua Support
-WIP: Right now I can confirm building works on Mac, I can't tell on Windows yet so feel free to try it out and let me know!
+> WIP: Right now I can confirm building works on Mac, I can't tell on Windows yet so feel free to try it out and let me know!
+
 Scripting in this TAS is done with Lua! By typing `lua` onto the console you'll enter into a Lua REPL (read-eval-print-loop), which will allow you to run arbitrary lua code. Documentation for the core lua engine functions can be found by navigating locally to docs/ldoc/index.html or you can browse the `TASMod/Assets/lua` folder where the lua files are stored.
 
 There is an example `init.lua` file in the `lua-examples` folder. The TASMod will look for a file called `init.lua` in the `StardewTAS/Scripts/` folder and will run that file when first launching into the lua console. This allows you to define custom functions and aliases that you can use in the console. For example, you can define a function called `myfunc` in `init.lua` and then call it from the lua console with `myfunc()`. You can also do things like auto-load into a specific save state or configure the engine state by toggling overlays/logic etc (or loading a particular engine state).
+
+#### Visual Studio Code Support
+If you are using Visual Studio Code for editing files in your local `StardewTAS/Scripts` folder, I recommend installing the [Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension to get type annotations and autocomplete for Lua. To include all the base engine lua files, open the workspace settings (Shift + Command + P (Mac) / Ctrl + Shift + P (Windows/Linux) to open the command palette) and search for `lua.workspace.library`, click Add Item, and then paste the path to the `lua` folder from the mod install.
+
+Default Steam install paths (if you are on linux let me know the path!):
+* Mac: `~/Library/Application Support/Steam/steamapps/common/Stardew Valley/Contents/MacOS/Mods/TASMod/assets/lua/`
+* Windows: `C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\TASMod\assets\lua\`
+
+You don't need to do this (the mod will correctly link the files), but it will give you intellisense for the base engine code.
 
 #### Key Lua Helper
 * `advance({keyboard={keys to press}, mouse={X=int, Y=int, left=bool, right=bool}})` - advance a frame with the given keyboard/mouse inputs. This should then pause while any existing automation is running. Example for holding down and right and clicking the mouse:
