@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/aliases.html">aliases</a></li>
+  <li><a href="../modules/core.clickables.html">core.clickables</a></li>
+  <li><a href="../modules/core.common.html">core.common</a></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><strong>core.engine</strong></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><a href="../modules/core.lua_utils.html">core.lua_utils</a></li>
+  <li><a href="../modules/core.scripts.newgame.html">core.scripts.newgame</a></li>
+  <li><a href="../modules/core.scripts.startup.html">core.scripts.startup</a></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>core.engine</code></h1>
+<p>attempt to wait until all logic has halted</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#advance">advance (input)</a></td>
+	<td class="summary">advance the game by one frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#reset">reset (frame)</a></td>
+	<td class="summary">reset the game to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fast_reset">fast_reset (frame)</a></td>
+	<td class="summary">fast reset the game to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#blocking_reset">blocking_reset (frame)</a></td>
+	<td class="summary">blocking reset the game to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#blocking_fast_reset">blocking_fast_reset (frame)</a></td>
+	<td class="summary">blocking fast reset the game to the specified frame</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "advance"></a>
+    <strong>advance (input)</strong>
+    </dt>
+    <dd>
+    advance the game by one frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">input</span>
+         table|nil input to advance with (defaults current frame)
+ negative frames are relative to the current frame (-1 == current frame)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "reset"></a>
+    <strong>reset (frame)</strong>
+    </dt>
+    <dd>
+    reset the game to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number|nil frame to reset to (defaults current frame)
+ negative frames are relative to the current frame (-1 == current frame)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "fast_reset"></a>
+    <strong>fast_reset (frame)</strong>
+    </dt>
+    <dd>
+    fast reset the game to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number|nil frame to reset to (defaults current frame)
+ negative frames are relative to the current frame (-1 == current frame)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "blocking_reset"></a>
+    <strong>blocking_reset (frame)</strong>
+    </dt>
+    <dd>
+    blocking reset the game to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number|nil frame to reset to (defaults current frame)
+ negative frames are relative to the current frame (-1 == current frame)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "blocking_fast_reset"></a>
+    <strong>blocking_fast_reset (frame)</strong>
+    </dt>
+    <dd>
+    blocking fast reset the game to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number|nil frame to reset to (defaults current frame)
+ negative frames are relative to the current frame (-1 == current frame)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-05 19:37:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -80,7 +80,7 @@ namespace TASMod.Console.Commands
             }
         }
 
-        public override void ReceiveInput(string input)
+        public override void ReceiveInput(string input, bool writeEntry = true)
         {
             string value = input.Trim();
             switch (CurrentStage)

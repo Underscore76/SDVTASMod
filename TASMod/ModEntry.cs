@@ -22,7 +22,7 @@ namespace TASMod
 {
     public class ModEntry : Mod
     {
-        private static ModEntry Instance;
+        public static ModEntry Instance;
         public static IReflectionHelper Reflection => Instance.Helper.Reflection;
         public static IMonitor Console => Instance.Monitor;
 

@@ -1,0 +1,570 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/aliases.html">aliases</a></li>
+  <li><a href="../modules/core.clickables.html">core.clickables</a></li>
+  <li><a href="../modules/core.common.html">core.common</a></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><a href="../modules/core.engine.html">core.engine</a></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><strong>core.lua_utils</strong></li>
+  <li><a href="../modules/core.scripts.newgame.html">core.scripts.newgame</a></li>
+  <li><a href="../modules/core.scripts.startup.html">core.scripts.startup</a></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>core.lua_utils</code></h1>
+<p>NOTE: this file pollutes the global namespace with utility functions</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#len">len (obj)</a></td>
+	<td class="summary">computes the length of an object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#dict_items">dict_items (dict)</a></td>
+	<td class="summary">generator for key/value pairs from a dictionary</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#print_dict">print_dict (dict, itemfunc, keyfunc)</a></td>
+	<td class="summary">print key/value pairs from a dictionary</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#print_vec_dict">print_vec_dict (dict, itemfunc)</a></td>
+	<td class="summary">print a dictionary with vector keys</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#list_items">list_items (obj)</a></td>
+	<td class="summary">generator for items from a list</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#print_list">print_list (obj, itemfunc)</a></td>
+	<td class="summary">print items from a list</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#where">where (cond, T, F)</a></td>
+	<td class="summary">allow inline definition of ternary operations
+ if a function is passed, it will be lazy evaluated (only if necessary)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clamp">clamp (x, min, max)</a></td>
+	<td class="summary">clamp a value between min and max</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#indexof">indexof (list, item)</a></td>
+	<td class="summary">computes element index of item in table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#copytable">copytable (list)</a></td>
+	<td class="summary">duplicates table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#concat">concat (...)</a></td>
+	<td class="summary">concatenates a list of strings together with tabs
+example: concat("a", "b", "c") -> "a\tb\tc"</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#string.split">string.split (inputstr, sep)</a></td>
+	<td class="summary">split a string into a table based on a separator</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#string.join">string.join (delim, items)</a></td>
+	<td class="summary">join a bunch of items together with a delimiter</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#list_filter">list_filter (items, filters)</a></td>
+	<td class="summary">filter a list of items based on if they exist in a table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#print_arr">print_arr (x)</a></td>
+	<td class="summary">print a c# array</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#string.random">string.random (length)</a></td>
+	<td class="summary">generates a random string of a given length
+taken from https://gist.github.com/haggen/2fd643ea9a261fea2094</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "len"></a>
+    <strong>len (obj)</strong>
+    </dt>
+    <dd>
+    computes the length of an object.
+  for tables this is via direct lookup,
+  all other objects are via iteration.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">obj</span>
+         any
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number @length of object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "dict_items"></a>
+    <strong>dict_items (dict)</strong>
+    </dt>
+    <dd>
+    generator for key/value pairs from a dictionary
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dict</span>
+         any @dictionary to iterate over
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        function,table,nil data key/value pairs to iterate over
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "print_dict"></a>
+    <strong>print_dict (dict, itemfunc, keyfunc)</strong>
+    </dt>
+    <dd>
+    print key/value pairs from a dictionary
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dict</span>
+         any @dictionary to iterate over
+        </li>
+        <li><span class="parameter">itemfunc</span>
+         function|nil @modifier function to apply to each item (defaults to nil)
+        </li>
+        <li><span class="parameter">keyfunc</span>
+         function|nil @modifier function to apply to each key (defaults to nil)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "print_vec_dict"></a>
+    <strong>print_vec_dict (dict, itemfunc)</strong>
+    </dt>
+    <dd>
+    print a dictionary with vector keys
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dict</span>
+         any @dictionary to iterate over
+        </li>
+        <li><span class="parameter">itemfunc</span>
+         function|nil @modifier function to apply to each item (defaults to nil)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "list_items"></a>
+    <strong>list_items (obj)</strong>
+    </dt>
+    <dd>
+    generator for items from a list
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">obj</span>
+         any @list to iterate over
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        function,table,nil data items to iterate over
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "print_list"></a>
+    <strong>print_list (obj, itemfunc)</strong>
+    </dt>
+    <dd>
+    print items from a list
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">obj</span>
+         any @list to iterate over
+        </li>
+        <li><span class="parameter">itemfunc</span>
+         function|nil @modifier function to apply to each item (defaults to nil)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "where"></a>
+    <strong>where (cond, T, F)</strong>
+    </dt>
+    <dd>
+    allow inline definition of ternary operations
+ if a function is passed, it will be lazy evaluated (only if necessary)
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cond</span>
+         boolean
+        </li>
+        <li><span class="parameter">T</span>
+         any
+        </li>
+        <li><span class="parameter">F</span>
+         any
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        any
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "clamp"></a>
+    <strong>clamp (x, min, max)</strong>
+    </dt>
+    <dd>
+    clamp a value between min and max
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+         number
+        </li>
+        <li><span class="parameter">min</span>
+         number
+        </li>
+        <li><span class="parameter">max</span>
+         number
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "indexof"></a>
+    <strong>indexof (list, item)</strong>
+    </dt>
+    <dd>
+    computes element index of item in table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+         table @table to search
+        </li>
+        <li><span class="parameter">item</span>
+         any @item to search for
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "copytable"></a>
+    <strong>copytable (list)</strong>
+    </dt>
+    <dd>
+    duplicates table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+         table @table to copy
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table @copy of table
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "concat"></a>
+    <strong>concat (...)</strong>
+    </dt>
+    <dd>
+    concatenates a list of strings together with tabs
+example: concat("a", "b", "c") -> "a\tb\tc"
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         vararg @list of strings to concatenate
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string @concatenated string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "string.split"></a>
+    <strong>string.split (inputstr, sep)</strong>
+    </dt>
+    <dd>
+    split a string into a table based on a separator
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">inputstr</span>
+         string @string to split
+        </li>
+        <li><span class="parameter">sep</span>
+         string @separator to split on
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table @split string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "string.join"></a>
+    <strong>string.join (delim, items)</strong>
+    </dt>
+    <dd>
+    join a bunch of items together with a delimiter
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">delim</span>
+         string @delimiter to join with
+        </li>
+        <li><span class="parameter">items</span>
+         table|string @items to join
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string @joined string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "list_filter"></a>
+    <strong>list_filter (items, filters)</strong>
+    </dt>
+    <dd>
+    filter a list of items based on if they exist in a table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">items</span>
+         table|string @items to filter
+        </li>
+        <li><span class="parameter">filters</span>
+         table @filters to apply
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "print_arr"></a>
+    <strong>print_arr (x)</strong>
+    </dt>
+    <dd>
+    print a c# array
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+         any @array to print
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string @string representation of array
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "string.random"></a>
+    <strong>string.random (length)</strong>
+    </dt>
+    <dd>
+    generates a random string of a given length
+taken from https://gist.github.com/haggen/2fd643ea9a261fea2094
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">length</span>
+         number @length of string to generate
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string|unknown @random string
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-05 19:37:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

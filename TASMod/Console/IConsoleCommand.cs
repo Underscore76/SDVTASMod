@@ -5,12 +5,13 @@ namespace TASMod.Console.Commands
     {
         public virtual void Run() { Run(new string[0]); }
         public abstract void Run(string[] tokens);
-        public virtual void ReceiveInput(string input) { }
+        public virtual void ReceiveInput(string input, bool writeAsEntry = true) { }
         public virtual void Stop() { }
         public virtual string SubscriberPrefix => "$ ";
 
         public void Subscribe()
         {
+
             Console.ActiveSubscribers.Push(Name);
         }
 

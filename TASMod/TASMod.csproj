@@ -1,19 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <EnableHarmony>true</EnableHarmony>
-    <CheckEolTargetFramework>false</CheckEolTargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+        <PackageReference Include="NLua" Version="1.6.3" />
+        <PackageReference Include="DynamicExpresso.Core" Version="2.16.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" Private="false" />
+        <PackageReference Include="SkiaSharp" Version="2.88.3" HintPath="$(GamePath)\SkiaSharp.dll" Private="false" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
-    <PackageReference Include="NLua" Version="1.6.2" />
-    <PackageReference Include="DynamicExpresso.Core" Version="2.16.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="SkiaSharp" Version="2.88.3" />
-  </ItemGroup>
+    <PropertyGroup>
+		<EnableHarmony>true</EnableHarmony>
+		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+		<EnableModZip>true</EnableModZip>
+		<IgnoreModFilePatterns>runtimes</IgnoreModFilePatterns>
+    </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Patches\" />
     <None Remove="Inputs\" />
@@ -27,6 +33,12 @@
     <None Remove="Helpers\" />
     <None Remove="Console\Commands\" />
     <None Remove="Views\" />
+    <None Remove="Console\Subconsoles\" />
+    <None Remove="LuaScripting\" />
+    <None Remove="_libs\" />
+    <None Remove="Assets\lua\" />
+    <None Remove="Assets\lua\core\" />
+    <None Remove="Assets\lua\core\utilities\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
@@ -41,6 +53,12 @@
     <Folder Include="Helpers\" />
     <Folder Include="Console\Commands\" />
     <Folder Include="Views\" />
+    <Folder Include="Console\Subconsoles\" />
+    <Folder Include="LuaScripting\" />
+    <Folder Include="_libs\" />
+    <Folder Include="Assets\lua\" />
+    <Folder Include="Assets\lua\core\" />
+    <Folder Include="Assets\lua\core\utilities\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
@@ -51,4 +69,39 @@
     </None>
     <None Include="..\.editorconfig" />
   </ItemGroup>
+
+  <!--<PropertyGroup>
+    <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>-->
+
+    <ItemGroup>
+        <None Include="_libs\liblua54.dylib" />
+        <ContentWithTargetPath Include="_libs\liblua54.dylib">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>liblua54.dylib</TargetPath>
+        </ContentWithTargetPath>
+        <None Include="_libs\lua54.dll" />
+        <ContentWithTargetPath Include="_libs\lua54.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>lua54.dll</TargetPath>
+        </ContentWithTargetPath>
+        <None Include="_libs\liblua54.so" />
+        <ContentWithTargetPath Include="_libs\liblua54.so">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>liblua54.so</TargetPath>
+        </ContentWithTargetPath>
+    </ItemGroup>
+    
+    <!-- Don't include the output from a previous source generator execution into future runs; the */** trick here ensures that there's
+    at least one subdirectory, which is our key that it's coming from a source generator as opposed to something that is coming from
+    some other tool. -->
+    <!--<ItemGroup>
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
+  </ItemGroup>-->
+
+  <!--<ItemGroup Condition="'$(Configuration)'=='Release'">
+    <PackageReference Include="CSCodeGen" Version="0.2.0" />
+  </ItemGroup>-->
+
 </Project>

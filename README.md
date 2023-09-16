@@ -1,6 +1,8 @@
 # Stardew Valley TAS Mod
 [Build Issues?](#build-issues)
 
+NOTE: Use of this mod will create a folder `StardewTAS` in your `Documents` folder. This folder will contain your save states, scripts, screenshots, etc.
+
 ## Basic controls (for this alpha)
 Basic Framework for a TAS Mod, includes
 * frame advance (press `q` or `downarrow` for 1 frame, hold `space` for real time)
@@ -17,6 +19,57 @@ Hold the keys you want and then advance a frame to store those inputs (simulate 
 Slowly copying over/making sure things work in the new system.
 
 Console supports scrolling, selection, normal copy and paste (or it should, LET ME KNOW because it works on mac fine). Console font has no support for non-ascii, so will print `?`.
+
+### Lua Support
+
+Scripting in this TAS is done with Lua! By typing `lua` onto the console you'll enter into a Lua REPL (read-eval-print-loop), which will allow you to run arbitrary lua code. Documentation for the core lua engine functions can be found by navigating locally to docs/ldoc/index.html or you can browse the `TASMod/Assets/lua` folder where the lua files are stored.
+
+There is an example `init.lua` file in the `lua-examples` folder. The TASMod will look for a file called `init.lua` in the `StardewTAS/Scripts/` folder and will run that file when first launching into the lua console. This allows you to define custom functions and aliases that you can use in the console. For example, you can define a function called `myfunc` in `init.lua` and then call it from the lua console with `myfunc()`. You can also do things like auto-load into a specific save state or configure the engine state by toggling overlays/logic etc (or loading a particular engine state).
+
+#### Visual Studio Code Support
+If you are using Visual Studio Code for editing files in your local `StardewTAS/Scripts` folder, I recommend installing the [Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) extension to get type annotations and autocomplete for Lua. To include all the base engine lua files, open the workspace settings (Shift + Command + P (Mac) / Ctrl + Shift + P (Windows/Linux) to open the command palette) and search for `lua.workspace.library`, click Add Item, and then paste the path to the `lua` folder from the mod install.
+
+Default Steam install paths (if you are on linux let me know the path!):
+* Mac: `~/Library/Application Support/Steam/steamapps/common/Stardew Valley/Contents/MacOS/Mods/TASMod/assets/lua/`
+* Windows: `C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\TASMod\assets\lua\`
+
+You don't need to do this (the mod will correctly link the files), but it will give you intellisense for the base engine code.
+
+#### Key Lua Helper
+* `advance({keyboard={keys to press}, mouse={X=int, Y=int, left=bool, right=bool}})` - advance a frame with the given keyboard/mouse inputs. This should then pause while any existing automation is running. Example for holding down and right and clicking the mouse:
+```lua
+advance({keyboard={Keys.S, Keys.D}, mouse={X=100, Y=100, left=true}})
+```
+
+* Global frame stack
+    * `current_frame()` - returns the current frame actual frame
+    * `push(f)` - pushes a frame onto the frame stack
+    * `push()` or `gcf()` - pushes the current frame onto the frame stack
+    * `f = pop()` - pops a frame off the frame stack
+    * `rw()` - rewinds to the frame on the top of the frame stack
+    * `brw()` - blocking rewind to the frame on the top of the frame stack
+    * `frame_stack_clear()` - clears the frame stack
+    * `pgcf()` - print the global frame stack
+* reset functions (blocking forces lua to wait until the reset is complete, others can occur async)
+    * `reset()` - reset to the current frame
+    * `freset()` - fast reset to the current frame
+    * `reset(f)` - reset to the given frame
+    * `freset(f)` - fast reset to the given frame
+    * `breset()` - blocking reset to the current frame
+    * `breset(f)` - blocking reset to the given frame
+    * `bfreset()` - blocking fast reset to the current frame
+    * `bfreset(f)` - blocking fast reset to the given frame
+* save state functions
+    * `save()` - save the current state to file
+    * `saveas(f)` or `save(f)` - save the current state to a new file
+    * `load(f)` - load a save state and advance to final frame
+    * `fload(f)` - load a save state and fast advance to final frame
+    * `view()` - swap between view modes
+    * `exec("...")` - execute a command on the base console (e.g. `exec("overlay off Layers")`)
+
+There's a ton more but there's a whole generated set of docs for the lua engine that you can find in the docs folder.
+
+### Core Console Functions
 
 #### Helper Functions:
 Any function that is callable through this top level console has some help text associated with its use, and you can discover different tools through the list command.
@@ -134,3 +187,21 @@ At the bottom of the file you can add
 ```
 
 (Thanks to @PianoAddict for finding these details!)
+
+
+## Generating Lua Docs
+This project uses [LDoc](https://github.com/lunarmodules/ldoc) to generate documentation for the lua files. To generate the docs, run the following command from the root directory of the project:
+
+```bash
+ldoc .
+```
+
+You'll need Lua/LuaRocks installed to run this command, which will vary by system. On Mac you can install Lua/LuaRocks with the following command:
+
+```bash
+brew install lua luarocks
+luarocks install penlight
+luarocks install ldoc
+```
+
+Looking for someone on windows to give guidance on how to install Lua/LuaRocks :).

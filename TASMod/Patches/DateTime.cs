@@ -3,6 +3,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using TASMod.System;
+using StardewValley;
 
 namespace TASMod.Patches
 {
@@ -12,6 +13,9 @@ namespace TASMod.Patches
 
         public override void Patch(Harmony harmony)
         {
+            // forces the game seed to be your actual game seed to start
+            // this allows the http request made by SMAPI to work for checking updates
+            TASDateTime.setUniqueIDForThisGame(Utility.NewUniqueIdForThisGame());
             harmony.Patch(
                 original: AccessTools.Property(typeof(DateTime), nameof(DateTime.Now)).GetMethod,
                 transpiler: new HarmonyMethod(this.GetType(), nameof(this.Transpiler))

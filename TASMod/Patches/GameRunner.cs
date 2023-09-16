@@ -43,6 +43,7 @@ namespace TASMod.Patches
         {
             CanDraw = (Counter + 1) == GameRunner_Update.Counter;
             gameTime = TASDateTime.CurrentGameTime;
+            //ModEntry.Console.Log($"Draw prefix: {Counter}:{GameRunner_Update.Counter}:{TASDateTime.CurrentFrame} => {CanDraw}");
             if (CanDraw)
             {
                 Controller.Timing.DrawPrefix();
@@ -161,6 +162,7 @@ namespace TASMod.Patches
 
         public static bool Prefix(GameRunner __instance, ref GameTime gameTime)
         {
+            //ModEntry.Console.Log($"Update prefix: {GameRunner_Draw.Counter}:{Counter}:{TASDateTime.CurrentFrame}");
             if (Controller.ResetGame)
             {
                 ModEntry.Console.Log("Running Reset", LogLevel.Error);

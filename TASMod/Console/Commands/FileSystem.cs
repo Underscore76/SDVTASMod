@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+using Newtonsoft.Json.Linq;
 using TASMod.Recording;
 
 namespace TASMod.Console.Commands
@@ -16,10 +18,10 @@ namespace TASMod.Console.Commands
             "\tAn automatic * wildcard is appended unless you explicitly use the .json extension"
         };
 
-        public override void Run(string[] tokens)
+        public List<string> GetFilePaths(string[] tokens)
         {
             HashSet<string> files;
-            if (tokens.Length == 0)
+            if (tokens == null || tokens.Length == 0)
                 files = new HashSet<string>(Directory.GetFiles(Constants.SaveStatePath, "*.json"));
             else if (tokens.Length == 1)
             {
@@ -34,11 +36,21 @@ namespace TASMod.Console.Commands
                 }
             }
 
-            List<string> results = new List<string>(files);
+            List<string> results = new List<string>(
+                files
+                    .ToArray()
+                    .Select((s) => s.Replace(Constants.SaveStatePath + Path.VolumeSeparatorChar, ""))
+            );
             results.Sort();
-            foreach (string s in results)
+            return results;
+        }
+
+        public override void Run(string[] tokens)
+        {
+            List<string> filePaths = GetFilePaths(tokens);
+            foreach (string s in filePaths)
             {
-                Write("\t{0}", s.Replace(Constants.SaveStatePath + Path.VolumeSeparatorChar, ""));
+                Write("\t{0}", s);
             }
         }
 

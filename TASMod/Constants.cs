@@ -26,7 +26,7 @@ namespace TASMod
             DisconnectLogsPath = mkdir(BasePath, "DisconnectLogs");
 
             SaveStatePath = mkdir(BasePath, "SaveStates");
-            ScriptsPath = Path.Combine(BasePath, "Scripts");
+            ScriptsPath = mkdir(BasePath, "Scripts");
         }
 
         private static string mkdir(string basePath, string subDir)

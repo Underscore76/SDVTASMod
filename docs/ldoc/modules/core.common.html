@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/aliases.html">aliases</a></li>
+  <li><a href="../modules/core.clickables.html">core.clickables</a></li>
+  <li><strong>core.common</strong></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><a href="../modules/core.engine.html">core.engine</a></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><a href="../modules/core.lua_utils.html">core.lua_utils</a></li>
+  <li><a href="../modules/core.scripts.newgame.html">core.scripts.newgame</a></li>
+  <li><a href="../modules/core.scripts.startup.html">core.scripts.startup</a></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>core.common</code></h1>
+<p>NOTE: this file pollutes the global namespace with common named elements</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#advance">advance (input)</a></td>
+	<td class="summary">advance the game by one frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#halt">halt (max_frames)</a></td>
+	<td class="summary">wait for the game to halt logic</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#reset">reset (frame)</a></td>
+	<td class="summary">advance the game by one frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#freset">freset (frame)</a></td>
+	<td class="summary">fast reset back to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#breset">breset (frame)</a></td>
+	<td class="summary">blocking reset back to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bfreset">bfreset (frame)</a></td>
+	<td class="summary">blocking fast reset back to the specified frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#current_frame">current_frame ()</a></td>
+	<td class="summary">returns the current game frame</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#gcf">gcf ()</a></td>
+	<td class="summary">push the current frame to the global framestack</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pgcf">pgcf ()</a></td>
+	<td class="summary">print the global frame stack</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#push">push (f)</a></td>
+	<td class="summary">push a specific frame to the global frame stack</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pop">pop ()</a></td>
+	<td class="summary">pop a frame from the global frame stack</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rw">rw ()</a></td>
+	<td class="summary">fast reset back to the top of the global frame stack (NON-BLOCKING).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#brw">brw ()</a></td>
+	<td class="summary">fast reset back to the top of the global frame stack (BLOCKING).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#frame_stack_clear">frame_stack_clear ()</a></td>
+	<td class="summary">clear the global frame stack</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#real_time">real_time ()</a></td>
+	<td class="summary">gets the current real time</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "advance"></a>
+    <strong>advance (input)</strong>
+    </dt>
+    <dd>
+    advance the game by one frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">input</span>
+         any
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "halt"></a>
+    <strong>halt (max_frames)</strong>
+    </dt>
+    <dd>
+    wait for the game to halt logic
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">max_frames</span>
+         number|nil
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "reset"></a>
+    <strong>reset (frame)</strong>
+    </dt>
+    <dd>
+    advance the game by one frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "freset"></a>
+    <strong>freset (frame)</strong>
+    </dt>
+    <dd>
+    fast reset back to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "breset"></a>
+    <strong>breset (frame)</strong>
+    </dt>
+    <dd>
+    blocking reset back to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bfreset"></a>
+    <strong>bfreset (frame)</strong>
+    </dt>
+    <dd>
+    blocking fast reset back to the specified frame
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">frame</span>
+         number
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "current_frame"></a>
+    <strong>current_frame ()</strong>
+    </dt>
+    <dd>
+    returns the current game frame
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number current frame number
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "gcf"></a>
+    <strong>gcf ()</strong>
+    </dt>
+    <dd>
+    push the current frame to the global framestack
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number current frame number
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pgcf"></a>
+    <strong>pgcf ()</strong>
+    </dt>
+    <dd>
+    print the global frame stack
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "push"></a>
+    <strong>push (f)</strong>
+    </dt>
+    <dd>
+    push a specific frame to the global frame stack
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pop"></a>
+    <strong>pop ()</strong>
+    </dt>
+    <dd>
+    pop a frame from the global frame stack
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number|nil popped frame number
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "rw"></a>
+    <strong>rw ()</strong>
+    </dt>
+    <dd>
+    fast reset back to the top of the global frame stack (NON-BLOCKING).
+for general resets this will work significantly faster than brw()
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "brw"></a>
+    <strong>brw ()</strong>
+    </dt>
+    <dd>
+    fast reset back to the top of the global frame stack (BLOCKING).
+this allows accurate syncing in a lua script to continue operating post-reset
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "frame_stack_clear"></a>
+    <strong>frame_stack_clear ()</strong>
+    </dt>
+    <dd>
+    clear the global frame stack
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "real_time"></a>
+    <strong>real_time ()</strong>
+    </dt>
+    <dd>
+    gets the current real time
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        System.DateTime @current real time
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-05 19:37:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

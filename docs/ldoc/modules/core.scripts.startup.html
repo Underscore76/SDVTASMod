@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/aliases.html">aliases</a></li>
+  <li><a href="../modules/core.clickables.html">core.clickables</a></li>
+  <li><a href="../modules/core.common.html">core.common</a></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><a href="../modules/core.engine.html">core.engine</a></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><a href="../modules/core.lua_utils.html">core.lua_utils</a></li>
+  <li><a href="../modules/core.scripts.newgame.html">core.scripts.newgame</a></li>
+  <li><strong>core.scripts.startup</strong></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>core.scripts.startup</code></h1>
+<p>setup your pet selection</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_hair">set_hair (variant)</a></td>
+	<td class="summary">setup your hair selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_acc">set_acc (variant)</a></td>
+	<td class="summary">setup your accessory selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_shirt">set_shirt (variant)</a></td>
+	<td class="summary">setup your shirt selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_skin">set_skin (variant)</a></td>
+	<td class="summary">setup your skin selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_pant">set_pant (variant)</a></td>
+	<td class="summary">setup your pants selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_eye_color">set_eye_color (h, s, v)</a></td>
+	<td class="summary">setup your eye color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_hair_color">set_hair_color (h, s, v)</a></td>
+	<td class="summary">setup your hair color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_pants_color">set_pants_color (h, s, v)</a></td>
+	<td class="summary">setup your pants color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_farm">set_farm (variant)</a></td>
+	<td class="summary">setup your farm selection</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_sex">set_sex (sex)</a></td>
+	<td class="summary">setup character sex</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_skip">set_skip (skip)</a></td>
+	<td class="summary">setup whether to skip the intro</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#run">run ()</a></td>
+	<td class="summary">run the startup script</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#click_ok">click_ok ()</a></td>
+	<td class="summary">click the OK button</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "set_hair"></a>
+    <strong>set_hair (variant)</strong>
+    </dt>
+    <dd>
+    setup your hair selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         number @the variant of the hair you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_acc"></a>
+    <strong>set_acc (variant)</strong>
+    </dt>
+    <dd>
+    setup your accessory selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         number @the variant of the accessory you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_shirt"></a>
+    <strong>set_shirt (variant)</strong>
+    </dt>
+    <dd>
+    setup your shirt selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         number @the variant of the shirt you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_skin"></a>
+    <strong>set_skin (variant)</strong>
+    </dt>
+    <dd>
+    setup your skin selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         number @the variant of the skin you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_pant"></a>
+    <strong>set_pant (variant)</strong>
+    </dt>
+    <dd>
+    setup your pants selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         number @the variant of the pants you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_eye_color"></a>
+    <strong>set_eye_color (h, s, v)</strong>
+    </dt>
+    <dd>
+    setup your eye color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">h</span>
+         number|nil @first value of the hsv color
+        </li>
+        <li><span class="parameter">s</span>
+         number|nil @second value of the hsv color
+        </li>
+        <li><span class="parameter">v</span>
+         number|nil @third value of the hsv color
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_hair_color"></a>
+    <strong>set_hair_color (h, s, v)</strong>
+    </dt>
+    <dd>
+    setup your hair color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">h</span>
+         number|nil @first value of the hsv color
+        </li>
+        <li><span class="parameter">s</span>
+         number|nil @second value of the hsv color
+        </li>
+        <li><span class="parameter">v</span>
+         number|nil @third value of the hsv color
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_pants_color"></a>
+    <strong>set_pants_color (h, s, v)</strong>
+    </dt>
+    <dd>
+    setup your pants color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">h</span>
+         number|nil @first value of the hsv color
+        </li>
+        <li><span class="parameter">s</span>
+         number|nil @second value of the hsv color
+        </li>
+        <li><span class="parameter">v</span>
+         number|nil @third value of the hsv color
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_farm"></a>
+    <strong>set_farm (variant)</strong>
+    </dt>
+    <dd>
+    setup your farm selection
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">variant</span>
+         string @the name of the farm you want to pick
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_sex"></a>
+    <strong>set_sex (sex)</strong>
+    </dt>
+    <dd>
+    setup character sex
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sex</span>
+         string @male or female
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_skip"></a>
+    <strong>set_skip (skip)</strong>
+    </dt>
+    <dd>
+    setup whether to skip the intro
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">skip</span>
+         boolean @true if you want to skip the intro, false if you want to watch it
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "run"></a>
+    <strong>run ()</strong>
+    </dt>
+    <dd>
+    run the startup script
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "click_ok"></a>
+    <strong>click_ok ()</strong>
+    </dt>
+    <dd>
+    click the OK button
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-05 19:37:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

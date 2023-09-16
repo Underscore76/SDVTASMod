@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>TAS Mod Lua Docs</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>TASMod</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/aliases.html">aliases</a></li>
+  <li><a href="../modules/core.clickables.html">core.clickables</a></li>
+  <li><a href="../modules/core.common.html">core.common</a></li>
+  <li><a href="../modules/core.console.html">core.console</a></li>
+  <li><a href="../modules/core.engine.html">core.engine</a></li>
+  <li><a href="../modules/core.input.html">core.input</a></li>
+  <li><a href="../modules/core.keybinds.html">core.keybinds</a></li>
+  <li><a href="../modules/core.lua_utils.html">core.lua_utils</a></li>
+  <li><strong>core.scripts.newgame</strong></li>
+  <li><a href="../modules/core.scripts.startup.html">core.scripts.startup</a></li>
+  <li><a href="../modules/core.utilities.frame_stack.html">core.utilities.frame_stack</a></li>
+  <li><a href="../modules/prelaunch.html">prelaunch</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>core.scripts.newgame</code></h1>
+<p>set the params for the new game</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_farmer_name">set_farmer_name (farmer_name)</a></td>
+	<td class="summary">set the farmer name</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_farm_name">set_farm_name (farm_name)</a></td>
+	<td class="summary">set the farm name</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_favorite_thing">set_favorite_thing (favorite_thing)</a></td>
+	<td class="summary">set the favorite thing</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_prefix">set_prefix (prefix)</a></td>
+	<td class="summary">set the save file prefix</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_seed">set_seed (seed)</a></td>
+	<td class="summary">set the game seed</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_language">set_language (language)</a></td>
+	<td class="summary">set the game language</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#run">run ()</a></td>
+	<td class="summary">generate a new game</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "set_farmer_name"></a>
+    <strong>set_farmer_name (farmer_name)</strong>
+    </dt>
+    <dd>
+    set the farmer name
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">farmer_name</span>
+         string @farmer name
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_farm_name"></a>
+    <strong>set_farm_name (farm_name)</strong>
+    </dt>
+    <dd>
+    set the farm name
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">farm_name</span>
+         string @farm name
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_favorite_thing"></a>
+    <strong>set_favorite_thing (favorite_thing)</strong>
+    </dt>
+    <dd>
+    set the favorite thing
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">favorite_thing</span>
+         string @favorite thing
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_prefix"></a>
+    <strong>set_prefix (prefix)</strong>
+    </dt>
+    <dd>
+    set the save file prefix
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">prefix</span>
+         string @save file prefix
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_seed"></a>
+    <strong>set_seed (seed)</strong>
+    </dt>
+    <dd>
+    set the game seed
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">seed</span>
+         number @game seed value: 0-2^31-1
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_language"></a>
+    <strong>set_language (language)</strong>
+    </dt>
+    <dd>
+    set the game language
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">language</span>
+         string @game language: en, fr, es, de, pt, ru, ja, zh
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "run"></a>
+    <strong>run ()</strong>
+    </dt>
+    <dd>
+    generate a new game
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-09-05 19:37:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
