@@ -22,6 +22,7 @@ namespace TASMod
 {
     public class ModEntry : Mod
     {
+        public static ModConfig Config;
         public static ModEntry Instance;
         public static IReflectionHelper Reflection => Instance.Helper.Reflection;
         public static IMonitor Console => Instance.Monitor;
@@ -29,6 +30,7 @@ namespace TASMod
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+            Config = this.Helper.ReadConfig<ModConfig>();
 
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;

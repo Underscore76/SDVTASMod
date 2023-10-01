@@ -138,12 +138,14 @@ namespace TASMod.Patches
         public static bool Prefix(Game1 __instance, ref int w, ref int h)
         {
             Trace($"Game1.SetWindowSize {TASDateTime.CurrentFrame} {Game1.graphics.IsFullScreen}");
-            Game1.graphics.IsFullScreen = false;
-            // HARD FORCE THE RESOLUTION
-            // TODO: Move this to a config that you can set for the mod
-            w = 1920;
-            h = 1080;
-            __instance.Window.BeginScreenDeviceChange(false);
+            bool windowed = ModEntry.Config.Windowed;
+            Game1.graphics.IsFullScreen = !windowed;
+            w = ModEntry.Config.ScreenWidth;
+            h = ModEntry.Config.ScreenHeight;
+            Game1.options.fullscreen = !windowed;
+            Game1.options.preferredResolutionX = w;
+            Game1.options.preferredResolutionY = h;
+            __instance.Window.BeginScreenDeviceChange(!windowed);
             __instance.Window.EndScreenDeviceChange(__instance.Window.ScreenDeviceName, w, h);
             Game1.graphics.PreferredBackBufferWidth = w;
             Game1.graphics.PreferredBackBufferHeight = h;
