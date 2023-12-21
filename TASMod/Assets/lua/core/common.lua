@@ -49,6 +49,19 @@ function current_frame()
     return interface:GetCurrentFrame()
 end
 
+---returns the current game1 random
+---@return Random @current game1 random
+function game1_random()
+    return interface:GetGame1Random()
+end
+
+---copies the random object
+---@param random Random
+---@return Random @copied random object
+function copy_random(random)
+    return interface:CopyRandom(random)
+end
+
 --
 -- functions for manipulating/working with the global framestack
 --

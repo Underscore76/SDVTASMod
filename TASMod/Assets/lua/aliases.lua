@@ -54,6 +54,20 @@ function fload(name)
     console.exec("fload " .. name)
 end
 
+---incremental load a TAS input file, attempts to add new frames to end or resets
+---@param name string @name of file to load
+function iload(name)
+    if name == nil then
+        print("ERROR: fload requires a filename")
+        return
+    end
+    if not save_state_exists(name) then
+        print("ERROR: save state does not exist")
+        return
+    end
+    console.exec("iload " .. name)
+end
+
 ---run the specified command on the top level console
 ---@param command string command to execute
 function exec(command)

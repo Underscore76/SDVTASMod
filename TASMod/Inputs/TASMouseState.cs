@@ -49,6 +49,27 @@ namespace TASMod.Inputs
         {
             return state == ButtonState.Pressed;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is TASMouseState state)
+            {
+                return state.MouseX == MouseX
+                    && state.MouseY == MouseY
+                    && state.ScrollWheel == ScrollWheel
+                    && state.LeftMouseClicked == LeftMouseClicked
+                    && state.MiddleMouseClicked == MiddleMouseClicked
+                    && state.RightMouseClicked == RightMouseClicked
+                    && state.XButton1Clicked == XButton1Clicked
+                    && state.XButton2Clicked == XButton2Clicked;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
 

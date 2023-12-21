@@ -1,7 +1,7 @@
 ﻿{
   "Name": "SDVTASMod",
   "Author": "Underscore76",
-  "Version": "0.0.1",
+  "Version": "0.0.3",
   "Description": "Stardew TAS Mod",
   "UniqueID": "underscore.tasmod",
   "EntryDll": "TASMod.dll",

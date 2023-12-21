@@ -165,7 +165,8 @@ namespace TASMod.Helpers
                 extraDrops.AddRange(GreenSlime_ExtraDropItems(slime, random));
             else if (monster is Bat bat)
                 extraDrops.AddRange(Bat_ExtraDropItems(bat, random));
-
+            else if (monster is DinoMonster dino)
+                extraDrops.AddRange(DinoMonster_ExtraDropItems(dino, random));
             // TODO: wearing ring stuff
             // actual items
             foreach (var obj in monster.objectsToDrop)
@@ -182,7 +183,23 @@ namespace TASMod.Helpers
             // TODO: Magnifying glass
             return items;
         }
-
+        public static List<string> DinoMonster_ExtraDropItems(DinoMonster dino, Random gameRandom)
+        {
+            List<string> extra_items = new List<string>();
+            if (gameRandom.NextDouble() < 0.10000000149011612)
+            {
+                extra_items.Add(DropInfo.ObjectName(107)); gameRandom.Next();
+            }
+            else
+            {
+                List<string> non_egg_items = new List<string>();
+                non_egg_items.Add(DropInfo.ObjectName(580)); gameRandom.Next();
+                non_egg_items.Add(DropInfo.ObjectName(583)); gameRandom.Next();
+                non_egg_items.Add(DropInfo.ObjectName(584)); gameRandom.Next();
+                extra_items.Add(Utility.GetRandom(non_egg_items, gameRandom));
+            }
+            return extra_items;
+        }
         public static List<string> GreenSlime_ExtraDropItems(GreenSlime slime, Random gameRandom)
         {
             Color color = slime.color.Value;

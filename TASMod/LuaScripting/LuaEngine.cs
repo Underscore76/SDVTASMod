@@ -30,6 +30,9 @@ namespace TASMod.LuaScripting
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Graphics')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Input')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Audio')
+                import ('StardewValley')
+                import ('StardewValley.Locations')
+                import ('StardewValley.Characters')
             ");
         }
 

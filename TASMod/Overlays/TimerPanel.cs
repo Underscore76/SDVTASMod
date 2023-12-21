@@ -84,6 +84,7 @@ namespace TASMod.Overlays
         public override string Name => "TimerPanel";
         public override string Description => "display a timer";
 
+        public ulong MaxFrame=ulong.MaxValue;
         public Stopwatch GlobalTimer;
         public List<Tuple<ulong, TimerElement>> Timers;
         public ulong CurrentFrame;
@@ -104,7 +105,8 @@ namespace TASMod.Overlays
                     tup.Item2.Update(time);
                 }
             }
-            CurrentFrame = TASDateTime.CurrentFrame;
+            if (TASDateTime.CurrentFrame <= MaxFrame)
+                CurrentFrame = TASDateTime.CurrentFrame;
         }
 
         public override void ActiveDraw(SpriteBatch spriteBatch)

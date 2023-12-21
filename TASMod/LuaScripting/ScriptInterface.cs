@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Linq;
 using NLua;
 using NLua.Exceptions;
 using Microsoft.Xna.Framework;
@@ -10,6 +12,14 @@ using TASMod.Recording;
 using TASMod.Extensions;
 using TASMod.Console;
 using TASMod.Helpers;
+using StardewValley.SDKs;
+using Galaxy.Api;
+using System.Reflection;
+using System.Diagnostics;
+using Steamworks;
+using StardewValley.Locations;
+using Microsoft.Xna.Framework.Graphics;
+using xTile;
 
 namespace TASMod.LuaScripting
 {
@@ -18,6 +28,9 @@ namespace TASMod.LuaScripting
         public static ScriptInterface _instance = null;
         private static TASConsole Console => Controller.Console;
         public Dictionary<Keys, Tuple<string,LuaFunction>> KeyBinds;
+        public static Random LastMinesLoadLevel;
+        public static Random LastMinesGetTreasureRoomItem;
+        public static Random LastArtifactSpotRNG;
 
         public ScriptInterface()
         {
@@ -183,6 +196,69 @@ namespace TASMod.LuaScripting
         public List<ClickableItems.ClickObject> GetClickableObjects()
         {
             return ClickableItems.GetClickObjects();
+        }
+
+        public Random GetGame1Random()
+        {
+            return Game1.random.Copy();
+        }
+
+        public Random CopyRandom(Random random)
+        {
+            return random.Copy();
+        }
+        public Random GetLastMinesLoadLevelRNG()
+        {
+            return LastMinesLoadLevel != null ? LastMinesLoadLevel.Copy() : null;
+        }
+        public Random GetLastMinesTreasureRNG()
+        {
+            return LastMinesGetTreasureRoomItem != null ? LastMinesGetTreasureRoomItem.Copy() : null;
+        }
+
+        public Random GetLastArtifactSpotRNG()
+        {
+            return LastArtifactSpotRNG != null ? LastArtifactSpotRNG.Copy() : null;
+        }
+
+        public void ScreenshotLocation(GameLocation location, string file_prefix)
+        {
+            Color old_ambientLoght = Game1.ambientLight;
+            Game1.ambientLight = Color.White;
+            GameLocation curr = Game1.currentLocation;
+            Game1.currentLocation = location;
+            Game1.game1.takeMapScreenshot(0.25f, file_prefix, null);
+            Game1.currentLocation = curr;
+            Game1.ambientLight = old_ambientLoght;
+        }
+
+        public VolcanoDungeon SpawnDungeon(int level, uint daysPlayed, ulong uniqueIDForThisGame)
+        {
+            Random old_random = Game1.random.Copy();
+            uint old_daysPlayed = Game1.stats.DaysPlayed;
+            Game1.stats.daysPlayed = daysPlayed;
+
+            ulong old_uniqueIDForThisGame = Game1.uniqueIDForThisGame;
+            Game1.uniqueIDForThisGame = uniqueIDForThisGame;
+
+            VolcanoDungeon dungeon = new VolcanoDungeon(level);
+            dungeon.GenerateContents();
+            dungeon.mapBaseTilesheet = Game1.temporaryContent.Load<Texture2D>(dungeon.map.TileSheets[0].ImageSource);
+            dungeon.reloadMap();
+
+            Game1.stats.daysPlayed = old_daysPlayed;
+            Game1.uniqueIDForThisGame = old_uniqueIDForThisGame;
+            Game1.random = old_random;
+            return dungeon;
+        }
+
+        public MineShaft SpawnMineShaft(int level)
+        {
+            Random old_random = Game1.random.Copy();
+            MineShaft mineShaft = new MineShaft(level);
+            Reflector.InvokeMethod(mineShaft, "generateContents");
+            Game1.random = old_random;
+            return mineShaft;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace TASMod.LuaScripting
             _interpreter.Reference(typeof(Mouse));
             _interpreter.Reference(typeof(Keyboard));
             _interpreter.Reference(typeof(Game1));
+            _interpreter.Reference(typeof(StardewValley.Object));
         }
     }
 }

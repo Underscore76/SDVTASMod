@@ -20,6 +20,25 @@ namespace TASMod.Recording
                 index = random.get_Index();
                 seed = random.get_Seed();
             }
+
+            public static bool operator ==(RandomState left, RandomState right)
+            {
+                return left.index == right.index && left.seed == right.seed;
+            }
+
+            public static bool operator !=(RandomState left, RandomState right)
+            {
+                return !(left == right);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return (obj is RandomState) && this == (RandomState)obj;
+            }
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
         public static Keys[] ValidKeys =
         {
@@ -84,6 +103,32 @@ namespace TASMod.Recording
         {
             kstate = keyboardState.GetKeyboardState();
             mstate = mouseState.GetMouseState();
+        }
+
+        public static bool operator ==(FrameState left, FrameState right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FrameState left, FrameState right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is FrameState state)
+            {
+                return (state.keyboardState.SetEquals(keyboardState))
+                    && (state.mouseState.Equals(mouseState))
+                    && state.randomState.Equals(randomState);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
