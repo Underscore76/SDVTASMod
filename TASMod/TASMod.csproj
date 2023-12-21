@@ -10,7 +10,7 @@
         <PackageReference Include="NLua" Version="1.6.3" />
         <PackageReference Include="DynamicExpresso.Core" Version="2.16.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" Private="false" />
-        <PackageReference Include="SkiaSharp" Version="2.88.3" HintPath="$(GamePath)\SkiaSharp.dll" Private="false" />
+        <PackageReference Include="SkiaSharp" Version="2.88.6" HintPath="$(GamePath)\SkiaSharp.dll" Private="false" />
     </ItemGroup>
 
     <PropertyGroup>
