@@ -4,8 +4,6 @@ using System.Reflection;
 using System.Text;
 using NLua;
 using NLua.Exceptions;
-using StardewValley.Characters;
-using TASMod.System;
 
 namespace TASMod.LuaScripting
 {
@@ -23,16 +21,29 @@ namespace TASMod.LuaScripting
         public static void SetupImports()
         {
             // import namespaces for core MonoGame types
+            ModEntry.Console.Log("\tLoading System", StardewModdingAPI.LogLevel.Trace);
             LuaState.DoString(@"
                 import ('System')
                 import ('System.Collections.Generic')
+            ");
+            ModEntry.Console.Log("\tLoading MonoGame", StardewModdingAPI.LogLevel.Trace);
+            LuaState.DoString(@"
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Graphics')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Input')
                 import ('MonoGame.Framework', 'Microsoft.Xna.Framework.Audio')
+            ");
+            ModEntry.Console.Log("\tLoading Stardew", StardewModdingAPI.LogLevel.Trace);
+            LuaState.DoString(@"
                 import ('StardewValley')
                 import ('StardewValley.Locations')
                 import ('StardewValley.Characters')
+            ");
+            ModEntry.Console.Log("\tLoading TASMod", StardewModdingAPI.LogLevel.Trace);
+            LuaState.DoString(@"
+                import ('TASMod')
+                import ('TASMod.Helpers')
+                import ('TASMod.Extensions')
             ");
         }
 
@@ -63,14 +74,22 @@ namespace TASMod.LuaScripting
         {
             try
             {
+                ModEntry.Console.Log("Starting reload", StardewModdingAPI.LogLevel.Trace);
                 Init();
+                ModEntry.Console.Log("Starting import", StardewModdingAPI.LogLevel.Trace);
                 SetupImports();
+                ModEntry.Console.Log("Starting load", StardewModdingAPI.LogLevel.Trace);
                 LoadAllFiles();
+                ModEntry.Console.Log("Starting register", StardewModdingAPI.LogLevel.Trace);
                 RegisterEnums();
                 RegisterStaticClasses();
 
+                ModEntry.Console.Log("Starting script interface", StardewModdingAPI.LogLevel.Trace);
                 LuaState["interface"] = new ScriptInterface();
+
+                ModEntry.Console.Log("Running prelaunch", StardewModdingAPI.LogLevel.Trace);
                 LuaState.DoString(@"require('prelaunch')");
+                LuaState.DoString(@"luanet.load_assembly('Stardew Valley')");
 
                 return "";
             }
@@ -109,25 +128,35 @@ namespace TASMod.LuaScripting
             }
             catch (LuaScriptException e)
             {
-                string err = e.Message;
-                if (e.InnerException != null)
-                    err += "\n\t" + e.InnerException.Message;
-                return err;
+                return FormatError(e.Message, e.InnerException);
             }
             catch (TypeInitializationException e)
             {
-                string err = e.Message;
-                if (e.InnerException != null)
-                    err += "\n\t" + e.InnerException.Message;
-                return err;
+                return FormatError(e.Message, e.InnerException);
             }
             catch (Exception e)
             {
-                string err = e.Message;
-                if (e.InnerException != null)
-                    err += "\n\t" + e.InnerException.Message;
-                return err;
+                return FormatError(e.Message, e.InnerException);
             }
+        }
+        public static string FormatError(string message, Exception innerException)
+        {
+            string err = message;
+            if (innerException == null)
+                return err;
+            string[] items = innerException.Message.Split(" ");
+            string curr = "";
+            foreach (var item in items)
+            {
+                if (curr.Length > 65)
+                {
+                    err += "\n\t" + curr;
+                    curr = "";
+                }
+                curr += item + " ";
+            }
+            err += "\n\t" + curr;
+            return err;
         }
     }
 }

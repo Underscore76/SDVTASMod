@@ -13,12 +13,6 @@ namespace TASMod.Helpers
 {
     public class DropInfo
     {
-        public static DropInfo _instance;
-        static DropInfo()
-        {
-            _instance = new DropInfo();
-        }
-
         public static string ObjectName(int index)
         {
             if (!Game1.objectInformation.ContainsKey(index))

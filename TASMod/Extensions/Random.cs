@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace TASMod.Extensions
 {
-    internal static class Random_Extensions
+    public static class Random_Extensions
     {
         // counts the number of times an RNG instance was called
         internal class Holder

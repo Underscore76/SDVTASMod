@@ -24,8 +24,17 @@ using TASMod.Monogame.Framework;
 
 namespace TASMod
 {
+    public enum LaunchState
+    {
+        None,
+        Launched,
+        WindowInitialized,
+        Loaded,
+        Finalized
+    }
 	public class Controller
 	{
+        public static LaunchState LaunchState = LaunchState.None;
         public static bool ResetGame = true;
         public static bool FastAdvance = false;
         public static bool AcceptRealInput = true;
@@ -121,6 +130,22 @@ namespace TASMod
 
 		public static bool Update()
 		{
+            switch (LaunchState)
+            {
+                case LaunchState.None:
+                    LaunchState = LaunchState.Launched;
+                    return true;
+                case LaunchState.Launched:
+                    LaunchState = LaunchState.WindowInitialized;
+                    return true;
+                case LaunchState.WindowInitialized:
+                    LaunchState = LaunchState.Loaded;
+                    return true;
+                case LaunchState.Loaded:
+                    Reset();
+                    LaunchState = LaunchState.Finalized;
+                    return false;
+            }
 			TASInputState.Active = false;
 			RealInputState.Update();
             Console.Update();

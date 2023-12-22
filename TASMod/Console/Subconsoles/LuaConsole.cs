@@ -20,6 +20,7 @@ namespace TASMod.Console.Commands
         public Stack<string> Openings;
         private Dictionary<string, string[]> Keywords;
 
+
         public LuaConsole()
 		{
             CommandString = new List<string>();
@@ -41,6 +42,7 @@ namespace TASMod.Console.Commands
             }
             if (tokens.Length == 1)
             {
+                Write($"Run {string.Join(",", tokens)}");
                 ReceiveInput(tokens[0], false);
                 return;
             }
@@ -100,10 +102,8 @@ namespace TASMod.Console.Commands
                 }
                 catch (LuaScriptException e)
                 {
-                    string err = e.Message;
-                    if (e.InnerException != null)
-                        err += "\n\t" + e.InnerException.Message;
-                    result = err;
+                    result = LuaEngine.FormatError(e.Message, e.InnerException);
+                    ModEntry.Console.Log(result);
                 }
                 Write(result);
                 Clear();
