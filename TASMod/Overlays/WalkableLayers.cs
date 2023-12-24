@@ -13,6 +13,7 @@ using xTile.ObjectModel;
 using xTile.Tiles;
 using Microsoft.Xna.Framework;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using StardewValley.TerrainFeatures;
 
 
 // THIS IS MOSTLY JACKED FROM
@@ -178,7 +179,6 @@ namespace TASMod.Overlays
                         return true;
                 }
             }
-
             // large terrain features
             if (location.largeTerrainFeatures.Any(p => p.getBoundingBox().Intersects(tilePixels)))
                 return true;

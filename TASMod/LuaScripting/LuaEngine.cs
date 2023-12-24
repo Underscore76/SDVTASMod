@@ -38,6 +38,7 @@ namespace TASMod.LuaScripting
                 import ('StardewValley')
                 import ('StardewValley.Locations')
                 import ('StardewValley.Characters')
+                import ('StardewValley.TerrainFeatures')
             ");
             ModEntry.Console.Log("\tLoading TASMod", StardewModdingAPI.LogLevel.Trace);
             LuaState.DoString(@"
@@ -90,7 +91,9 @@ namespace TASMod.LuaScripting
                 ModEntry.Console.Log("Running prelaunch", StardewModdingAPI.LogLevel.Trace);
                 LuaState.DoString(@"require('prelaunch')");
                 LuaState.DoString(@"luanet.load_assembly('Stardew Valley')");
-
+                // override System.Object since it gets confusing very fast
+                LuaState.DoString(@"SObject=luanet.import_type('StardewValley.Object')");
+                
                 return "";
             }
             catch (LuaScriptException e)
@@ -109,9 +112,10 @@ namespace TASMod.LuaScripting
                 string message = "";
                 switch (command)
                 {
-                    case "reload":
-                        message = Reload();
-                        break;
+                    // NOTE: I was freezing on reload, might be a mac exclusive issue...
+                    //case "reload":
+                    //    message = Reload();
+                    //    break;
                     default:
                         object[] results = LuaState.DoString(Encoding.ASCII.GetBytes(command));
                         foreach (var r in results)

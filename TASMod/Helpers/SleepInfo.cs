@@ -10,6 +10,11 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System.Collections.Generic;
+using TASMod.Extensions;
+using StardewValley.Characters;
+using static HarmonyLib.Code;
+using System.Collections;
+using Object = StardewValley.Object;
 
 namespace TASMod.Helpers
 {
@@ -91,6 +96,16 @@ namespace TASMod.Helpers
             }
         }
 
+        public static Random PostWeatherRandom
+        {
+            get
+            {
+                if (NeedsUpdate())
+                    RecomputeStats();
+                return random.Copy();
+            }
+        }
+
 
         public static bool NeedsUpdate()
         {
@@ -106,6 +121,52 @@ namespace TASMod.Helpers
             return true;
         }
 
+        private static void UpdateMachines(int timeElapsed, GameLocation location)
+        {
+            for (int n = location.objects.Count() - 1; n >= 0; n--)
+            {
+                // Object:minutesElapsed
+                List<KeyValuePair<Vector2, StardewValley.Object>> updateList = new();
+                foreach (KeyValuePair<Vector2, StardewValley.Object> pair2 in location.objects.Pairs)
+                {
+                    updateList.Add(pair2);
+                }
+                for (int i = updateList.Count - 1; i >= 0; i--)
+                {
+                    KeyValuePair<Vector2, StardewValley.Object> pair = updateList[i];
+                    int minutesUntilReady = pair.Value.MinutesUntilReady;
+                    var obj = pair.Value;
+                    bool readyForHarvest = pair.Value.readyForHarvest.Value;
+                    if (obj.heldObject.Value != null && !obj.name.Contains("Table") && (!obj.bigCraftable.Value || obj.ParentSheetIndex != 165))
+                    {
+                        if (obj.name.Equals("Bee House") && !location.IsOutdoors)
+                        {
+                            continue;
+                        }
+                        if (obj.IsSprinkler())
+                        {
+                            continue;
+                        }
+                        if (obj.bigCraftable.Value && obj.ParentSheetIndex == 231)
+                        {
+                            continue;
+                        }
+                        if (Game1.IsMasterGame)
+                        {
+                            minutesUntilReady -= timeElapsed;
+                        }
+                        if (minutesUntilReady <= 0 && !obj.name.Contains("Incubator"))
+                        {
+                            readyForHarvest = true;
+                        }
+                        if (!readyForHarvest && random.NextDouble() < 0.33)
+                        {
+                            // random working animation
+                        }
+                    }
+                }
+            }
+        }
         public static void RecomputeStats()
         {
             if (Game1.getLocationFromName("Farm") == null || Game1.getLocationFromName("Farm").terrainFeatures == null)
@@ -140,11 +201,10 @@ namespace TASMod.Helpers
             random.NextDouble(); // Object::Constructor() flipped.Value
 
             // Minutes Elapsed Block
+            int overnightMinutesElapsed = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
             foreach (GameLocation location in Game1.locations)
             {
-                for (int n = location.objects.Count() - 1; n >= 0; n--)
-                {
-                }
+                UpdateMachines(overnightMinutesElapsed, location);
             }
             if (Game1.getFarm() != null)
             {
@@ -152,6 +212,7 @@ namespace TASMod.Helpers
                 {
                     if (building.indoors.Value != null)
                     {
+                        UpdateMachines(overnightMinutesElapsed, building.indoors.Value);
                     }
                 }
             }
@@ -992,6 +1053,242 @@ namespace TASMod.Helpers
                     break;
             }
         }
+
+        public static Farm TomorrowsFarm()
+        {
+            Farm orig = (Farm)Game1.getLocationFromName("Farm");
+            Farm farm = new Farm(orig.mapPath.Value, orig.Name);
+            Random backupRandom = Game1.random.Copy();
+            Random postWeatherRandom = PostWeatherRandom.Copy();
+            int dayOfMonth = Game1.dayOfMonth;
+            string currentSeason = Game1.currentSeason;
+            int year = Game1.year;
+            uint stats_DaysPlayed = Game1.stats.DaysPlayed;
+            int weather = Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).weatherForTomorrow.Value;
+            bool isRaining = Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isRaining.Value;
+            bool isSnowing = Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isSnowing.Value;
+            bool isLightning = Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isLightning.Value;
+            bool isDebrisWeather = Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isDebrisWeather.Value;
+
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isRaining.Value = weather == 1 || weather == 3;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isSnowing.Value = weather == 5;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isLightning.Value = weather == 3;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isDebrisWeather.Value = weather == 2;
+            Game1.stats.DaysPlayed++;
+            Game1.dayOfMonth++;
+
+            if (Game1.dayOfMonth == 29) {
+                switch (currentSeason)
+                {
+                    case "spring":
+                        Game1.currentSeason = "summer";
+                        break;
+                    case "summer":
+                        Game1.currentSeason = "fall";
+                        break;
+                    case "fall":
+                        Game1.currentSeason = "winter";
+                        break;
+                    case "winter":
+                        Game1.currentSeason = "spring";
+                        Game1.year++;
+                        break;
+                }
+                Game1.dayOfMonth = 1;
+            }
+            // clone objects
+            DuplicateObjects(orig, farm);
+            DuplicateTerrainFeatures(orig, farm);
+            DuplicateLargeTerrainFeatures(orig, farm);
+            DuplicateResourceClumps(orig, farm);
+            // call the day update
+            Game1.random = postWeatherRandom;
+            farm.DayUpdate(Game1.dayOfMonth);
+            // restore everything
+            Game1.random = backupRandom;
+            Game1.dayOfMonth = dayOfMonth;
+            Game1.currentSeason = currentSeason;
+            Game1.year = year;
+            Game1.stats.DaysPlayed = stats_DaysPlayed;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isRaining.Value = isRaining;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isSnowing.Value = isSnowing;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isLightning.Value = isLightning;
+            Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).isDebrisWeather.Value = isDebrisWeather;
+            return farm;
+        }
+
+        public static Crop CopyCrop(Crop old, Vector2 tile)
+        {
+            if (old == null) return null;
+            Crop crop;
+            if (old.forageCrop.Value)
+            {
+                crop = new Crop(old.forageCrop.Value, old.whichForageCrop.Value, (int)tile.X, (int)tile.Y);
+            }
+            else
+            {
+                crop = new Crop(old.netSeedIndex.Value, (int)tile.X, (int)tile.Y);
+            }
+            crop.flip.Value = old.flip.Value;
+            crop.dayOfCurrentPhase.Value = old.dayOfCurrentPhase.Value;
+            crop.currentPhase.Value = old.currentPhase.Value;
+            crop.phaseToShow.Value = old.phaseToShow.Value;
+            crop.dead.Value = old.dead.Value;
+            crop.fullyGrown.Value = old.fullyGrown.Value;
+            crop.indexOfHarvest.Value = old.indexOfHarvest.Value;
+            crop.netSeedIndex.Value = old.netSeedIndex.Value;
+            return crop;
+        }
+
+        public static Object CopyObject(Object old)
+        {
+            Object obj = new Object(old.TileLocation, old.ParentSheetIndex, 1);
+            obj.Flipped = old.Flipped;
+            return obj;
+        }
+        public static Tree CopyTree(Tree old)
+        {
+            Tree tree = new Tree(old.treeType.Value, old.growthStage.Value);
+            tree.flipped.Value = old.flipped.Value;
+            return tree;
+        }
+        public static Grass CopyGrass(Grass old)
+        {
+            Grass grass = new Grass(old.grassType.Value, old.numberOfWeeds.Value);
+            string[] fields = new[] { "whichWeed", "offset1", "offset2", "offset3", "offset4", "flip", "shakeRandom" };
+            foreach(var field in fields)
+            {
+                dynamic n = Reflector.GetDynamicCastField(grass, field);
+                dynamic o = Reflector.GetDynamicCastField(old, field);
+                for(int i = 0; i < 4; i++)
+                {
+                    n[i] = o[i];
+                }
+            }
+            return grass;
+        }
+
+        public static HoeDirt CopyHoeDirt(HoeDirt old, GameLocation loc)
+        {
+            Crop crop = CopyCrop(old.crop, old.currentTileLocation);
+            HoeDirt dirt = new HoeDirt(old.state.Value, loc);
+            dirt.crop = crop;
+            return dirt;
+        }
+
+        public static Bush CopyBush(Bush old, GameLocation loc)
+        {
+            Bush bush = new Bush(old.tilePosition.Value, old.size.Value, loc);
+            bush.flipped.Value = old.flipped.Value;
+            return bush;
+        }
+
+        public static ResourceClump CopyResourceClump(ResourceClump old)
+        {
+            ResourceClump clump = new ResourceClump(old.parentSheetIndex.Value, old.width.Value, old.height.Value, old.tile.Value);
+            return clump;
+        }
+
+        public static void DuplicateObjects(Farm src, Farm dst)
+        {
+            // NOTE: this is a hack to get around the fact that dictionary insertion order is not preserved
+            // need to be able to initialize the dict in the correct sequence so we take a fresh copy of the map
+            // and then nuke any features in that fresh map not in the current(preserving initialization)
+            // and then we can copy over the remaining features
+            List<Vector2> toRemove = new();
+            foreach(var kvp in dst.netObjects.Pairs)
+            {
+                if (!src.Objects.ContainsKey(kvp.Key))
+                {
+                    toRemove.Add(kvp.Key);
+                }
+            }
+            foreach(var vec in toRemove)
+            {
+                dst.Objects.Remove(vec);
+            }
+            foreach(var kvp in src.netObjects.Pairs)
+            {
+                Object o = CopyObject(kvp.Value);
+                if (dst.Objects.ContainsKey(kvp.Key))
+                {
+                    dst.Objects[kvp.Key] = o;
+                }
+                else
+                {
+                    dst.Objects.Add(kvp.Key, o);
+                }
+            }
+        }
+        public static void DuplicateTerrainFeatures(Farm src, Farm dst)
+        {
+            // NOTE: this is a hack to get around the fact that dictionary insertion order is not preserved
+            // need to be able to initialize the dict in the correct sequence so we take a fresh copy of the map
+            // and then nuke any features in that fresh map not in the current(preserving initialization)
+            // and then we can copy over the remaining features
+            List<Vector2> toRemove = new();
+            foreach (var kvp in dst.terrainFeatures.Pairs)
+            {
+                if (!src.terrainFeatures.ContainsKey(kvp.Key))
+                {
+                    toRemove.Add(kvp.Key);
+                }
+            }
+            foreach (var vec in toRemove)
+            {
+                dst.terrainFeatures.Remove(vec);
+            }
+            foreach (var kvp in src.terrainFeatures.Pairs)
+            {
+                TerrainFeature tf;
+                if (kvp.Value is HoeDirt dirt)
+                {
+                    tf = CopyHoeDirt(dirt, dst);
+                } else if(kvp.Value is Tree tree)
+                {
+                    tf = CopyTree(tree);
+                } else if (kvp.Value is Grass grass)
+                {
+                    tf = CopyGrass(grass);
+                } else
+                {
+                    ModEntry.Console.Log($"Could not clone {kvp.Value.GetType().Name}...", StardewModdingAPI.LogLevel.Error);
+                    tf = null;
+                }
+                if (dst.terrainFeatures.ContainsKey(kvp.Key))
+                {
+                    dst.terrainFeatures[kvp.Key] = tf;
+                }
+                else
+                {
+                    dst.terrainFeatures.Add(kvp.Key, tf);
+                }
+            }
+        }
+
+        public static void DuplicateLargeTerrainFeatures(Farm src, Farm dst)
+        {
+            dst.largeTerrainFeatures.Clear();
+            foreach(var ltf in src.largeTerrainFeatures)
+            {
+                if (ltf is Bush bush)
+                {
+                    dst.largeTerrainFeatures.Add(CopyBush(bush, dst));
+                } else
+                {
+                    ModEntry.Console.Log($"Could not clone {ltf.GetType().Name}...", StardewModdingAPI.LogLevel.Error);
+                }
+            }
+        }
+
+        public static void DuplicateResourceClumps(Farm src, Farm dst)
+        {
+            dst.resourceClumps.Clear();
+            foreach(var rc in src.resourceClumps)
+            {
+                dst.resourceClumps.Add(CopyResourceClump(rc));
+            }
+        }
+        }
     }
-}
 

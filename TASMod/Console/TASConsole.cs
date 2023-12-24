@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Windows.Input;
 using TASMod.Console.Commands;
 using TASMod.Overlays;
+using System.IO;
 
 namespace TASMod.Console
 {
@@ -518,6 +519,22 @@ namespace TASMod.Console
                 historyLog[i].Visible = false;
             }
             ResetHistoryPointers();
+        }
+
+        public void WriteToFile()
+        {
+            string name = Path.GetRandomFileName().Substring(0, 8) + ".txt";
+            string filePath = Path.Combine(Constants.BasePath, name);
+            using (StreamWriter file = File.CreateText(filePath))
+            {
+                for(int i = 0; i < historyLog.Count; ++i)
+                {
+                    if (historyLog[i].Visible)
+                    {
+                        file.WriteLine((historyLog[i].Entry ? ">":"") + historyLog[i].Text);
+                    }
+                }
+            }
         }
     }
 }
