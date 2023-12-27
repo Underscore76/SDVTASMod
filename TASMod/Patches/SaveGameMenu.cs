@@ -24,7 +24,7 @@ namespace TASMod.Patches
         {
             var loader = (IEnumerator<int>)Reflector.GetValue(__instance, "loader");
             var completePause = (int)Reflector.GetValue(__instance, "completePause");
-            __state = loader == null && __instance.hasDrawn && completePause == -1;
+            __state = loader == null && __instance.hasDrawn && completePause == -1 && Controller.SkipSave;
 
             return true;
         }

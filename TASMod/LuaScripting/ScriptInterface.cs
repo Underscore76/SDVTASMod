@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 using System.Linq;
 using NLua;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using TASMod.Inputs;
+using TASMod.System;
 using TASMod.Recording;
 using TASMod.Extensions;
 using TASMod.Console;
@@ -30,10 +32,19 @@ namespace TASMod.LuaScripting
         public static Random LastMinesGetTreasureRoomItem;
         public static Random LastArtifactSpotRNG;
 
+        public bool SimulateRealAdvance = false;
+        public double SleepRetry = 2;
+        public Stopwatch _gameTimer;
+        public long _previousTicks = 0;
+        public TimeSpan _accumulatedElapsedTime;
+        public TimeSpan _targetElapsedTime = TimeSpan.FromTicks(166667); // 60fps
+
+
         public ScriptInterface()
         {
             _instance = this;
             KeyBinds = new Dictionary<Keys, Tuple<string,LuaFunction>>();
+            _gameTimer = Stopwatch.StartNew();
         }
 
         public void PrintKeyBinds()
@@ -113,10 +124,35 @@ namespace TASMod.LuaScripting
             }
         }
 
+        public void WaitPrefix()
+        {
+            // uses the same logic as https://github.com/MonoGame/MonoGame/blob/develop/MonoGame.Framework/Game.cs#L58
+            // idea is to force a sleep until the next tick should fire
+            // not super accurate but from testing reaches pretty close to 60fps
+            PrefixTicks:
+                var currentTicks = _gameTimer.Elapsed.Ticks;
+                _accumulatedElapsedTime += TimeSpan.FromTicks(currentTicks - _previousTicks);
+                _previousTicks = currentTicks;
+
+                if (SimulateRealAdvance && _accumulatedElapsedTime < _targetElapsedTime)
+                {
+                    var sleepTime = (_targetElapsedTime - _accumulatedElapsedTime).TotalMilliseconds;
+                    if (sleepTime >= SleepRetry)
+                        Thread.Sleep(1);
+                    goto PrefixTicks;
+                }
+
+        }
+        public void WaitPostfix()
+        {
+            _accumulatedElapsedTime = TimeSpan.Zero;
+        }
+
         public void AdvanceFrame(LuaTable input)
         {
+            RealInputState.Update();
+            WaitPostfix();
             ReadInputStates(input, out TASKeyboardState kstate, out TASMouseState mstate);
-
             Controller.State.FrameStates.Add(
                 new FrameState(
                     kstate.GetKeyboardState(),
@@ -124,9 +160,14 @@ namespace TASMod.LuaScripting
                 )
             );
             StepLogic();
+            WaitPostfix();
         }
         public void StepLogic()
         {
+            if (RealInputState.IsKeyDown(Keys.OemMinus) && RealInputState.IsKeyDown(Keys.OemPlus))
+            {
+                throw new Exception("dropping out of step logic");
+            }
             Controller.AcceptRealInput = false;
             GameRunner.instance.Step();
             Controller.AcceptRealInput = true;
@@ -257,6 +298,14 @@ namespace TASMod.LuaScripting
             Reflector.InvokeMethod(mineShaft, "generateContents");
             Game1.random = old_random;
             return mineShaft;
+        }
+
+        public void SetTargetFPS(int fps)
+        {
+            // 60 fps => 166667
+            double rate = 60 / fps;
+            int ticks = (int)(166667 * rate);
+            _targetElapsedTime = TimeSpan.FromTicks(ticks);
         }
     }
 }

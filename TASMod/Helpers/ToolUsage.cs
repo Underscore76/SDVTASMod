@@ -34,6 +34,9 @@ namespace TASMod.Helpers
                             case 11:
                                 kstate.Add("OemPlus");
                                 break;
+                            case 9:
+                                kstate.Add("D0");
+                                break;
                             default:
                                 kstate.Add("D" + (i + 1).ToString());
                                 break;

@@ -6,6 +6,13 @@ using System.Linq;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Locations;
+using StardewValley.Objects;
+using StardewValley.Projectiles;
+using StardewValley.TerrainFeatures;
+using System.Xml.Linq;
+using xTile;
+using xTile.Layers;
+using xTile.ObjectModel;
 
 namespace TASMod.Helpers
 {

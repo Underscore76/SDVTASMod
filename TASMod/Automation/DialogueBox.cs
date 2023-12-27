@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StardewValley;
 using TASMod.Helpers;
 using TASMod.Inputs;
 
@@ -19,6 +20,9 @@ namespace TASMod.Automation
             gstate = null;
 
             if (!CurrentMenu.Active || !CurrentMenu.IsDialogue)
+                return false;
+
+            if (Game1.currentMinigame != null)
                 return false;
 
             // transitioning on/off screen

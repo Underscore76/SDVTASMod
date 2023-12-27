@@ -11,7 +11,9 @@ function engine.halt(max_frames)
     local i = 0
     while interface.HasStep and i < max_frames do
         i = i + 1
+        interface:WaitPrefix()
         interface:StepLogic()
+        interface:WaitPostfix()
     end
 end
 

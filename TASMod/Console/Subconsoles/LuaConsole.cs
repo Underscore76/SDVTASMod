@@ -74,13 +74,13 @@ namespace TASMod.Console.Commands
                 Unsubscribe();
                 return;
             }
-            if (input == "reload")
-            {
-                Clear();
-                LuaEngine.Reload();
-                WriteAsEntry(input);
-                return;
-            }
+            //if (input == "reload")
+            //{
+            //    Clear();
+            //    LuaEngine.Reload();
+            //    WriteAsEntry(input);
+            //    return;
+            //}
             if (input == "clr")
             {
                 Clear();

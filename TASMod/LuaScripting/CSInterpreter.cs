@@ -3,6 +3,8 @@ using DynamicExpresso;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
+using StardewValley.Menus;
+using TASMod.Helpers;
 
 namespace TASMod.LuaScripting
 {
@@ -28,6 +30,8 @@ namespace TASMod.LuaScripting
             _interpreter.Reference(typeof(Keyboard));
             _interpreter.Reference(typeof(Game1));
             _interpreter.Reference(typeof(StardewValley.Object));
+            _interpreter.Reference(typeof(CraftingPage));
+            _interpreter.Reference(typeof(CurrentMenu));
         }
     }
 }

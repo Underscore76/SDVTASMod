@@ -161,7 +161,13 @@ namespace TASMod.Helpers
             }
             if (location.overlayObjects.ContainsKey(tile.toVector2()))
             {
-                return false;
+                Object obj = location.overlayObjects[tile.toVector2()];
+                return obj.isPassable();
+            }
+            if (location.Objects.ContainsKey(tile.toVector2()))
+            {
+                Object obj = location.Objects[tile.toVector2()];
+                return obj.isPassable();
             }
             // check furniture
             if (location.GetFurnitureAt(tile.toVector2()) != null)

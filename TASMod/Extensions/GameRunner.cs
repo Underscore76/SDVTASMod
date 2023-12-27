@@ -118,6 +118,7 @@ namespace TASMod.Extensions
             //ModEntry.Console.Log($"\tinvoking EndDraw... {gameTime.TotalGameTime}", LogLevel.Error);
             runner.InvokeEndDraw();
             //ModEntry.Console.Log($"finished step. {gameTime.TotalGameTime}", LogLevel.Error);
+            runner.EventLoop();
         }
 
         public static void RunFast(this GameRunner runner)

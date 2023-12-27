@@ -39,7 +39,7 @@ namespace TASMod
         public static bool FastAdvance = false;
         public static bool AcceptRealInput = true;
         public static int FramesBetweenRender = 60;
-
+        public static bool SkipSave = false;
         public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
         public static TASKeyboardState LogicKeyboard = null;
@@ -118,11 +118,6 @@ namespace TASMod
                     // TODO: Does this do anything? it's going to copy the reference to the same RNG object anyways
                     defaults[i] = new Random(0);
                     Game1.recentMultiplayerRandom = new Random(0);
-                }
-                if (fields[i].Name == "savePathOverride")
-                {
-                    defaults[i] = Constants.SavesPath;
-                    Game1.savePathOverride = Constants.SavesPath;
                 }
             }
             //ModEntry.Console.Log($"number of statics: {defaults.Count}");
