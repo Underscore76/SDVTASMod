@@ -27,6 +27,7 @@ namespace TASMod.Helpers
         private static bool receiveGift;
         private static bool lightningTriggered;
         private static int weatherForTomorrow;
+        private static int islandWeatherForTomorrow;
 
         private static NetVector2Dictionary<TerrainFeature, Netcode.NetRef<TerrainFeature>> Farm_terrainFeatures;
 
@@ -93,6 +94,16 @@ namespace TASMod.Helpers
                 if (NeedsUpdate())
                     RecomputeStats();
                 return weatherForTomorrow;
+            }
+        }
+
+        public static int IslandWeatherForTomorrow
+        {
+            get
+            {
+                if (NeedsUpdate())
+                    RecomputeStats();
+                return islandWeatherForTomorrow;
             }
         }
 
@@ -287,7 +298,14 @@ namespace TASMod.Helpers
             }
             // NOTE: v1.5 change, setting island weather
             // Game1::SetOtherLocationWeatherForTomorrow()
-            random.NextDouble();
+            if (random.NextDouble() < 0.24)
+            {
+                islandWeatherForTomorrow = 1;
+            }
+            else
+            {
+                islandWeatherForTomorrow = 0;
+            }
 
             if (weatherForTomorrow == 2)
                 PopulateDebrisWeatherArray();
