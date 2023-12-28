@@ -287,6 +287,26 @@ namespace TASMod.Helpers
             }
             return false;
         }
+
+        public static Vector2 NearestGrass()
+        {
+            float minDist = float.MaxValue;
+            Vector2 nearest = Vector2.Zero;
+            Vector2 player = Game1.player.getTileLocation();
+            foreach(var tf in Game1.currentLocation.terrainFeatures.Pairs)
+            {
+                if (tf.Value is Grass grass)
+                {
+                    float diff = Vector2.DistanceSquared(tf.Key, player);
+                    if (diff < minDist)
+                    {
+                        minDist = diff;
+                        nearest = tf.Key;
+                    }
+                }
+            }
+            return nearest;
+        }
     }
 }
 

@@ -39,7 +39,7 @@ namespace TASMod
         public static bool FastAdvance = false;
         public static bool AcceptRealInput = true;
         public static int FramesBetweenRender = 60;
-        public static bool SkipSave = false;
+        public static bool SkipSave = true;
         public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
         public static TASKeyboardState LogicKeyboard = null;
