@@ -48,7 +48,7 @@ namespace TASMod.Views
 
             // HARD FORCE THE RESOLUTION
             // TODO: move this to pull from the same config as in Game1_SetWindowSize
-            ScreenRect = new Rectangle(0, 0, 1920, 1080);
+            ScreenRect = new Rectangle(0, 0, ModEntry.Config.ScreenWidth, ModEntry.Config.ScreenHeight);
             ModEntry.Console.Log($"initializing MapView: {ScreenRect}", StardewModdingAPI.LogLevel.Error);
             Scale = 1;
         }
@@ -56,6 +56,7 @@ namespace TASMod.Views
         public void Enter()
         {
             OldZoomLevel = Game1.options.baseZoomLevel;
+            Game1.game1.zoomModifier = Game1.options.baseZoomLevel;
             OldViewport = Game1.viewport;
             if (Game1.gameMode != 3) return;
             Game1.options.baseZoomLevel = 1;
@@ -103,6 +104,7 @@ namespace TASMod.Views
         {
             Game1.viewport = OldViewport;
             Game1.options.baseZoomLevel = OldZoomLevel;
+            Game1.game1.zoomModifier = 1;
         }
 
         public static Vector2 MouseTile
