@@ -521,9 +521,9 @@ namespace TASMod.Console
             ResetHistoryPointers();
         }
 
-        public void WriteToFile()
+        public void WriteToFile(string name)
         {
-            string name = Path.GetRandomFileName().Substring(0, 8) + ".txt";
+            name += ".txt";
             string filePath = Path.Combine(Constants.BasePath, name);
             using (StreamWriter file = File.CreateText(filePath))
             {
@@ -532,6 +532,21 @@ namespace TASMod.Console
                     if (historyLog[i].Visible)
                     {
                         file.WriteLine((historyLog[i].Entry ? ">":"") + historyLog[i].Text);
+                    }
+                }
+            }
+        }
+        public void WriteToRandomFile()
+        {
+            string name = Path.GetRandomFileName().Substring(0, 8) + ".txt";
+            string filePath = Path.Combine(Constants.BasePath, name);
+            using (StreamWriter file = File.CreateText(filePath))
+            {
+                for (int i = 0; i < historyLog.Count; ++i)
+                {
+                    if (historyLog[i].Visible)
+                    {
+                        file.WriteLine((historyLog[i].Entry ? ">" : "") + historyLog[i].Text);
                     }
                 }
             }

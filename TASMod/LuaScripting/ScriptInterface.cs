@@ -291,6 +291,24 @@ namespace TASMod.LuaScripting
             return dungeon;
         }
 
+        public VolcanoDungeon SpawnDungeonMinimal(int level, uint daysPlayed, ulong uniqueIDForThisGame)
+        {
+            Random old_random = Game1.random.Copy();
+            uint old_daysPlayed = Game1.stats.DaysPlayed;
+            Game1.stats.daysPlayed = daysPlayed;
+
+            ulong old_uniqueIDForThisGame = Game1.uniqueIDForThisGame;
+            Game1.uniqueIDForThisGame = uniqueIDForThisGame;
+
+            VolcanoDungeon dungeon = new VolcanoDungeon(level);
+            dungeon.GenerateContents();
+
+            Game1.stats.daysPlayed = old_daysPlayed;
+            Game1.uniqueIDForThisGame = old_uniqueIDForThisGame;
+            Game1.random = old_random;
+            return dungeon;
+        }
+
         public MineShaft SpawnMineShaft(int level)
         {
             Random old_random = Game1.random.Copy();
