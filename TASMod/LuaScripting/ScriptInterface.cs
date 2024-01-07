@@ -17,6 +17,7 @@ using TASMod.Helpers;
 using StardewValley.SDKs;
 using System.Reflection;
 using System.Diagnostics;
+using StardewValley.Objects;
 using StardewValley.Locations;
 using Microsoft.Xna.Framework.Graphics;
 using xTile;
@@ -324,6 +325,114 @@ namespace TASMod.LuaScripting
             double rate = 60 / fps;
             int ticks = (int)(166667 * rate);
             _targetElapsedTime = TimeSpan.FromTicks(ticks);
+        }
+
+        public Dictionary<string, int> CountInventory()
+        {
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            for(int i = 0; i < Game1.player.Items.Count; i++)
+            {
+                if (Game1.player.Items[i] != null)
+                {
+                    if (res.ContainsKey(Game1.player.Items[i].Name))
+                    {
+                        res[Game1.player.Items[i].Name] += Game1.player.Items[i].Stack;
+                    }
+                    else
+                    {
+                        res.Add(Game1.player.Items[i].Name, Game1.player.Items[i].Stack);
+                    }
+                }
+            }
+            return res;
+        }
+
+        public Dictionary<string, int> CountChest(string locName, Vector2 chestTile)
+        {
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            GameLocation loc = Game1.getLocationFromName(locName);
+            if (loc.Objects.TryGetValue(chestTile, out StardewValley.Object obj))
+            {
+                if (obj is Chest chest)
+                {
+                    for(int i = 0; i < chest.items.Count; i++)
+                    {
+                        if (res.ContainsKey(chest.items[i].Name))
+                        {
+                            res[chest.items[i].Name] += chest.items[i].Stack;
+                        }
+                        else
+                        {
+                            res.Add(chest.items[i].Name, chest.items[i].Stack);
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        public readonly string[] MachineNames = {
+            "Deconstructor", "Crystalarium", "Wood Chipper"
+        };
+
+        public struct MachineState
+        {
+            public string Name;
+            public int NumMachine;
+            public int NumMachineDone;
+            public Dictionary<string, int> ItemCounts;
+            public MachineState(string machineName)
+            {
+                Name = machineName;
+                ItemCounts = new Dictionary<string, int>();
+                NumMachine = 0;
+                NumMachineDone = 0;
+            }
+            public void Update(string locName)
+            {
+                NumMachine = 0;
+                NumMachineDone = 0;
+                ItemCounts.Clear();
+
+                if (Name == "")
+                {
+                    return;
+                }
+
+                GameLocation loc = Game1.getLocationFromName(locName);
+                foreach(var kvp in loc.Objects.Pairs)
+                {
+                    var obj = kvp.Value;
+                    if (obj.Name == Name)
+                    {
+                        NumMachine++;
+                        if (obj.heldObject.Value == null)
+                        {
+                            NumMachineDone++;
+                        }
+                        else if (obj.readyForHarvest.Value)
+                        {
+                            NumMachineDone++;
+                            var heldObject = obj.heldObject.Value;
+                            if (ItemCounts.ContainsKey(heldObject.Name))
+                            {
+                                ItemCounts[heldObject.Name] += heldObject.Stack;
+                            }
+                            else
+                            {
+                                ItemCounts.Add(heldObject.Name, heldObject.Stack);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public MachineState GetMachineState(string locName, string machineName)
+        {
+            MachineState state = new MachineState(machineName);
+            state.Update(locName);
+            return state;
         }
     }
 }

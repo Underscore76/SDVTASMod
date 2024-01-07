@@ -8,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using xTile.ObjectModel;
+using xTile.Dimensions;
 using Object = StardewValley.Object;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Microsoft.Xna.Framework;
 
 namespace TASMod.Helpers
@@ -35,10 +37,35 @@ namespace TASMod.Helpers
             solver = new AStar<Tile>(this.GetNeighbors, this.DistanceStep, this.DistanceHeuristic);
         }
 
+        private bool TileValid(Tile pos)
+        {
+            if (Game1.currentLocation is BuildableGameLocation location)
+            {
+                Vector2 tile = new Vector2(pos.X, pos.Y);
+                foreach (var b in location.buildings)
+                {
+                    if (b.occupiesTile(tile))
+                        return false;
+                }
+            }
+            {
+                Location tile = new Location(pos.X, pos.Y);
+                if (!Game1.currentLocation.isTilePassable(tile, Game1.viewport))
+                    return false;
+            }
+            return true;
+        }
+
         public void Update(Tile start, Tile end, bool useTool = true)
         {
             location = Game1.currentLocation;
             useTools = useTool;
+            if (!IsValid(end))
+            {
+                path = null;
+                hasPath = false;
+                return;
+            }
             try
             {
                 path = solver.Search(start, end, out cost, maxCost);
