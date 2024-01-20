@@ -406,3 +406,6 @@ ASALocalRun/
 
 # vscode specific folder
 .vscode/
+
+# local dev specific
+run.sh

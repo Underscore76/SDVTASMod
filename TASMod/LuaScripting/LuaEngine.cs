@@ -45,6 +45,7 @@ namespace TASMod.LuaScripting
                 import ('TASMod')
                 import ('TASMod.Helpers')
                 import ('TASMod.Extensions')
+                import ('TASMod.Overlays')
             ");
         }
 
@@ -66,7 +67,6 @@ namespace TASMod.LuaScripting
 
         public static void RegisterStaticClasses()
         {
-            LuaState["Controller"] = Activator.CreateInstance(typeof(Controller));
             LuaState.RegisterFunction("RunCS", typeof(CSInterpreter).GetMethod("Eval"));
             LuaState.RegisterFunction("GetValue", typeof(Reflector).GetMethod("GetDynamicCastField"));
         }

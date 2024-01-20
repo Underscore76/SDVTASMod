@@ -32,6 +32,7 @@ namespace TASMod
         Loaded,
         Finalized
     }
+
 	public class Controller
 	{
         public static LaunchState LaunchState = LaunchState.None;
@@ -39,7 +40,11 @@ namespace TASMod
         public static bool FastAdvance = false;
         public static bool AcceptRealInput = true;
         public static int FramesBetweenRender = 60;
+        public static int PlaybackFrame = -1;
         public static bool SkipSave = true;
+        public static int PauseFrame = 0;
+        public static bool IsPaused = false;
+
         public static PerformanceTiming Timing;
         public static TASMouseState LogicMouse = null;
         public static TASKeyboardState LogicKeyboard = null;
@@ -125,6 +130,29 @@ namespace TASMod
 
 		public static bool Update()
 		{
+            if (LaunchUpdate()) return true;
+
+			RealInputState.Update();
+            Console.Update();
+            bool didInjectText = HandleTextBoxEntry();
+            UpdateOverlays();
+
+            TASInputState.Active = false;
+            switch(GameMode)
+            {
+                case TASMode.Edit:
+                    EditUpdate(didInjectText);
+                    break;
+                case TASMode.Replay:
+                    ReplayUpdate(didInjectText);
+                    break;
+            }
+
+			return TASInputState.Active;
+		}
+
+        public static bool LaunchUpdate()
+        {
             switch (LaunchState)
             {
                 case LaunchState.None:
@@ -140,14 +168,72 @@ namespace TASMod
                     Reset();
                     LaunchState = LaunchState.Finalized;
                     return false;
+                case LaunchState.Finalized:
+                default:
+                    return false;
             }
-			TASInputState.Active = false;
-			RealInputState.Update();
-            Console.Update();
-            bool didInjectText = HandleTextBoxEntry();
+        }
 
-            UpdateOverlays();
+        public static void ReplayUpdate(bool didInjectText)
+        {
+            // you can't pause on inject text frames
+            if (didInjectText)
+            {
+                // advance if we have a frame to pull
+                if(HandleStoredInput())
+                {
+                    PullFrame();
+                }
+                return;
+            }
 
+            // only allow release if we're on the main game view
+            if (CurrentView != TASView.None)
+            {
+                return;
+            }
+
+            if (!Console.IsOpen)
+            {
+                if (RealInputState.KeyTriggered(Keys.P))
+                {
+                    IsPaused = !IsPaused;
+                    if (!IsPaused && HandleStoredInput()) { PullFrame(); }
+                    return;
+                }
+                else if (HandleRealInput())
+                {
+                    if (HandleStoredInput())
+                    {
+                        PullFrame();
+                    }
+                    return;
+                }
+            }
+            if (ResetGame)
+            {
+                IsPaused = false;
+                return;
+            }
+
+            // advance until we reach the pause frame
+            if (!IsPaused)
+            {
+                if (PauseFrame == (int)TASDateTime.CurrentFrame)
+                {
+                    IsPaused = true;
+                    return;
+                }
+                // advance if we have a frame to pull
+                if (HandleStoredInput())
+                {
+                    PullFrame();
+                }
+            }
+        }
+
+        public static void EditUpdate(bool didInjectText)
+        {
             if (HandleStoredInput())
             {
                 FrameState state = PullFrame();
@@ -156,10 +242,7 @@ namespace TASMod
                     && TASDateTime.CurrentFrame > 3000)
                 {
                     ModEntry.Console.Log(string.Format("{0}: Game1.random: [{1}]\tFrame: {2}", TASDateTime.CurrentFrame, Game1.random.ToString(), state.randomState), StardewModdingAPI.LogLevel.Error);
-                    //Game1.game1.Exit();
-                    //Environment.Exit(1);
                 }
-                // compare randoms
             }
             else if (didInjectText)
             {
@@ -179,8 +262,7 @@ namespace TASMod
                 TASInputState.SetMouse(RealMouse);
                 PushFrame();
             }
-			return TASInputState.Active;
-		}
+        }
 
         public static void UpdateOverlays()
         {
@@ -279,6 +361,7 @@ namespace TASMod
             TASInputState.Reset();
             TASDateTime.Reset();
             TASGuid.Reset();
+            IsPaused = false;
         }
         #endregion
 
@@ -359,6 +442,21 @@ namespace TASMod
                     State = state;
                     Reset(false);
                     advance = false;
+                }
+            }
+            if (RealInputState.KeyTriggered(Keys.M))
+            {
+                switch(GameMode)
+                {
+                    case TASMode.Edit:
+                        if (!HandleStoredInput())
+                        {
+                            GameMode = TASMode.Replay;
+                        }
+                        break;
+                    case TASMode.Replay:
+                        GameMode = TASMode.Edit;
+                        break;
                 }
             }
             if (RealInputState.KeyTriggered(Keys.OemPipe))

@@ -149,6 +149,7 @@ namespace TASMod.Recording
 
         public void Reset(int resetTo)
         {
+            if (Controller.GameMode != TASMode.Edit) return;
             if (resetTo < 0)
                 resetTo = FrameStates.Count + 1 + resetTo;
             resetTo = Math.Min(resetTo, FrameStates.Count);
