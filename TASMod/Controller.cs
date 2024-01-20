@@ -350,6 +350,20 @@ namespace TASMod
             );
             TASInputState.Active = true;
         }
+        public static void PushTextFrame(string text)
+        {
+            var mState = LastFrameMouse();
+            mState.LeftMouseClicked = false;
+            mState.RightMouseClicked = false;
+            State.FrameStates.Add(
+                new FrameState(
+                    new KeyboardState(),
+                    mState.GetMouseState(),
+                    inject: text
+                )
+            );
+            TASInputState.Active = true;
+        }
         public static void Reset(bool fastAdvance=false)
         {
             ModEntry.Console.Log("Calling reset", LogLevel.Error);
@@ -491,7 +505,7 @@ namespace TASMod
             TextBox textBox = TextBoxInput.GetSelected(out string Name);
             if (textBox != null)
             {
-                if (textBox.Text.Length == 0)
+                if (textBox.Text.Length == 0 || State.FrameStates[(int)TASDateTime.CurrentFrame-1].HasInjectText())
                 {
                     switch (Name)
                     {
@@ -505,7 +519,8 @@ namespace TASMod
                             TextBoxInput.Write(textBox, Controller.State.FavoriteThing);
                             break;
                         default:
-                            TextBoxInput.Write(textBox, Name);
+                            string text = State.FrameStates[(int)TASDateTime.CurrentFrame-1].injectText;
+                            TextBoxInput.Write(textBox, text);
                             break;
                     }
                     return true;
