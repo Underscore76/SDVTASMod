@@ -63,6 +63,9 @@ namespace TASMod.Recording
         [JsonProperty]
         public TASMouseState mouseState;
         public string comments;
+        [JsonProperty]
+        public string injectText;
+        public string InjectText { get => injectText; set => injectText = value; }
 
         public FrameState()
         {
@@ -70,6 +73,7 @@ namespace TASMod.Recording
             keyboardState = new TASKeyboardState();
             mouseState = new TASMouseState();
             comments = "";
+            injectText = "";
         }
 
         public FrameState(FrameState o)
@@ -82,15 +86,30 @@ namespace TASMod.Recording
             keyboardState.IntersectWith(ValidKeys);
             mouseState = new TASMouseState(o.mouseState);
             comments = o.comments;
+            injectText = o.injectText;
         }
 
-        public FrameState(KeyboardState kstate, MouseState mstate, string comm = "")
+        public FrameState(KeyboardState kstate, MouseState mstate, string comm = "", string inject = "")
         {
             randomState = new RandomState(Game1.random);
             keyboardState = new TASKeyboardState(kstate);
             keyboardState.IntersectWith(ValidKeys);
             mouseState = new TASMouseState(mstate);
             comments = comm;
+            injectText = inject;
+        }
+
+        public bool HasInjectText()
+        {
+            return !string.IsNullOrEmpty(injectText);
+        }
+        public void SetInjectText(string text)
+        {
+            injectText = text;
+        }
+        public void ClearInjectText()
+        {
+            injectText = "";
         }
 
         public void toStates(out TASKeyboardState kstate, out TASMouseState mstate)
@@ -119,9 +138,10 @@ namespace TASMod.Recording
         {
             if (obj is FrameState state)
             {
-                return (state.keyboardState.SetEquals(keyboardState))
-                    && (state.mouseState.Equals(mouseState))
-                    && state.randomState.Equals(randomState);
+                return state.keyboardState.SetEquals(keyboardState)
+                    && state.mouseState.Equals(mouseState)
+                    && state.randomState.Equals(randomState)
+                    && state.injectText == injectText;
             }
             return false;
         }

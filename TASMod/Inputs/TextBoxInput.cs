@@ -85,6 +85,8 @@ namespace TASMod.Inputs
                         return textBox;
                     }
                 }
+                if (textBox == null)
+                    textBox = (TextBox)Game1.keyboardDispatcher.Subscriber;
             }
             // TODO: Other textbox based events
             if (textBox != null)
@@ -101,6 +103,7 @@ namespace TASMod.Inputs
         {
             if (textBox != null)
             {
+                textBox.Text = "";
                 foreach (char c in text)
                 {
                     textBox.RecieveTextInput(c);

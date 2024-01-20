@@ -153,11 +153,12 @@ namespace TASMod.LuaScripting
         {
             RealInputState.Update();
             WaitPostfix();
-            ReadInputStates(input, out TASKeyboardState kstate, out TASMouseState mstate);
+            ReadInputStates(input, out TASKeyboardState kstate, out TASMouseState mstate, out string injectText);
             Controller.State.FrameStates.Add(
                 new FrameState(
                     kstate.GetKeyboardState(),
-                    mstate.GetMouseState()
+                    mstate.GetMouseState(),
+                    inject: injectText
                 )
             );
             StepLogic();
@@ -174,14 +175,16 @@ namespace TASMod.LuaScripting
             Controller.AcceptRealInput = true;
         }
 
-        public static void ReadInputStates(LuaTable input, out TASKeyboardState kstate, out TASMouseState mstate)
+        public static void ReadInputStates(LuaTable input, out TASKeyboardState kstate, out TASMouseState mstate, out string injectText)
         {
             LuaTable keyboard = null;
             LuaTable mouse = null;
+            injectText = "";
             if (input != null)
             {
                 keyboard = (LuaTable)input["keyboard"];
                 mouse = (LuaTable)input["mouse"];
+                injectText = (string)input["text"];
             }
 
             kstate = new TASKeyboardState();
