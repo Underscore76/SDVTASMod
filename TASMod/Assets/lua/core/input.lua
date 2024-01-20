@@ -15,7 +15,7 @@ function input.click_point(point, left, right)
         left=false,
         right=false
     }
-    local last_mouse = RunCS("Controller.LastFrameMouse()")
+    local last_mouse = Controller.LastFrameMouse()
     if last_mouse.X ~= mouse.X or last_mouse.Y ~= mouse.Y  or (last_mouse.LeftMouseClicked and left) or (last_mouse.RightMouseClicked and right) then
         advance({mouse=mouse})
     end
