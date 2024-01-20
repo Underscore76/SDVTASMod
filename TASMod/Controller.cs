@@ -40,6 +40,7 @@ namespace TASMod
         public static bool FastAdvance = false;
         public static bool AcceptRealInput = true;
         public static int FramesBetweenRender = 60;
+        public static int PlaybackFrame = -1;
         public static bool SkipSave = true;
         public static int PauseFrame = 0;
         public static bool IsPaused = false;

@@ -128,7 +128,10 @@ namespace TASMod.Extensions
             int counter = 0;
             int finalFrames = 10;
             TASSpriteBatch.Active = false;
-            while ((int)TASDateTime.CurrentFrame < Controller.State.Count - finalFrames)
+            int maxFrame = Controller.State.Count - finalFrames;
+            if (Controller.PlaybackFrame != -1)
+                maxFrame = Math.Min(maxFrame, Controller.PlaybackFrame);
+            while ((int)TASDateTime.CurrentFrame < maxFrame)
             {
                 try
                 {
